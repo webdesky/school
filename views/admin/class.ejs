@@ -1,0 +1,93 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Class</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/classList"><button class="btn btn-inverse-dark btn-fw">class List</button></a>
+          </p>
+          
+          <form class="forms-sample" id="form_class" method="post" action="/addClass">
+             <input type="hidden" value="<%= classdata.class_id %>" name="class_id" >
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-4">
+                <input type="name" class="form-control" id="name" placeholder="Enter  Class Name" <% if(classdata.class_name){%> value="<%= classdata.class_name%>"<% }  %> name="name">
+                <span for="name"  class="error below" style="display: none"></span>
+
+              </div>
+
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Abbreviations</label>
+              <div class="col-sm-4">
+               <input type="name" class="form-control" id="class_abbreviations" placeholder="Enter  Class Name" <% if(classdata.class_abbreviations){%> value="<%= classdata.class_abbreviations%>"<% }  %> name="class_abbreviations">
+               <span for="class_abbreviations"  class="error below" style="display: none"></span>
+                
+
+              </div>
+            </div>
+            <div class="col-sm-12" align="center">
+              
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+          <br><br>
+          <% if(class_list!=''){ %>
+          <div class="table-responsive">
+              <table class="table table-bordered" id="myTable">
+                <thead>
+                  <tr>
+                    <th>
+                      #
+                    </th>
+                    <th>
+                      Class name
+                    </th>
+                    <th>
+                      Numeric Value
+                    </th>
+                    <th>
+                      Action
+                    </th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                <%  var i=1; class_list.forEach(function(class_list){ %>
+                  <tr id="tr_<%= i %>">
+                    <td >
+
+                      <%= i %>
+                    </td>
+                    <td>
+                      <%= class_list.class_name %>
+                    </td>
+                    <td>
+                      <%= class_list.class_name_numeric %>
+                    </td>
+                    
+                    <td>
+                     <a href="/admin/class/?id=<%= class_list.class_id %>">
+
+                      <button type="button" class="btn btn-dark btn-fw">
+                                  <i class="mdi mdi-cloud-download"></i>Edit
+                                  </button>
+                                 </a>
+                                 
+                                 <a href="#"  onclick="delete_record('<%= class_list.class_id %>','<%= i %>','tbl_class','class_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                 </td>
+
+                    
+                  </tr>
+                <% i++; })%>
+                </tbody>
+              </table>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,170 @@
+
+<style>
+	
+/*.form-sample .form-group {
+    width: 100%;
+}*/
+
+</style>
+
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Message</h2>
+					<!-- <form class="form-sample" id="form_register" method="Post" action="/admin/registration"> -->
+					<div class="col-md-12">
+						<div class="form-group row">
+							<label class="col-sm-2 col-form-label">Send TO</label>
+							<div class="col-sm-2">
+								<div class="form-radio abc" id="stud">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="register" id="register" value="student" checked > Student
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-radio" id="teach">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="register" value="teacher"> Teacher
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-radio" id="acc">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="register" value="accountant"> Parents
+									</label>
+								</div>
+							</div>
+							 
+						</div>
+					</div>
+					<br/><br/>
+					<div id="student">
+					 <form class="form-sample" id="student_register" method="Post" action="/admin/sendmessage">	
+					 	 <input type="hidden" name="page" value='studentpage'>
+					 	 <br/><br/>
+                          <div class="form-group row">
+				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+				              <div class="col-sm-2">
+				               <select class="form-control" id="class_id" name="class_id">
+				               	<option value="">Select Class</option>
+				                <option value="">-----------</option>
+				                <option value="daysscholler">All days Scholler</option>
+				                <option value="hostels">Hostlers</option>
+				                <option value="">-----------</option>
+				               	<%  class_list.forEach(function(class_list){ %>
+				                <option value="<%= class_list.class_id  %>"><%=    class_list.class_name; %></option>
+				               	<% }) %>
+				               </select>
+				              </div>
+				          </div>
+
+				          <div class="form-group row">
+				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+				              <div class="col-sm-4">
+				              <textarea class="form-control" rows="10" id="descriptionstudent" placeholder="Enter Description" name="descriptionstudent"> </textarea>
+				              </div>
+				          </div>
+				        
+				          <div class="col-sm-12" align="center"> 
+				              <button type="submit" class="btn btn-success mr-2">Submit</button>
+				               <button class="btn btn-light">Cancel</button>
+				          </div>
+					 	 
+				 	 </form>
+				 	</div>
+					
+					<br/><br/>	
+					<div id="teacher" style="display: none">
+
+						<form class="form-sample" id="teacher_register" method="Post" action="/admin/sendmessage">	
+							<input type="hidden" name="page" value='teacherpage'>
+						  <div class="form-group row">
+				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Teachers </label>
+				              <div class="col-sm-2">
+				               <select class="form-control" id="class_id" name="class_id">
+				               	<option value="">Select Teachers</option>
+				                <option value="">-----------</option>
+				                <option value="ALLT">All Teachers</option>
+				                <option value="Tstff">All Teaching staff</option>
+				                <option value="Nstff">All Non Teaching staff</option>
+				                <option value="">-----------</option>
+				               	<%  teacher_list.forEach(function(teacher_list){ %>
+				                <option value="<%= teacher_list.registration_id %>"><%=    teacher_list.name; %> </option>
+				               	<% }) %>
+				               </select>
+				              </div>
+				          </div>
+
+				          <div class="form-group row">
+				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+				              <div class="col-sm-4">
+				              <textarea class="form-control" rows="10" id="descriptionteacher" placeholder="Enter Description" name="descriptionteacher"> </textarea>
+				              </div>
+				          </div>
+				        
+				          <div class="col-sm-12" align="center"> 
+				              <button type="submit" class="btn btn-success mr-2">Submit</button>
+				               <button class="btn btn-light">Cancel</button>
+				          </div>	
+					 
+						  
+						</form>	
+						</div>
+                        
+                    
+						<div id="accountant" style="display: none">
+				          <form class="form-sample" id="accountant_register" method="Post" action="/admin/sendmessage"> 
+						 	  <input type="hidden" name="page" value='parentpage'>
+                           
+	                           <div class="form-group row">
+					              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Parents</label>
+					              <div class="col-sm-2">
+					               <select class="form-control" id="class_id" name="class_id">
+					               	<option value="">Select Parents</option>
+					                <option value="">-----------</option>
+					                <option value="ALLP">All parents</option>
+					                <option value="">-----------</option>
+					               	<%  parent_list.forEach(function(parent_list){ %>
+					                <option value="<%= parent_list.registration_id  %>"><%=    parent_list.name; %></option>
+					               	<% }) %>
+					               </select>
+					              </div>
+					          </div>
+
+					          <div class="form-group row">
+					              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+					              <div class="col-sm-4">
+					              <textarea class="form-control" rows="10" id="descriptionparent" placeholder="Enter Description" name="descriptionparent"> </textarea>
+					              </div>
+					          </div>
+					        
+					          <div class="col-sm-12" align="center"> 
+					              <button type="submit" class="btn btn-success mr-2">Submit</button>
+					               <button class="btn btn-light">Cancel</button>
+					          </div>	
+
+						 </form>	
+						</div>
+					
+                    
+						<!-- <div id="librarian" style="display: none">
+                         <form class="form-sample" id="librarian_register" method="Post" action="/admin/registration"> 
+                         	
+                         	 Librarian
+						</form>
+						</div> -->
+						
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ 
+<script>
+
+ 
+</script>

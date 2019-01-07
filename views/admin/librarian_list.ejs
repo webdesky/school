@@ -1,0 +1,67 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Librarian List</u></b></h2>
+			<p class="card-description">
+				<a href="/admin/Registration"><button class="btn btn-inverse-dark btn-fw">Add Librarian</button></a>
+				
+			</p>
+			<div class="table-responsive">
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Librarian Name
+							</th>
+							<th>
+								Gender
+							</th>
+							<th>
+								Email
+							</th>
+							<th>
+								Phone
+							</th>
+							<th>
+								Action
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<%  var i=1; librarian_list.forEach(function(librarian_list){ %>
+						<tr id="tr_<%= i %>">
+							<td>
+								<%= i %>
+							</td>
+							<td>
+								<%= librarian_list.name %>
+							</td>
+							<td>
+								<%= librarian_list.sex %>
+							</td>
+							
+							<td>
+								<%= librarian_list.email %>
+							</td>
+							<td>
+								<%= librarian_list.phone %>
+							</td>
+							<td>
+							<a href="/librarianDetail/?registration_id=<%= librarian_list.registration_id %>">
+                         	 	<button type="button" class="btn btn-dark btn-fw">
+                         	 	<i class="mdi mdi-cloud-download"></i>Edit</button>
+                         	 </a>
+                         	 <a href="#"  onclick="delete_record('<%= librarian_list.registration_id %>','<%= i %>','tbl_registration','registration_id')" class="btn btn-sm btn-danger">Delete</a>
+							</td>
+						</tr>
+						<% i++; })%>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

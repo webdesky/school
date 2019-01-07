@@ -1,0 +1,71 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Class Routine</u></b></h2>
+			<p class="card-description">
+				<a href="#"><button class="btn btn-inverse-dark btn-fw">Class Routine</button></a>
+				
+			</p>
+			
+			<div id="routine" >
+				<h2>Student Class Routine</h2>
+				<div class="table-responsive">
+					<table class="table table-bordered" id="class_routine_table">
+						<thead>
+							<tr>
+								<th>
+									#
+								</th>
+								
+								
+								
+								<th>
+									Detail 
+								</th>
+								
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+						 <%  Object.keys(class_routine).forEach(function (key){ %>
+						    <tr>
+						    	<td><%= key %></td>
+						    	<td>
+						    		<%  Object.keys(class_routine[key]).forEach(function (skey){ %>
+						    		<%=  class_routine[key][skey].subject_name %> 
+						    		<span>(</span>
+						    		<%= class_routine[key][skey].time_start  %>
+						    		<span>:</span>
+						    		<%= class_routine[key][skey].time_start_min  %>
+						    		<% if(class_routine[key][skey].starting_ampm==1){ %>
+						    		<span>am</span>
+						    		<% }else{ %>
+						    		<span>pm</span>
+						    		<% } %>
+						    		<span>-</span>
+						    		<%= class_routine[key][skey].time_end  %>
+						    		<span>:</span>
+						    		<%= class_routine[key][skey].time_end_min  %>
+
+						    		<% if(class_routine[key][skey].end_ampm==1){ %>
+						    		<span>am</span>
+						    		<% }else{ %>
+						    		<span>pm</span>
+						    		<% } %>
+						    		<span>)</span>
+						    		<% }); %>
+						    		
+						    	</td>
+						    </tr>
+						<% }); %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+					
+			
+					
+		</div>
+	</div>
+</div>

@@ -1,0 +1,132 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      	<div class="card">
+	        <div class="card-body">
+	          <h2 class="card-title"><b><u>Marksheet Formats</u></b></h2>
+            <p class="card-description">
+           <!--  <a href="/admin/exam_list"><button class="btn btn-inverse-dark btn-fw">Marksheet Formats</button></a> -->
+           </p>
+	         
+
+       <form class="form-sample" id="form_addexam" method="Post" action="/admin/sheet_Formats">       
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Select Class</label>
+                <!-- <input type="hidden" name="exam_id" value="<%= examdata.exam_id %>"> -->
+                <div class="col-sm-4">
+                  <select class="form-control" name="class" id="class"  onchange="get_all_exam_name(this.value)">
+                    <option value="">Select Class</option>
+                    <%  class_list.forEach(function(class_list){ %>
+
+                    <option <% if(examdata.class_id == class_list.class_id){ %>  selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                    <%   }) %>
+                  </select>
+                  <span for="class"  class="error below" style="display: none"></span>
+                </div>
+                <label class="col-sm-2 col-form-label">Select Exam</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="exam_id" id="exam_id">
+                            <option value="">Exam</option>                       
+                    </select>
+                   
+                   <span for="name"  class="error below" style="display: none"></span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-group row othername"  >
+        	
+                 <div id="coulmn_link" style="width: 50%; float: left;">
+                    <div class="form-group">
+                      <label for="sheetcolumn" class="col-sm-4 col-form-label">Add Column</label>
+                      <div class="col-sm-7">
+                         <input type="text" name="column" class="form-control" placeholder="Enter Column name ">
+                      </div>
+
+                      <div class="col-sm-1">
+                        <i class="fa fa-plus-circle" aria-hidden="true" id="columnlinks" style="font-size: 25px;">
+                        </i>
+                      </div>
+                    </div> 
+                 </div>
+
+                 <div id="activity_link" style="width: 50%; float: left;">
+                    <div class="form-group">
+                      <label for="sheetcolumn" class="col-sm-4 col-form-label">Other Activity </label>
+                      <div class="col-sm-7">
+                         <input type="text" name="activity_column" class="form-control" placeholder="Enter Other Activity ">
+                      </div>
+
+                      <div class="col-sm-1">
+                        <i class="fa fa-plus-circle" aria-hidden="true" id="activitylinks" style="font-size: 25px;">
+                        </i>
+                      </div>
+                    </div> 
+                 </div>
+            </div>
+
+            <div class="col-sm-12" align="center">
+                  <button type="submit" class="btn btn-success mr-2">Submit</button>
+                  <button class="btn btn-light">Cancel</button>   
+            </div>         
+       </form>
+       <% if(formate_list!=''){ %>
+       	<div class="table-responsive">
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Class Name
+							</th>
+							 
+							<th>
+								Exam Name
+							</th>
+							<th>
+								Action
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+
+            <%  var i=1; formate_list.forEach(function(formate_list){ %>
+            <tr id="tr_<%= i %>">
+              <td >
+
+                <%= i %>
+              </td>
+              <td>
+                <%= formate_list.class_name %>
+              </td>
+             
+              <td>
+                <%= formate_list.exam_name %>
+              </td>
+              <td>
+               <a href="/admin/exam/?exam_id=<%= formate_list.exam_id %>">
+
+                         <button type="button" class="btn btn-dark btn-fw">
+                            <i class="mdi mdi-cloud-download"></i>Edit
+                            </button>
+                           </a>
+                           
+                           <a href="#"  onclick="delete_record('<%= formate_list.id %>','<%= i %>','tbl_sheet_formats','id')" class="btn btn-sm btn-danger">Delete</a>
+
+              </td>
+            </tr>
+          <% i++; })%>
+					 
+					</tbody>
+				</table>
+		</div>
+
+       <% } %>
+       
+       </div>           
+       </div>
+    </div>
+  </div>
+</div>

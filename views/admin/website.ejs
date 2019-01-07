@@ -1,0 +1,629 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Website Content</u></b></h1>
+          <p class="card-description">
+          <a href="#"><button class="btn btn-inverse-dark btn-fw">Website Content</button></a>
+          </p>
+
+          <style type="text/css">
+          .web-content ul li{
+              width: 100%;
+            }
+            .web-content .nav-tabs>li.active>a{
+              border: unset;
+              border-radius: 0px;
+              background-color: #42beda;
+              color: #fff;
+            }
+            .web-content .nav-tabs>li>a:hover {
+                border-color: unset;
+                border-radius: 0;
+                border: unset;
+                color: 
+                background-color: unset;
+            }
+            .web-content .nav-tabs{
+              border: 0
+            }
+            /*.nav-tabs>li>a{
+              border: unset;
+            }*/
+            /*
+            
+            
+            
+            .web-content .nav-tabs>li {
+                float: left;
+                margin-bottom: 1px;
+            }*/
+          </style>
+          <div class="row web-content">
+
+            <div class="col-xs-12 col-sm-2">
+              <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#NoticeBoard">NoticeBoard</a></li>
+                <li><a data-toggle="tab" href="#Events">Events</a></li>
+                <li><a data-toggle="tab" href="#aboutUs">About Us</a></li>
+                <li><a data-toggle="tab" href="#t_c">Terms And Conditions</a></li>
+                <li><a data-toggle="tab" href="#privacy">Privacy Policy</a></li>
+                <li><a data-toggle="tab" href="#slider">Home Slider</a></li>
+                <li><a data-toggle="tab" href="#settings">General Settings</a></li>
+                <li><a data-toggle="tab" href="#gallery">Gallery</a></li>
+              </ul>
+            </div>
+
+            <div class="col-xs-12 col-sm-9">
+              <div class="tab-content">
+                <div id="NoticeBoard" class="tab-pane fade in active">
+                  <h3>Notice Board</h3>
+                  <form action="/frontend_setting" method="post" enctype="multipart/form-data">
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
+                        <div class="col-sm-4">
+                        <input type="hidden" name="type" value="notice_board">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title">
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
+                        <div class="col-sm-4">
+                           <input type="text" name="date" id="datepicker" class="form-control attendence_date" placeholder="notice date"  >
+                        </div>
+                      </div>  
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Show On Website</label>
+                        <div class="col-sm-4">
+                         <select class="form-control" name="show_website">
+                           <option value="1">Yes</option>
+                           <option value="0">No</option>
+                         </select>
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Send Sms To All</label>
+                        <div class="col-sm-4">
+                          <select class="form-control" name="send_sms">
+                           <option value="1">Yes</option>
+                           <option value="0">No</option>
+                         </select>
+                        </div>
+                      </div> 
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Notice</label>
+                        <div class="col-sm-4">
+                         <textarea class="form-control" name="notice" placeholder="Enter Notice" rows="6"></textarea>
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Image</label>
+                        <div class="col-sm-4">
+                           <input type="file" accept="images/*" name="file" id="file" class="form-control">
+                        </div>
+                      </div>  
+                      <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+                  </form>
+
+                  <br><br>
+                  <% if(noticedata!=''){ %>
+                  <div class="table-responsive">
+                        <table class="table table-bordered" id="myTable">
+                          <thead>
+                            <tr>
+                              <th>
+                                #
+                              </th>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Notice
+                              </th>
+                              
+                              <th>
+                                Action
+                              </th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <%  var i=1; noticedata.forEach(function(noticedata){ %>
+                            <tr id="tr_<%= i %>">
+                              <td>
+                                <%= i %>
+                              </td>
+                              <td>
+                                <%= noticedata.notice_title %>
+                              </td>
+                              <td>
+                                <%= noticedata.notice %>
+                              </td>
+                             
+                              <td>
+                               <a href="/admin/noticeBoard/?id=<%= noticedata.notice_id%>">
+                                <button type="button" class="btn btn-dark btn-fw">
+                                            <i class="mdi mdi-cloud-download"></i>Edit
+                                            </button>
+                                           </a>
+                                           <a href="#"  onclick="delete_record('<%= noticedata.notice_id %>','<%= i %>','tbl_noticeboard','notice_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                           </td>
+                                            
+                              
+                            </tr>
+                          <% i++; })%>
+                          </tbody>
+                        </table>
+                  </div>
+                  <% } %>
+                </div>
+                <div id="Events" class="tab-pane fade">
+                  <h3>Events</h3>
+                  <form action="/frontend_setting" method="post" enctype="multipart/form-data">
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
+                        <div class="col-sm-4">
+                        <input type="hidden" name="type" value="events">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title">
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
+                        <div class="col-sm-4">
+                           <input type="text" name="event_date" id="datepickers" class="form-control attendence_date" placeholder="Event date">
+                        </div>
+                      </div>  
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-4">
+                         <select class="form-control" name="status">
+                           <option value="0">InActive</option>
+                           <option value="1">Active</option>
+                         </select>
+                        </div>
+                         
+                      </div> 
+                      <div class="clearfix"></div>
+                      
+                      <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+                  </form>
+
+                  <br><br>
+                  <% if(Events!=''){ %>
+                  <div class="table-responsive">
+                        <table class="table table-bordered" id="myTable">
+                          <thead>
+                            <tr>
+                              <th>
+                                #
+                              </th>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Action
+                              </th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <%  var j=1; Events.forEach(function(Events){ %>
+                            <tr id="event_<%= j %>">
+                              <td>
+                                <%= j %>
+                              </td>
+                              <td>
+                                <%= Events.title %>
+                              </td>
+                              
+                             
+                              <td>
+                               <a href="/admin/Events/?id=<%= Events.frontend_events_id%>">
+                                <button type="button" class="btn btn-dark btn-fw">
+                                            <i class="mdi mdi-cloud-download"></i>Edit
+                                            </button>
+                                           </a>
+                                           <a href="#"  onclick="delete_event_record('<%= Events.frontend_events_id %>','<%= j %>','tbl_frontend_events','frontend_events_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                           </td>
+                                            
+                              
+                            </tr>
+                          <% j++; })%>
+                          </tbody>
+                        </table>
+                  </div>
+                  <% } %>
+                </div>
+                <div id="aboutUs" class="tab-pane fade">
+                  <h3>About Us</h3>
+                 <form action="/frontend_setting" method="post">  
+                   <input type="hidden" name="type" value="about_us">
+                   <textarea class="form-control" id="about_description" name="about_description"><%= current_setting[0].about_us %></textarea>
+                   <script type="text/javascript">
+                     CKEDITOR.replace('about_description');
+                   </script>
+                   <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+                 </form>
+                </div>
+                <div id="t_c" class="tab-pane fade">
+                  <h3>Terms And Conditions</h3>
+                 <form action="/frontend_setting" method="post">
+                     <input type="hidden" name="type" value="terms_conditions">
+
+                     <textarea class="form-control" id="terms_description" name="terms_description"><%= current_setting[0].terms_conditions %></textarea>
+                     <script type="text/javascript">
+                       CKEDITOR.replace('terms_description');
+                     </script>
+                     <br>
+                     <div class="col-sm-2 col-sm-offset-5">
+                     <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                     </div>
+
+                 </form>
+
+                 
+                </div>
+                <div id="privacy" class="tab-pane fade">
+                  <h3>Privacy Policy</h3>
+                  <form action="/frontend_setting" method="post">
+                   <input type="hidden" name="type" value="privacy_policy">
+                   <textarea class="form-control" id="privacy_description" name="privacy_description"><%= current_setting[0].privacy_policy %></textarea>
+                   <script type="text/javascript">
+                     CKEDITOR.replace('privacy_description');
+                   </script>
+                   <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+                 </form>
+                </div>
+                <div id="slider" class="tab-pane fade">
+                  <h3>Slider</h3>
+                  <form action="/frontend_setting" method="post" enctype="multipart/form-data">
+                      <div id="app">
+                        <div class="form-group row">
+                          <label for="exampleInputEmail2" class="col-sm-2 col-form-label" >Title</label>
+                          <div class="col-sm-4">
+                          <input type="hidden" name="type" value="slider">
+                           <input type="text" name="slider_title" class="form-control" placeholder="Enter Title" required="required">
+                          </div>
+                          <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Slider Image</label>
+                          <div class="col-sm-4">
+                             <input type="file" name="slider_image" class="form-control" required="required" multiple="multiple">
+                          </div>
+                        </div>  
+                        <div class="clearfix"></div>
+                        <div class="form-group row">
+                        <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Description</label>
+                          <div class="col-sm-10">
+                             <textarea class="form-control" name="slider_description" placeholder="Enter Slider Description" rows="8"></textarea>
+                          </div>
+
+                          
+                        </div>
+
+                         <div class="col-lg-2" style="margin-top: 5px;"><i class="fa fa-plus-circle" aria-hidden="true" id="add" style="font-size: 25px;"></i></div>
+                      </div>
+                      
+                      
+
+                    
+                      
+                      
+                      
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+                  </form>
+
+                  <br><br>
+                  <% if(slider_image!=''){ %>
+                  <div class="table-responsive">
+                        <table class="table table-bordered" id="myTable">
+                          <thead>
+                            <tr>
+                              <th>
+                                #
+                              </th>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Description
+                              </th>
+                              <th>
+                                Image
+                              </th>
+                              <th>
+                                Action
+                              </th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <%  var j=1; slider_image.forEach(function(slider_image){ %>
+                            <tr id="slider_<%= j %>">
+                              <td>
+                                <%= j %>
+                              </td>
+                              <td>
+                                <%= slider_image.title %>
+                              </td>
+                              <td>
+                                 <%= slider_image.description %>
+                              </td>
+                              <td>
+                                <img src="../../../images/<%= slider_image.image %>" height="50px" width="50px; " alt="no image uploaded"> 
+                              </td>
+                             
+                              <td>
+                              <!--  <a href="/admin/SliderImage/?id=<%= slider_image.slider_id%>">
+                                <button type="button" class="btn btn-dark btn-fw">
+                                            <i class="mdi mdi-cloud-download"></i>Edit
+                                            </button>
+                                           </a> -->
+                                           <a href="#"  onclick="delete_slider_record('<%= slider_image.slider_id %>','<%= j %>','tbl_frontend_slider','slider_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                           </td>
+                                            
+                              
+                            </tr>
+                          <% j++; })%>
+                          </tbody>
+                        </table>
+                  </div>
+                  <% } %>
+                </div>
+                <div id="settings" class="tab-pane fade">
+                  <h3>Settings</h3>
+                  <form action="/frontend_setting" method="post" enctype="multipart/form-data">
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label" >School Title</label>
+                        <div class="col-sm-4">
+                        <input type="hidden" name="type" value="settings">
+                         <input type="text" name="school_title" class="form-control" placeholder="Enter Title" value="<%= settings[0].school_title %>">
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">School Email</label>
+                        <div class="col-sm-4">
+                           <input type="text" name="school_email"  class="form-control" placeholder="Enter School Email" value="<%= settings[0].school_email %>">
+                        </div>
+                      </div>  
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Phone</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="phone" class="form-control" placeholder="Enter Phone" value="<%= settings[0].phone %>">
+                        </div>
+                        
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Fax</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="fax" class="form-control" placeholder="Enter Fax" value="<%= settings[0].fax %>">
+                        </div> 
+                      </div> 
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">CopyRight Text</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="copyright_text" class="form-control" placeholder="Enter CopyRight Text" value="<%= settings[0].copyright_text %>">
+                        </div>
+                        
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Address</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="address" class="form-control" placeholder="Enter Address" value="<%= settings[0].address %>">
+                        </div> 
+                      </div> 
+
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Geo Code</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="geo_code" class="form-control" placeholder="Enter Geo Code" value="<%= settings[0].geo_code %>">
+                        </div>
+                        
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Recaptcha Site Key</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="recaptcha_site_key" class="form-control" placeholder="Enter Recaptcha Site Key" value="<%= settings[0].recaptcha_site_key %>">
+                        </div> 
+                      </div>
+
+                      <!-- <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Social Links</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="facebook" class="form-control" placeholder="Enter facebook Url">
+                          <br>
+                          <input type="text" name="twitter"  class="form-control" placeholder="Enter Twitter Url">
+                          <br>
+                          <input type="text" name="linkedin" class="form-control" placeholder="Enter Linkedin Url">
+                          <br>
+                          
+                        </div>
+                        
+                       
+                        <div class="col-sm-6">
+                          <input type="text" name="google"   class="form-control" placeholder="Enter Google Url">
+                          <br>
+                          <input type="text" name="youtube"  class="form-control" placeholder="Enter Youtube Url">
+                          <br>
+                          <input type="text" name="Instagram"  class="form-control" placeholder="Enter Instagram Url">
+                        </div> 
+
+                      </div>  -->
+                      
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Header Logo</label>
+                        <div class="col-sm-4">
+                          <input type="file" name="header_logo" class="form-control" >
+                          <% if(settings[0].header_logo!=''){ %>
+                          <img src="../../../images/<%= settings[0].header_logo %>">
+                          <% } %>
+                        </div>
+                        
+                       
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Footer Logo</label>
+                        <div class="col-sm-4">
+                          <input type="file" name="footer_logo" class="form-control">
+                          <% if(settings[0].footer_logo!=''){ %>
+                          <img src="../../../images/<%= settings[0].footer_logo %>">
+                          <% } %>
+                        </div>
+
+                      </div> 
+                      <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+                  </form>
+                </div>
+
+                 <div id="gallery" class="tab-pane fade">
+                    <h3>Gallery</h3>
+                    <form action="/frontend_setting" method="post" enctype="multipart/form-data">
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label" >Title</label>
+                        <div class="col-sm-4">
+                        <input type="hidden" name="type" value="gallery">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title" value="">
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
+                        <div class="col-sm-4">
+                           <input type="text" name="date"  class="form-control attendence_date" placeholder="Select Date" value="">
+                        </div>
+                      </div>  
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Cover Image</label>
+                        <div class="col-sm-4">
+                          <input type="file" name="cover_image" class="form-control"  value="">
+                        </div>
+                        
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Gallery Image</label>
+                        <div class="col-sm-4">
+                          <input type="file" name="gallery_image" class="form-control" value="" multiple="multiple">
+                        </div> 
+                      </div> 
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                        <textarea class="form-control" name="gallery_description" rows="10" placeholder="Enter Gallery Description"></textarea>
+                          
+                        </div>
+                        
+                        
+                      </div> 
+
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Show On Website</label>
+                        <div class="col-sm-4">
+                         <select name="show_on_website" class="form-control">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                          </select>
+                          
+                        </div>
+                       
+                      </div>
+                      <div id="youtube_link">
+                      <div class="form-group row">
+                           <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Youtube Link</label>
+                        
+                        <div class="col-sm-4">
+                          
+                           <input type="text" name="youtube_link" class="form-control" placeholder="Enter Youtube Link">
+                           
+                         
+                        </div>
+                        
+                         <div class="col-sm-1" style="margin-top: 5px;"><i class="fa fa-plus-circle" aria-hidden="true" id="links" style="font-size: 25px;"></i></div>
+                        
+                      </div> 
+                      </div>
+
+                    
+                    
+                     
+                      <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+                  </form>
+
+                  <br><br>
+                  <% if(gallery!=''){ %>
+                  <div class="table-responsive">
+                        <table class="table table-bordered" id="myTable">
+                          <thead>
+                            <tr>
+                              <th>
+                                #
+                              </th>
+                              <th>
+                                Title
+                              </th>
+                              <th>
+                                Description
+                              </th>
+                              <th>
+                                Image
+                              </th>
+                              <th>
+                                Action
+                              </th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <%  var j=1; gallery.forEach(function(gallery){ %>
+                            <tr id="gallery_<%= j %>">
+                              <td>
+                                <%= j %>
+                              </td>
+                              <td>
+                                <%= gallery.title %>
+                              </td>
+                              <td>
+                                 <%= gallery.description %>
+                              </td>
+                              <td>
+                                <img src="../../../images/<%= gallery.image %>" height="50px" width="50px; " alt="no image uploaded"> 
+                              </td>
+                             
+                              <td>
+                              <!--  <a href="/admin/SliderImage/?id=<%= slider_image.slider_id%>">
+                                <button type="button" class="btn btn-dark btn-fw">
+                                            <i class="mdi mdi-cloud-download"></i>Edit
+                                            </button>
+                                           </a> -->
+                                           <a href="#"  onclick="delete_gallery_record('<%= gallery.frontend_gallery_id %>','<%= j %>','tbl_frontend_gallery','frontend_gallery_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                           </td>
+                                            
+                              
+                            </tr>
+                          <% j++; })%>
+                          </tbody>
+                        </table>
+                  </div>
+                  <% } %>
+                 </div>
+              </div>
+            </div>
+
+          </div>
+
+          
+
+          
+
+          <!-- //content -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

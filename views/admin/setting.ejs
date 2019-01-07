@@ -1,0 +1,73 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>School Setting</u></b></h1>
+          <p class="card-description">
+          
+          </p>
+          
+          <form class="forms-sample" method="post" id="form_setting" action="/setting" enctype="multipart/form-data">
+          
+            
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">School Name </label>
+              <div class="col-sm-4">
+               <input type="text" name="school_name" id="school_name" class="form-control" value="<%= current_setting[0].school_name ? current_setting[0].school_name : ''  %>" placeholder="Enter School Name">
+               <span for="school_name"  class="error below" style="display: none"></span> 
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Logo</label>
+              <div class="col-sm-4">
+                <input type="file" accept="images/*" name="file" id="file" class="form-control">
+                <span for="file"  class="error below" style="display: none"></span> 
+              </div>
+            </div>
+            
+            <div class="form-group row">
+
+              <label for="school_address" class="col-sm-2  col-form-label">School Address</label>
+              <div class="col-sm-4">
+                 <input type="text"  name="school_address" id="school_address" value="<%= current_setting[0].school_address ? current_setting[0].school_address : ''  %>" class="form-control" placeholder="Enter School Address">
+                 <span for="school_address"  class="error below" style="display: none"></span> 
+              </div> 
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Currrent Session</label>
+              <div class="col-sm-4">
+                
+               <select class="form-control" id="session_year" name="session_year">
+
+                <option selected value="<%= current_setting[0].session_year %>"><%=current_setting[0].session_year%></option>
+                 <%
+                  current = current_setting[0].session_year
+                  for($i=2018;$i<=2030;$i++){%>
+                   <% condition = $i +"-"+ ($i+1) %>
+                    <option <% if(current == condition){ %>   selected  <% } %>   value="<%=condition%>"><%=condition%></option>  
+                   <% } %>
+               </select>
+               <span for="session_year"  class="error below" style="display: none"></span> 
+              </div>
+             
+            </div>
+
+            <div class="form-group row">
+               <label for="phone" class="col-sm-2  col-form-label">School Phone Number</label>
+                <div class="col-sm-4">
+                   <input type="text"  name="phone" id="phone" value="<%= current_setting[0].phone ? current_setting[0].phone : ''  %>" class="form-control" placeholder="Enter School Phone Number">
+                   <span for="phone"  class="error below" style="display: none"></span> 
+                </div> 
+            </div>
+            <br><br><br>
+              <div class="col-sm-12" align="center">
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+              </div>
+           
+            <br><br>
+          </form>
+           
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

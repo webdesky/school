@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>SMS - Marksheet</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <style type="text/css">
+         body {
+         margin: 0;
+         padding: 0;
+         background-color: #FAFAFA;
+         font: 12pt "Tahoma";
+         }
+         * {
+         box-sizing: border-box;
+         -moz-box-sizing: border-box;
+         }
+         .page {
+         width: 24cm;
+         min-height: 29.7cm;
+         padding: 2cm;
+         margin: 1cm auto;
+         border: 1px #D3D3D3 solid;
+         border-radius: 5px;
+         background: white;
+         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+         }
+         .subpage {
+         padding: 1cm;
+         border: 5px red solid;
+         height: 256mm;
+         outline: 2cm #FFEAEA solid;
+         }
+         .justify-text
+         {
+         line-height: 40px;
+         }
+         .div-right{
+         float: right;
+         }
+         .div-left{
+         float: left;
+         text-align: justify;
+         }
+         .drwaline{
+         margin: 2cm auto;
+         border: 1px #000 solid;
+         border-radius: 5px;
+         }
+         @page {
+         size: A4;
+         margin: 0;
+         }
+         @media print {
+         .page {
+         margin: 0;
+         border: initial;
+         border-radius: initial;
+         width: initial;
+         min-height: initial;
+         box-shadow: initial;
+         background: initial;
+         page-break-after: always;
+         }
+         }
+         @media print {
+         .hiderow {
+         display: none;
+         }
+         }
+         /*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
+         @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,500i,700,700i');
+         h1,h2,h3,h4,h5,h6{
+         font-family: 'Ubuntu', sans-serif;
+         margin: 15px 0px;
+         }
+         p{
+         font-size: 14px;
+         color: #828282;
+         }
+         a{
+         color: #005a4f;
+         }
+         h1{
+         font-size: 60px;
+         }
+         h3{
+         font-size: 28px;
+         color: #202020;
+         }
+         h4{
+         font-size: 30px;
+         font-weight: 600;
+         }
+         .summative-1 table.table .bold-1{
+         font-weight: 800!important;
+         }
+         .summative-1 table.table .bold-2{
+         font-weight: 600!important;
+         font-size: 13px!important;
+         }
+         ul{
+         margin:0;
+         padding: 0;
+         }
+         li{
+         list-style: none;
+         }
+         a, a:hover {                
+         text-decoration: none;
+         color: #ccc;
+         }
+         .heading-1 {
+         position: absolute;
+         font-size: 22px;
+         font-weight: 900;
+         text-align: center;
+         transform: translateX(-50%) translateY(-50%);
+         background: #fff!important;
+         left: 50%;
+         top: -22px;
+         padding: 5px 15px;
+         border: 2px solid #903f5f;
+         color: #903f5f!important;
+         }
+         .heading-2 {
+         padding: 5px 15px;
+         border: 2px solid #903f5f;
+         color: #903f5f!important;
+         font-size: 22px;
+         font-weight: 900;
+         text-align: center;
+         width: 100%;
+         margin: auto;
+         border-radius: 9px;
+         }
+         .summative-1 {
+         position: relative;
+         border: 2px solid #903f5f;
+         outline: 4px solid #903f5f;
+         outline-offset: 4px;
+         margin: 30px;
+         padding: 20px 5px;
+         width: 750px;
+         margin: 30px auto 0;
+         }
+         .wripper-left{
+         width: 65%;
+         float: left;
+         }
+         .table {
+         width: 100%;
+         max-width: 100%;
+         margin-bottom: 12px;
+         margin-top: 12px;
+         }
+         .wripper-right{
+         width: 30%;
+         float: left;
+         margin-left: 20px;
+         }
+         .co-curricular{
+         font-weight: 800;
+         }
+         .sign p{
+         color: #903f5f!important;
+         font-weight: 500;
+         }
+         .summative-1 {
+         }
+         .summative-1 .table-bordered>tbody>tr>td, .summative-1 .table-bordered>tbody>tr>th, .summative-1 .table-bordered>tfoot>tr>td, 
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         color: #903f5f;
+         font-weight: 300!important;
+         font-size: 11px!important;
+         }
+         .summative-1 .table-bordered>tbody>tr>td, .summative-1 .table-bordered>tbody>tr>th, .summative-1 .table-bordered>tfoot>tr>td, 
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         color: #903f5f!important;
+         font-weight: 300;
+         }
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         font-weight: 700!important;
+         }
+         .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+         border: 2px solid #903f5f;
+         text-align: center;
+         vertical-align: middle;
+         font-family: 'Open Sans', sans-serif;
+         padding: 2px;
+         }
+         thead>tr{
+         border: 2px solid #903f5f;
+         text-align: center;
+         }
+         .student-info{
+         padding: 0 15px;
+         margin-top: 10px;
+         }
+         .student-info .col-xs-6{
+         padding: 0px;
+         }
+         .student-info div:first-child {
+         width: 36%;
+         }
+         .student-info div{
+         width: 20%;
+         float: left;
+         }
+         .row.sign {
+         margin-top: 10px;
+         }
+         .sign-inner{
+         width: 33%;
+         float: left;
+         padding: 0px 15px;
+         }
+         .print-1{
+         background: #613131;
+         padding: 5px 10px;
+         border-radius: 5px;
+         cursor: pointer;
+         }
+         .sign-div{
+         width: 30%;
+         float: left;
+         margin-left: 2.5%;
+         }
+         .word-b tr th, .word-b tr td{
+         word-break: break-all;
+         }
+
+         @media print {
+           .break {page-break-after: always;}
+         }
+
+      </style>
+   </head>
+   <!-- /////////////////////////////////// Formative 1 /////////////////////////////////// -->
+
+   <div class="summative-1">
+      <h1 class="heading-1"> FORMATIVE I</h1>
+      <div class="row student-info">
+         <div class="col-xs-6 col-sm-6">
+            <p>Name <b>........................</b></p>
+         </div>
+         <div class="col-xs-6 col-sm-2">
+            <p>Class <b>................</b></p>
+         </div>
+         <div class="col-xs-6 col-sm-2">
+            <p>Section <b>..............</b></p>
+         </div>
+         <div class="col-xs-6 col-sm-2">
+            <p>Exam <b>................</b></p>
+         </div>
+      </div>
+      <div class="wrapper">
+         <div class="wripper-left">
+            <table class="table table-bordered">
+               <thead>
+                  <tr>
+                     <td>Sr. No.</td>
+                     <td  colspan="2">Subject</td>
+                     <td>Childrens Participation Responses</td>
+                     <td>Written Work</td>
+                     <td>Project Work</td>
+                     <td>Slip Test</td>
+                     <td>Total 20%</td>
+                     <td>Grade</td>
+                  </tr>
+               </thead>
+               
+               <tr>
+                  <td>1</td>
+                  <td  colspan="2">1st Lang</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+
+               <tr>
+                  <td>2</td>
+                  <td  colspan="2">2nd Lang</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+
+               <tr>
+                  <td>3</td>
+                  <td  colspan="2">English</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td>4</td>
+                  <td  colspan="2">Mathematics</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td rowspan="2">5</td>
+                  <td rowspan="2">Gen. Science EVS</td>
+                  <td>P.S.</td>
+                  <td rowspan="2"></td>
+                  <td rowspan="2"></td>
+                  <td rowspan="2"></td>
+                  <td rowspan="2"></td>
+                  <td rowspan="2"></td>
+                  <td rowspan="2"></td>
+               </tr>
+               <tr>
+                  <td>B.S.</td>
+               </tr>
+
+               <tr>
+                  <td>6</td>
+                  <td colspan="2">Social Studies</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+
+               <tr>
+                  <td>7</td>
+                  <td colspan="2">GK IIT Maths</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+
+               <tr>
+                  <td>8</td>
+                  <td colspan="2">Com IIT Science</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+
+               <tr>
+                  <td colspan="3" class="bold-1">TOTAL TOTAL</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+
+               <tr>
+                  <td colspan="3" class="bold-1">TOTAL GRADE</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+            </table>
+         </div>
+         <div class="wripper-right">
+            <h2 class="heading-2">ATTENDANCE</h2>
+            <table class="table table-bordered attendance">
+               <tr>
+                  <td>Month</td>
+                  <td>No. of Working Days</td>
+                  <td>No. of Days Present</td>
+               </tr>
+               <tr>
+                  <td>GRAND TOTAL</td>
+                  <td></td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td>GRAND TOTAL</td>
+                  <td></td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td class="bold-1">TOTAL</td>
+                  <td></td>
+                  <td></td>
+               </tr>
+            </table>
+            <table class="table table-bordered grade-rank">
+               <tr>
+                  <td width="20%" class="bold-1">RANK:</td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td class="bold-1">GRADE: </td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td class="bold-1">GPA: </td>
+                  <td></td>
+               </tr>
+            </table>
+         </div>
+         <br/>
+         <br/>
+         <br/>
+         <br/>
+         <br/>
+         <div class="clearfix"></div>
+         <div class="row sign">
+            <div class="sign-div">
+               <p>.........................................<br>
+                  Sig. of Class Teacher
+               </p>
+            </div>
+            <div class="sign-div text-center">
+               <p>.........................................<br>
+                  Head of the Institution
+               </p>
+            </div>
+            <div class="sign-div text-right">
+               <p>.........................................<br>
+                  Parent / Guardian
+               </p>
+            </div>
+         </div>
+      </div>
+   </div>
+
+  
+
+   

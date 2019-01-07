@@ -1,0 +1,42 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u> Second Message to student </u></b></h1>
+          <form class="forms-sample" method="post" action="/sendmessage" enctype="multipart/form-data">
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-2">
+               <select class="form-control" id="class_id" name="class_id">
+               	<option value="">Select Class</option>
+                <option value="">-----------</option>
+                <option value="daysscholler">All days Scholler</option>
+                <option value="hostels">Hostlers</option>
+                <option value="">-----------</option>
+               	<%  class_list.forEach(function(class_list){ %>
+                <option value="<%= class_list.class_id  %>"><%=    class_list.class_name; %></option>
+               	<% }) %>
+               </select>
+              </div>
+            </div>
+
+           <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+              <div class="col-sm-4">
+              <textarea class="form-control" rows="10" id="description" placeholder="Enter Description" name="description"> </textarea>
+              </div>
+            </div>
+        
+            <div class="col-sm-12" align="center"> 
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+               <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

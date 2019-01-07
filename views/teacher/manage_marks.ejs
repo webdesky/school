@@ -1,0 +1,116 @@
+<style type="text/css">
+  .error{
+    color:red;
+  }
+</style>
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      	<div class="card">
+	        <div class="card-body">
+  	          <h2 class="card-title">Manage Marks</h2>
+              <p class="card-description">
+                <a href="#"><button class="btn btn-inverse-dark btn-fw">Manage Marks</button></a>
+              </p>
+             
+             <form class="form-sample" id="form_register" method="Post" action="/teacher/add_manage_marks">       
+                  <p class="card-description">
+                    <h3><b><u>Manage Marks</u></b></h3>
+                  </p>
+           
+                  <div class="form-group row">
+                        <label class="col-sm-1 col-form-label">Class</label>
+                        <div class="col-sm-1">
+                          <select class="form-control" name="Teacher_class_id" id="Teacher_class_id" >
+                            <option value="">Class</option>
+                              <%  class_list.forEach(function(class_list){ %>
+                              <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                              <%   }) %>
+                            </select>
+                        </div>
+                        <span for="Teacher_class_id"  class="error below" style="display: none"></span>
+
+                        <label class="col-sm-1 col-form-label">Section</label>
+                        <div class="col-sm-1">
+                            <select class="form-control" name="exam_section_id" id="exam_section_id" onchange="Teacher_get_all_exam_data(this.value)">
+                               <option value="">Section</option>                    
+                             </select>
+                        </div>
+
+                        <label class="col-sm-1 col-form-label">Subject</label>
+                        <div class="col-sm-1">
+
+                          <select class="form-control" name="subject_id" id="subject_id" onchange="Teacher_get_scheduled_exam()">
+
+                            <option value="">Subject</option>                       
+                          </select>
+                          <input type="hidden" id="subject_type" name="subject_type" value="">
+                        </div>
+
+                        <label class="col-sm-1 col-form-label">Exam</label>
+                        <div class="col-sm-1">
+                          <select class="form-control" name="exam_id" id="exam_id" onchange="Teacher_getexamcode()">
+                            <option value="">Exam</option>                       
+                          </select>
+                          <input type="hidden" id="exam_code" name="exam_code" value="">
+                        </div>
+                        <div class="col-sm-2">
+                           <a href="#" onclick="Teacher_get_student_detail()"> <span class="btn btn primary">Manage Marks</span></a>
+                            
+                        </div>  
+
+                          
+                  </div>
+                    
+                <br><br><br>
+              <div class="table-responsive" style="display: none" id="table_manage">
+                <table class="table table-bordered" id="manage_marks" >
+
+                  <thead >
+               
+                  </thead> 
+
+                  <tbody>
+                  
+                  </tbody>
+                </table>
+                  <br><br>
+                  <div class="col-sm-12">
+                    <div  align="center">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>   
+              </div>
+
+
+              <div class="table-responsive" style="display: none" id="other_table_manage">
+                <table class="table table-bordered" id="other_manage_marks" >
+
+                  <thead >
+               
+                  </thead> 
+
+                  <tbody>
+                  
+                  </tbody>
+                </table>
+                  <br><br>
+                  <div class="col-sm-12">
+                    <div  align="center">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>   
+              </div>
+                  
+                  
+                    
+              
+             </form> 
+
+
+           
+          </div>           
+       </div>
+    </div>
+  </div>
+</div>

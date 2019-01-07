@@ -1,0 +1,122 @@
+<style type="text/css">
+	 @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+
+
+    }
+    @media print {
+    .hiderow {
+      display: none;
+    }
+</style>
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Exam Marks</u></b></h2>
+			<p class="card-description">
+				<a href="#"><button class="btn btn-inverse-dark btn-fw">View Exam MArks</button></a>
+				
+			</p>
+			<style type="text/css">
+				 select{
+					border: 1px solid #ccc;
+					height: 40px;
+					background-color: #fff;
+					padding-left: 10px;
+					width: 150px;
+					margin-left: 10px;
+				}
+			</style>
+			<div class="table-responsive" style="position: relative;padding-top: 30px;"> 
+				
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Name 
+							</th>
+							<th>
+								Class Name
+							</th>	
+							<th>Section Name</th>
+							
+							<th>Action</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					<%  var i=1; student_information.forEach(function(data){ %>
+						<tr id="tr_<%= i %>">
+							<td >
+
+								<%= i %>
+							</td>
+							<td>
+								<%= data.name %>
+							</td>
+							<td>
+								<%= data.class_name %>
+							</td>
+							<td>
+								<%= data.section_name %>
+							</td>
+						
+							<td colspan="2">
+							<select id="exam_<%= data.registration_id %>" onchange="getParentexamCode('<%= data.registration_id %>')">
+							<option value="">Select Exam</option>
+							<% Object.keys(data.exam).forEach(function(key) { %>
+    							<option data-value="<%= data.exam[key].exam_code ; %>" value="<%= data.exam[key].exam_id ; %>"><%= data.exam[key].exam_name ; %> </option>
+    							
+ 							<% }); %>
+							<input type="hidden" id="exam_code_<%= data.registration_id %>">
+						    </select>
+									
+								
+								<a href="#"  onclick="get_parent_exam_marks('<%= data.class_id  %>','<%= data.registration_id  %>','<%= data.section_id  %>')" class="btn btn-sm btn-primary">View</a>
+							</td>
+							
+						</tr>
+					<% i++; })%>
+					</tbody>
+				</table>
+			</div>
+			<br><br>
+			<div id="print_tabular">
+			<div class="table-responsive" id="tabulationsheet" style="display: none;">
+              <h1> Tabulation Sheet </h1>
+               <p class="card-description">
+               	<a class="hiderow" href="javascript:void(0)"  onclick="PrintTabularSheet()">Print</a>
+             
+                </p>
+
+              <table class="table table-bordered tabulation_table" id="myTable">
+                <thead >
+                  <!--  <tr id="tabulation_thead"><th>#</th><th>Student Name</th></tr> -->
+                </thead>
+                <tbody id="tabulation_tbody">
+                 
+                </tbody>
+              </table>
+          </div>
+          </div>
+
+					
+		</div>
+	</div>
+</div>

@@ -1,0 +1,532 @@
+<div class="container-fluid page-body-wrapper">
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <% if(session.user_role==1){ %>
+          <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+
+                  <img src="../../../images/faces/dummy.png" alt="profile image">
+
+                </div>
+                <div class="text-wrapper">
+               
+                  <p class="profile-name">ADMIN</p>
+                  <div>
+                    <small class="designation text-muted">admin</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                  
+                </div>
+              </div>
+              
+            </div>
+          </li>
+         
+          <li class="nav-item">
+
+            <a class="nav-link" href="/admin/dashboard">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/Registration">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">Registration</span>
+            </a>
+          </li>    
+          
+            
+
+          <li class="nav-item">
+
+            <a class="nav-link" href="/admin/transport">
+              <i class="menu-icon mdi mdi-airplane"></i>
+              <span class="menu-title">Transport</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/dormitory">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dormitory</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#class" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-clipboard-flow"></i>
+              <span class="menu-title">Class & Sections</span>
+              <i class="menu-arrow"></i>
+            </a>
+
+            <div class="collapse" id="class">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/class">  Class </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="/admin/classList"> View Class </a>
+                </li> -->
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/section">  Section </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/academic_syllabus">  Academic Syllabus </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="/admin/sectionList"> View Section </a>
+                </li>  -->               
+              </ul>
+            </div>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/Subject">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Subject</span>
+            </a>
+          </li>  
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/AssignTeacher">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">AssignTeacher</span>
+            </a>
+          </li>  
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/HomeWork">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">HomeWork</span>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/classRoutine">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">Class Routine</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/attendence">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">Attendence</span>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/study_material">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">Study Material</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#exam" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-clipboard-flow"></i>
+              <span class="menu-title">Exam</span>
+              <i class="menu-arrow"></i>
+            </a>
+
+            <div class="collapse" id="exam">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/exam">  Exam  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/exam_schedule">  Exam  Schedule</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/exam_grades">  Exam  Grades</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/manage_marks">  Manage Marks</a>
+                </li>
+
+              </ul>
+            </div>
+          </li>   
+
+               
+          <% }else if(session.user_role==2){ %>
+              <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+                  <img src="images/faces/dummy.png" alt="profile image">
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">Parent</p>
+                  <div>
+                    <small class="designation text-muted">parent</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </li>
+          <li class="nav-item">
+
+            <a class="nav-link" href="/parent/dashboard">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link" href="pages/forms/basic_elements.html">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">Student Information</span>
+               
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-library-books"></i>
+              <span class="menu-title">Home Work</span>
+                
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/forms/basic_elements.html">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">Teacher</span>
+              
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Academic Syllabus</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Question Paper</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+
+          
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-recycle"></i>
+              <span class="menu-title">Class Routine</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Study Material</span>
+               
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Academic Syllabus</span>
+               
+            </a>
+          </li>
+
+           <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-file-document-box"></i>
+              <span class="menu-title">Student Attendence</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+
+            <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-file-document-box"></i>
+              <span class="menu-title">Exam Marks</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-library"></i>
+              <span class="menu-title">Library</span>
+               
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-clipboard-text"></i>
+              <span class="menu-title">NoticeBoard</span>
+               
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-account-multiple"></i>
+              <span class="menu-title">Message</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-account"></i>
+              <span class="menu-title">Account</span>
+               
+            </a>
+          </li>
+          <% }else if(session.user_role==3){ %>
+             <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+                  <img src="images/faces/dummy.png" alt="profile image">
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">Student</p>
+                  <div>
+                    <small class="designation text-muted">student</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                </div>
+              </div>
+          <li class="nav-item">
+
+            <a class="nav-link" href="/student/dashboard">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link" href="pages/forms/basic_elements.html">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">Teacher</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/charts/chartjs.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Subject</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-recycle"></i>
+              <span class="menu-title">Class Routine</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Study Material</span>
+               
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Academic Syllabus</span>
+               
+            </a>
+          </li>
+
+         
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-file-document-box"></i>
+              <span class="menu-title">Exam Marks</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-library"></i>
+              <span class="menu-title">Library</span>
+               
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-clipboard-text"></i>
+              <span class="menu-title">NoticeBoard</span>
+               
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-account-multiple"></i>
+              <span class="menu-title">Message</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-account"></i>
+              <span class="menu-title">Account</span>
+               
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-library-books"></i>
+              <span class="menu-title">Home Work</span>
+                
+            </a>
+          </li>
+
+          <% }else if(session.user_role==4){ %>
+          <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+                  <img src="images/faces/dummy.png" alt="profile image">
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">Teacher</p>
+                  <div>
+                    <small class="designation text-muted">teacher</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </li>
+          <li class="nav-item">
+
+            <a class="nav-link" href="/teacher/dashboard">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link" href="pages/forms/basic_elements.html">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">Student</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/charts/chartjs.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Subject</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-recycle"></i>
+              <span class="menu-title">Class Routine</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Study Material</span>
+               
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/tables/basic-table.html">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Academic Syllabus</span>
+               
+            </a>
+          </li>
+
+           <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-file-document-box"></i>
+              <span class="menu-title">Daily Attendence</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+
+            <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-file-document-box"></i>
+              <span class="menu-title">Exam</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-library"></i>
+              <span class="menu-title">Library</span>
+               
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi  mdi-clipboard-text"></i>
+              <span class="menu-title">NoticeBoard</span>
+               
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-account-multiple"></i>
+              <span class="menu-title">Message</span>
+                <i class="menu-arrow"></i>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-account"></i>
+              <span class="menu-title">Account</span>
+               
+            </a>
+          </li>
+
+
+
+          <% } %>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/user_rights">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">User Rights</span>
+            </a>
+          </li>
+        </ul>
+</nav>
+<div class="main-panel">
+

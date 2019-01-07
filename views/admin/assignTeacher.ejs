@@ -1,0 +1,152 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Assign Teacher</h2>
+            <p class="card-description">
+            <a href="/admin/assignteacher_list"><button class="btn btn-inverse-dark btn-fw">Assign Teacher List</button></a>
+           </p>
+          
+
+       <form class="form-sample" id="form_assignteacher" method="Post" action="/admin/add_assignTeacher">  
+            <input type="hidden" value="<%= assigned_id %>" name="assigned_id">
+              <p class="card-description">
+                <h3><b><u>Assign Teacher</u></b></h3>
+              </p>
+
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Select Class</label>
+                    <div class="col-sm-4">
+                      <select class="form-control" name="class" id="class" onchange="get_all_data(this.value)">
+                        <option value="">Select Class</option> 
+                        
+                        <%  class_list.forEach(function(class_list){ %>
+                        
+                        <option <% if(assign_list.class_id==class_list.class_id) { %> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                        
+                        <%   }) %>
+                         
+                      </select>
+                      <span for="class"  class="error below" style="display: none"></span>
+                    </div>
+                    <label class="col-sm-2 col-form-label">Select Section</label>
+                    <div class="col-sm-4">
+                      <select class="form-control" name="section_id" id="section_id">
+                         <option value="">Select Section</option> 
+                        <% if(assign_list) { %>
+                          <option selected value="<%= assign_list.section_id  %>"><%= assign_list.section_name  %> </option>
+                         <% } %> 
+                      
+                      </select>
+                         <span for="section_id"  class="error below" style="display: none"></span>
+                    </div>
+                  </div>
+              
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Select Subject</label>
+                    <div class="col-sm-4">
+                      <select class="form-control" name="subject_id" id="subject_id">
+                        <option value="">Select Subject</option> 
+                         <% if(assign_list) { %>
+                          <option selected value="<%= assign_list.subject_id  %>"><%= assign_list.subject_name  %> </option>
+                         <% }%> 
+                        </select>
+                      <span for="subject_id"  class="error below" style="display: none"></span>
+                    </div>
+
+                    <label class="col-sm-2 col-form-label">Select Teacher</label>
+                    <div class="col-sm-4">
+                      <select class="form-control" name="teacher_id" id="teacher_id">
+                        <option value="">Select Teacher</option> 
+                        <% if(teacher) { %>
+                        <%  teacher.forEach(function(teacher){ %>
+                        <option <% if(assign_list.teacher_id==teacher.registration_id){%> selected <% } %> value="<%= teacher.registration_id  %>"><%= teacher.name; %></option>
+                        <%   }) %>
+                        <% } %>
+                        </select>
+                       <span for="teacher_id"  class="error below" style="display: none"></span>
+                    </div>
+                  </div>
+               
+              
+              <div class="col-sm-12" align="center">
+                  <button type="submit" class="btn btn-success mr-2">Submit</button>
+                  <button class="btn btn-light">Cancel</button>   
+             </div>         
+       </form>
+        
+        <% if(assign_list){ %>
+        <div class="table-responsive teachertable" style="display: none">
+          <table class="table table-bordered teacherlistTable" id="myTable">
+            <thead>
+              <tr>
+                <th>
+                  #
+                </th>
+                <th>
+                  Class 
+                </th>
+                <th>
+                  Section 
+                </th>
+                <th>
+                  Subject 
+                </th>
+                <th>
+                  Teacher
+                </th>
+                <th>
+                  Action
+                </th>
+                
+              </tr>
+            </thead>
+            <tbody>
+            <%  var i=1; assign_list.forEach(function(data){ %>
+              <tr id="tr_<%= i %>">
+                <td >
+
+                  <%= i %>
+                </td>
+                <td>
+                  <%= data.class_name %>
+                </td>
+                <td>
+                  <%= data.section_name %>
+                </td>
+                
+                <td>
+                  <%= data.subject_name %>
+                </td>
+                <td>
+                  <%= data.teacher_name %> 
+                </td>
+                
+                <td>
+                 <a href="/admin/class/?id=<%= data.id %>">
+
+                  <button type="button" class="btn btn-dark btn-fw">
+                              <i class="mdi mdi-cloud-download"></i>Edit
+                              </button>
+                 </a>
+                             
+                 <a href="#"  onclick="delete_record('<%= data.id %>','<%= i %>','tbl_class','class_id')" class="btn btn-sm   btn-danger">Delete
+                 </a>
+
+                             </td>
+
+                
+              </tr>
+            <% i++; })%>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+
+
+       </div>           
+       </div>
+    </div>
+  </div>
+</div>

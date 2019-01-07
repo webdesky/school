@@ -1,0 +1,129 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Question Paper</u></b></h1>
+          <p class="card-description">
+          <!-- <a href="/admin/homeworkList"><button class="btn btn-inverse-dark btn-fw">Question Paper List</button></a> -->
+          </p>
+          
+          <form class="forms-sample" method="post" action="/teacher/QuestionPaper" enctype="multipart/form-data">
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-2">
+               <select class="form-control" id="Teacher_class_id" name="class_id">
+               	<option value="">Select Class</option>
+               	<%  class_list.forEach(function(class_list){ %>
+                <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+				        
+               	<%   }) %>
+               </select>
+              </div>
+               <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
+              <div class="col-sm-2">
+               <select class="form-control" name="exam_section_id" id="Teacher_section_id" onchange="get_teacher_all_exam_data(this.value)">
+                               <option value="">Section</option>                    
+               </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Subject</label>
+              <div class="col-sm-2">
+                <select class="form-control" name="subject_id" id="subject_id" onchange="get_teacher_scheduled_exam()">
+
+                            <option value="">Subject</option>                       
+                </select>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Exam</label>
+              <div class="col-sm-2">
+                <select class="form-control" name="exam_id" id="exam_id">
+                            <option value="">Exam</option>                       
+                 </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Quesion Paper</label>
+              <div class="col-sm-2">
+                <input type="file" name="quesionpaper_file" id="quesionpaper_file">
+              </div>
+            </div>
+
+
+            <br><br><br>
+             <div class="col-sm-12" align="center">
+                  <button type="submit" class="btn btn-success mr-2">Submit</button>
+                  <button class="btn btn-light">Cancel</button>   
+            </div>      
+            
+          </form>
+
+          <% if(question_paper_list!=''){ %>
+          <div class="table-responsive">
+            <table class="table table-bordered" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                    Class
+                  </th>
+                  <th>
+                    Section
+                  </th>
+                  <th>
+                    Subject
+                  </th>
+
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <%  var i=1; question_paper_list.forEach(function(question_paper_list){ %>
+                <tr id="tr_<%= i %>">
+
+                  <td>
+                    <%= i %>
+                  </td>
+                  <td>
+                    <%= question_paper_list.class_name %>
+                  </td>
+                  <td>
+                    <%= question_paper_list.section_name %>
+                  </td>
+                  <td>
+                    <%= question_paper_list.subject_name %>
+                  </td>
+                  
+                  <td>
+                   <!-- <a href="#">
+                      <button type="button" class="btn btn-dark btn-fw">
+                        <i class="mdi mdi-cloud-download"></i>Edit
+                      </button>
+                    </a> -->
+                     <a href="../../question_paper/<%= question_paper_list.file_name %>"download="">
+                          <button type="button" class="btn btn-success"> Download File </button>  </a>
+                     <a href="#">
+                       <button type="button" onclick="delete_teacher_question_record('<%= question_paper_list.question_paper_id %>','<%= i %>','tbl_question_paper','question_paper_id')" class="btn btn-danger btn-fw">
+
+                         <i class="mdi mdi-alert-outline"></i>Delete
+                       </button>
+                     </a>
+                  </td>
+                </tr>
+                <% i++; })%>
+              </tbody>
+            </table>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

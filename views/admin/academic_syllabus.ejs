@@ -1,0 +1,133 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Accademic Syllabus</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/academicSyllabus_list"><button class="btn btn-inverse-dark btn-fw">Accademic Syllabus List</button></a>
+          </p>
+          
+          <form class="forms-sample" id="form_academicsyllabus" method="post" action="/addAcademicSyllabus" enctype="multipart/form-data">
+          	<input type="hidden" name="academic_syllabus_id" id="academic_syllabus_id" class="form-control" placeholder="Enter Title" value="<%= academic_syllabusData.academic_syllabus_id %>">
+
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-4">
+               <select class="form-control" id="class_id" name="class_id" onchange="getSubject(this.value)">
+               	<option value="">Select Class</option>
+               	<% class_list.forEach(function(class_list){ %>
+                  <option <% if(academic_syllabusData.class_id == class_list.class_id){ %> selected <% } %> value="<%= class_list.class_id %>"><%= class_list.class_name%></option>
+               	<% }) %>
+               	 
+               </select>
+               <span for="class_id"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Subject Name</label>
+              <div class="col-sm-4">
+               <select class="form-control" name="subject_id" id="subject_id">
+                 <option value="">Select Subject</option>
+                 <% if(academic_syllabusData.subject_id){ %>
+                  <option <% if(academic_syllabusData.subject_id) {%> selected <% }%> value="<%= academic_syllabusData.subject_id %>"><%= academic_syllabusData.subject_id %></option>
+                 <% }  %>
+               </select>
+               <span for="subject_id"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-4">
+               <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title" value="<%= academic_syllabusData.title %>">
+               <span for="title"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">File</label>
+              <div class="col-sm-4">
+                <input type="file" name="file" id="file" class="form-control" >
+                <span for="file"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-4">
+                  <textarea class="form-control" id="descriptions" name="descriptions"> <%= academic_syllabusData.description %></textarea>
+                </div>
+            </div>
+
+            <br><br><br>
+              <div class="col-sm-12" align="center">
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+              </div>
+           
+            <br><br>
+          </form>
+ 
+          <% if(academic_syllabus!=''){ %>
+          <div class="table-responsive">
+            <table class="table table-bordered" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                   Class Name
+                  </th>
+                  <th>
+                    Subject Name
+                  </th>
+                  <th>
+                    Title
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <%  var i=1; academic_syllabus.forEach(function(academic_syllabus){ %>
+                <tr id="tr_<%= i %>">
+                  <td>
+                    <%= i %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.class_name %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.name %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.title %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.description %>
+                  </td>
+                  <td>
+                  	<% if(academic_syllabus.file_name){ %>
+                  	 <a href="/syllabus/<%=academic_syllabus.file_name %>" download><button type="button" class="btn btn-dark btn-fw"><i class="mdi mdi-cloud-download"></i>Download</button> 
+                     </a>
+                     <% } %>
+                     <a href="/academic_syllabus?id=<%=academic_syllabus.academic_syllabus_id%>"><button type="button" class="btn btn-dark btn-fw"><i class="mdi mdi-cloud-download"></i>Edit</button> 
+                     </a>
+
+                     <a href="#" onclick="delete_record('<%= academic_syllabus.academic_syllabus_id %>','<%= i %>','tbl_academic_syllabus','academic_syllabus_id')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>
+
+                  </td>
+                </tr>
+                <% i++; })%>
+              </tbody>
+            </table>
+          </div>
+          <% } %>
+          
+ 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+ <div class="content-wrapper">
+<div class="col-lg-12 grid-margin stretch-card" style="padding-left: 15px;padding-top:15px">
+	<div class="card">
+
+		<div class="card-body1">
+		   
+		     <form class="forms-sample" method="post" action="/addHomeWork" enctype="multipart/form-data">
+			     <div class="form-group row">
+			             <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+			             <div class="col-sm-2">
+			               <select class="form-control" id="classid" name="class_id" onchange="Teacher_get_subjectlist()">
+
+			                <option value="">Select Class</option>
+			                <%  class_list.forEach(function(class_list){ %>
+			                <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+			                
+			                <%   }) %>
+			               </select>
+			             </div>
+	 		      </div>
+		     </form>
+
+	    </div>
+
+		<div class="card-body subjecttable" style="display: none">
+			<h2 class="card-title"><b><u>Subject List</u></b></h2>
+			<p class="card-description">
+				<a href="/teacher/subject"><button class="btn btn-inverse-dark btn-fw">Add Subject</button></a>
+				
+			</p>
+			<div class="table-responsive subjecttable">
+				<table class="table table-bordered table-1 subjectlistTable" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Class Name
+							</th>
+							<th>
+								Subject Name
+							</th>
+							<th>
+								Subject Type
+							</th>
+							
+							<!-- <th>
+								Action
+							</th> -->
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

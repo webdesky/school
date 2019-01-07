@@ -1,0 +1,68 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Transport List</u></b></h2>
+			<p class="card-description">
+				<a href="/admin/transport"><button class="btn btn-inverse-dark btn-fw">Add Transport</button></a>
+				
+			</p>
+			<div class="table-responsive">
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Route Name
+							</th>
+							<th>
+								Number Of Vehicle
+							</th>
+							<th>
+								Description
+							</th>
+							<th>
+								Route Fare
+							</th>
+							<th>
+								Action
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					<%  var i=1; transport_list.forEach(function(transport_list){ %>
+						<tr>
+							<td>
+								<%= i %>
+							</td>
+							<td>
+								<%= transport_list.route_name %>
+							</td>
+							<td>
+								<%= transport_list.number_of_vehicle %>
+							</td>
+							
+							<td>
+								<%= transport_list.description %>
+							</td>
+							<td>
+								<%= transport_list.route_fare %>
+							</td>
+							<td>
+							 <a href="/transport/?id=<%= transport_list.transport_id %>">
+								<button type="button" class="btn btn-dark btn-fw">
+                         	 	<i class="mdi mdi-cloud-download"></i>Edit
+                         	 	</button>
+                         	 </a>
+                         	 <a href="#"  onclick="delete_record('<%= transport_list.transport_id %>','<%= i %>','tbl_transport','transport_id')" class="btn btn-sm btn-danger">Delete</a>
+							</td>
+						</tr>
+					<% i++; })%>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,126 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      	<div class="card">
+	        <div class="card-body">
+	          <h2 class="card-title"><b><u>Payment Report</u></b></h2>
+            <p class="card-description">
+            <a href="#"><button class="btn btn-inverse-dark btn-fw">Payment Report</button></a>
+           </p>
+	        
+
+       <!-- <form class="form-sample" id="form_addexam" method="Post" action="#">        -->
+ 
+                  <div class="panel-group">
+                    <div class="col-md-2">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading bg-blue">Total Fee</div>
+                      <div class="panel-body"><span id="total"><%= total_fees %></span></div>
+                    </div>
+                  </div>
+                   <div class="col-md-2">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading bg-green">Total Fee Paid</div>
+                      <div class="panel-body" ><span id="paid"><%= paid_amount %></span></div>
+                    </div>
+                  </div>
+                   <div class="col-md-2">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading bg-gray">Total Discount</div>
+                      <div class="panel-body" ><span id="discount"><%= paid_discount %></span></div>
+                    </div>
+                  </div>
+                   <div class="col-md-2">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading bg-gray">Total Transport Fees Paid</div>
+                      <div class="panel-body" ><span id="transport_amount"><%= paid_transport_amount %></span></div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2">
+                    <div class="panel panel-primary">
+                      <div class="panel-heading bg-red">Total Balance Amount</div>
+                      
+                      <div class="panel-body" ><span id="amount"><%= total_fees - (paid_amount + paid_discount + paid_transport_amount) %></span></div>
+                    </div>
+                  </div>
+                  </div>
+              <div class="clearfix"></div>
+              <br><br>
+            	<div class="form-group row">
+      
+                    <div class="col-sm-2">
+                    	<label class="col-form-label">Select Class</label>
+                      <select class="form-control" name="class_id" id="class_id" onchange="get_fees_tt(this.value)">
+                        <option value="">Select Class</option>
+                        <%  class_list.forEach(function(class_list){ %>
+                        <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                        <%   }) %>
+                      </select>
+                      <span for="class"  class="error below" style="display: none"></span>
+                    </div>
+
+
+                    
+                    <div class="col-sm-2">
+                    	<label class="col-form-label">Select Section</label>
+                      <select class="form-control" name="section_id" id="section_id">
+                        <option value="">Select Section</option>                   
+                       </select>
+                       <span for="section_id"  class="error below" style="display: none"></span>
+                    </div>
+
+                    <div class="col-sm-2">
+                    	<label class="col-form-label">Accounting Term</label>
+                      	<select class="form-control" name="fees_term_id" id="fees_term_id">
+                        	<option value="">Select Accounting Term</option>                   
+                        </select>
+                       <span for="accounting_term"  class="error below" style="display: none"></span>
+                    </div>
+
+                    <div class="col-sm-2">
+                    	<label class="col-form-label">Fee Type</label>
+                      	<select class="form-control" name="fee_type_id" id="fee_type_id">
+                        	<option value="">Select Fee Type</option>                   
+                       	</select>
+                       <span for="fee_type_id"  class="error below" style="display: none"></span>
+                    </div>
+                    
+
+                    <div class="col-sm-2">
+		                  <button type="submit" class="btn btn-success mr-2" style="margin-top: 36px;" onclick="ajax_get_payment_receipt_data()">Submit</button>
+                    </div>
+                    
+            </div>
+        <!-- </form> -->
+          
+
+        <div id="fees_report" style="display: none;" class="table-responsive">
+            <table id="fees_report_table" class="table table-bordered" >
+              <h2>Payment Report</h2>
+              <thead>
+                <tr>
+                  <th>  #               </th>
+                  <th> Student Name     </th>
+                  <th> Amount           </th>
+                  <th> Transport Amount </th>
+                  <th> Discount         </th>
+                  <th> Collected Amount </th>
+                  <th> Transport Fees   </th>
+                  <th> Balance Amount   </th>
+                
+                 
+              
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+           
+          </div>
+       </div>           
+       </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<style type="text/css">
+  .form-check.form-check-flat label input:checked + .input-helper:before {
+    background-color: #42b9da;
+    border: none;
+}
+.form-check.form-check-flat label .input-helper:before {
+    border: 2px solid #42b9da;
+    width: 20px;
+    height: 20px;
+}
+.fa-plus, .fa-edit, .fa-trash{
+    margin-left: 16px;
+    font-size: 20px;
+    margin-top: 1px;
+}
+.form-group {
+    margin-bottom: 0rem;
+}
+.stretch-card > .card {
+
+    padding-left: 20px;
+}
+
+
+.form-check .form-check-label .input-helper:before {
+    top: 10px;
+}
+</style>
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>User Rights</u></b></h1>
+        </div>
+        <form class="form-sample" id="form_rights" method="Post" action="/admin/add_rights">
+        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">Role</label>
+                           
+                          <div class="col-sm-2">
+                            
+                             <select class="form-control" id="role_id" name="role_id">
+                              <option value="">Select User Role</option>
+                              <%  user_role.forEach(function(user_role){ %>
+                              <option value="<%= user_role.role_id  %>"><%= user_role.user_role; %></option>
+                              
+                              <%   }) %>
+                             </select>    
+             
+                          </div>
+          </div>
+        <%  user_rights.forEach(function(user_rights){  %>
+        
+           
+           
+                
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label"><%= user_rights.menu_name %></label>
+                           <input type="hidden" name="user_role[]" value="<%= user_rights.menu_name %>">
+                          <div class="col-sm-1">
+                            <div class="form-check form-check-flat">
+                              <label class="form-check-label">
+                                <input type="checkbox" name="<%= user_rights.menu_name %>_add" value="1" class="form-check-input" checked="">
+                                <i class="input-helper"></i>
+                                <i class="fa fa-plus"></i>
+
+                                </label>
+                              
+                            </div>
+                          </div>
+                          <div class="col-sm-1">
+                            <div class="form-check form-check-flat">
+                              <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked="" name="<%= user_rights.menu_name %>_edit" value="1">
+                                <i class="input-helper"></i>
+                                <i class="fa fa-edit"></i>
+                                </label>
+                            </div>
+                          </div>
+                          <div class="col-sm-1">
+                            <div class="form-check form-check-flat">
+                              <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" checked="" name="<%= user_rights.menu_name %>_delete" value="1">
+                                <i class="input-helper"></i>
+                                <i class="fa fa-trash"></i>
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                      
+
+            
+        <% }) %>
+        <div class="col-md-12">
+        <input type="submit" name="submit" value="submit" class="btn btn-primary">
+        </div>
+        </form>
+        </div>
+    </div>
+  </div>
+</div>

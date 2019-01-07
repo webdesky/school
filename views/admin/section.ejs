@@ -1,0 +1,90 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Section</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/sectionList"><button class="btn btn-inverse-dark btn-fw">Section List</button></a>
+          </p>
+          
+          <form class="forms-sample" id="form_section" method="post" action="/addSection">
+            <div class="form-group row">
+              <input type="hidden" value="<%= section_data.section_id%>" name="section_id">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-4">
+               <select class="form-control" id="class_id" name="class_id">
+               	<option value="">Select Class</option>
+               	<%  class_list.forEach(function(class_list){ %>
+				          <option <% if(section_data.class_id==class_list.class_id) { %> selected="selected" <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+               	<%   }) %>
+               </select>
+               <span for="class_id"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
+              <div class="col-sm-4">
+               <input type="text" name="section_name" <%if(section_data.section_name) { %> value="<%= section_data.section_name %>" <% } %> id="section_name" placeholder="Enter Section Name Like a,b" class="form-control">
+               <span for="section_name"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            <div class="col-sm-12" align="center">
+              
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+          <br><br>
+          <% if(section_list!=''){ %>
+          <div class="table-responsive">
+                <table class="table table-bordered" id="myTable">
+                  <thead>
+                    <tr>
+                      <th>
+                        #
+                      </th>
+                      <th>
+                        Class Name
+                      </th>
+                      <th>
+                        Section Name
+                      </th>
+                      <th>
+                        Action
+                      </th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <%  var i=1; section_list.forEach(function(section_list){ %>
+                    <tr id="tr_<%= i %>">
+                      <td>
+                        <%= i %>
+                      </td>
+                      <td>
+                        <%= section_list.class_name %>
+                      </td>
+                      <td>
+                        <%= section_list.section_name %>
+                      </td>
+                      <td>
+                       <a href="/admin/section/?id=<%= section_list.section_id%>">
+                        <button type="button" class="btn btn-dark btn-fw">
+                                    <i class="mdi mdi-cloud-download"></i>Edit
+                                    </button>
+                                   </a>
+                                   <a href="#"  onclick="delete_record('<%= section_list.section_id %>','<%= i %>','tbl_section','section_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                   </td>
+                                    
+                      
+                    </tr>
+                  <% i++; })%>
+                  </tbody>
+                </table>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

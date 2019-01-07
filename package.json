@@ -1,0 +1,34 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "async-each": "^1.0.1",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "csv": "^5.0.1",
+    "csv-parse": "^4.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.0.0",
+    "express-flash": "0.0.2",
+    "express-session": "^1.15.6",
+    "fs": "0.0.1-security",
+    "is-empty": "^1.2.0",
+    "json2csv": "^4.3.2",
+    "moment": "^2.22.2",
+    "msg91": "0.0.6",
+    "mysql": "^2.16.0",
+    "nocache": "^2.0.0",
+    "path": "^0.12.7",
+    "sha1": "^1.1.1"
+  }
+}

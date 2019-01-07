@@ -1,0 +1,22 @@
+Mime-Version: 1.0
+Content-Base: file:///home/rajendra/Downloads/Export-Html-To-Word-Document-With-Images-Using-jQuery-Word-Export-Plugin/index.htm
+Content-Type: Multipart/related; boundary="NEXT.ITEM-BOUNDARY";type="text/html"
+
+--NEXT.ITEM-BOUNDARY
+Content-Type: text/html; charset="utf-8"
+Content-Location: file:///home/rajendra/Downloads/Export-Html-To-Word-Document-With-Images-Using-jQuery-Word-Export-Plugin/index.htm
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+
+</style>
+</head>
+<body>
+<h1>Hello, world!</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula bibendum lacinia. Pellentesque placerat interdum nisl non semper. Integer ornare, nunc non varius mattis, nulla neque venenatis nibh, vitae cursus risus quam ut nulla. Aliquam erat volutpat. Aliquam erat volutpat. Etiam eu auctor risus, condimentum sodales nisi. Curabitur aliquam, lorem accumsan aliquam mattis, sem ipsum vulputate quam, at interdum nisl turpis pharetra odio. Vivamus diam eros, mattis eu dui nec, blandit pulvinar felis.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula bibendum lacinia. Pellentesque placerat interdum nisl non semper. Integer ornare, nunc non varius mattis, nulla neque venenatis nibh, vitae cursus risus quam ut nulla. Aliquam erat volutpat. Aliquam erat volutpat. Etiam eu auctor risus, condimentum sodales nisi. Curabitur aliquam, lorem accumsan aliquam mattis, sem ipsum vulputate quam, at interdum nisl turpis pharetra odio. Vivamus diam eros, mattis eu dui nec, blandit pulvinar felis.</p>
+</body></html>
+--NEXT.ITEM-BOUNDARY--

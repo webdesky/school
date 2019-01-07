@@ -1,0 +1,125 @@
+<style type="text/css">
+          .web-content ul li{
+              width: 100%;
+            }
+            .web-content .nav-tabs>li.active>a{
+              border: unset;
+              border-radius: 0px;
+              background-color: #42beda;
+              color: #fff;
+            }
+            .web-content .nav-tabs>li>a:hover {
+                border-color: unset;
+                border-radius: 0;
+                border: unset;
+                color: 
+                background-color: unset;
+            }
+            .web-content .nav-tabs{
+              border: 0
+            }
+            /*.nav-tabs>li>a{
+              border: unset;
+            }*/
+            /*
+            
+            
+            
+            .web-content .nav-tabs>li {
+                float: left;
+                margin-bottom: 1px;
+            }*/
+          </style>
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Account Information</u></b></h2>
+			<p class="card-description">
+				<a href="#"><button class="btn btn-inverse-dark btn-fw">Account</button></a>
+				
+			</p>
+			<div class="row web-content">
+
+            <div class="col-xs-12 col-sm-2">
+              <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#account">Manage Profile</a></li>
+                <li><a data-toggle="tab" href="#change_password">Change Password</a></li>
+              </ul>
+            </div>
+
+            <div class="col-xs-12 col-sm-9">
+              <div class="tab-content">
+              	<div id="account" class="tab-pane fade in active">
+                  <h3><u>Manage Profile</u></h3>
+                  <br><br>
+                <form action="/student/account_information" method="post">
+					  <div class="form-group col-xs-12 col-sm-6">
+					    <label for="name">Name:</label>
+					    <input type="hidden" name="type" value="account">
+					    <input type="hidden" name="registration_id" value="<%= student.registration_id %>">
+					    <input type="text" class="form-control" id="name" name="name" value="<%= student.name %>">
+					  </div>
+					  <div class="form-group col-xs-12 col-sm-6">
+					    <label for="phone">Phone:</label>
+					    <input type="text" class="form-control" id="phone" name="phone" value="<%= student.phone %>">
+					  </div>
+					  <div class="form-group col-xs-12 col-sm-6">
+					    <label for="name">Address:</label>
+					    <input type="text" class="form-control" id="address" name="address" value="<%= student.address %>">
+					  </div>
+					  <div class="form-group col-xs-12 col-sm-6">
+					    <label for="name">Adhar Number:</label>
+					    <input type="text" class="form-control" id="aadhar_number" name="aadhar_number" value="<%= student.aadhar_number %>">
+					  </div>
+					  <div class="col-sm-4 col-sm-offset-5">
+					  <button type="submit" class="btn btn-primary">Update</button>
+					  </div>
+				</form>		
+                  
+                  
+                
+                </div>
+
+                <div id="change_password" class="tab-pane fade">
+                  <h3><u>Change Password</u></h3>
+                  <br><br>
+
+
+                   <form action="/student/account_information" method="post">
+					  <div class="form-group col-xs-12 col-sm-6">
+					    <label for="name">Old Password:</label>
+					    <input type="hidden" name="type" value="password">
+					    <input type="hidden" name="registration_id" value="<%= student.registration_id %>">
+					    <input type="password" class="form-control" id="old_password" name="old_password" placeholder="Enter Old Password" onblur="student_check_password(this.value)" required="required">
+					  </div>
+					  <div class="clearfix"></div>
+					  <span class="old_error" style="color:red"></span>
+					  <div class="form-group col-xs-12 col-sm-6">
+					    <label for="phone">New Password:</label>
+					   	<input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter New Password" required="required">
+					  </div>
+					  <div class="clearfix"></div>
+					  <span class="new_error" style="color:red"></span>
+					  <div class="form-group col-xs-12 col-sm-6">
+					    <label for="name">Confirm Password:</label>
+					    <input type="password" class="form-control" id="cnfrm_password" name="cnfrm_password" placeholder="Enter Confirm Password" required="required" onblur="student_password_verify(this.value)">
+					  </div>
+					   <div class="clearfix"></div>
+					     <span class="cnfrm_error" style="color:red"></span>
+					  <div class="col-sm-4 ">
+					  <button type="submit" class="btn btn-primary">Update</button>
+					  </div>
+				</form>	
+                  
+                  
+                
+                </div>
+              </div>
+            </div>
+
+           </div>
+
+
+		</div>
+	</div>
+</div>

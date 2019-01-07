@@ -1,0 +1,113 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Transport Route</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/transportList"><button class="btn btn-inverse-dark btn-fw">Transport List</button></a>
+          </p>
+          
+          <form class="forms-sample" id="form_transport" method="post" action="/addTransport">
+            <div class="form-group row">
+               <input type="hidden" value="<%=transportdata.transport_id%>" name="transport_id">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Route Name</label>
+              <div class="col-sm-4">
+                <input type="name" value="<%= transportdata.route_name %>" class="form-control" id="route_name" placeholder="Enter  Route Name" name="route_name">
+                <span for="route_name"  class="error below" style="display: none"></span>
+              </div>
+
+                <label for="exampleInputPassword2" class="col-sm-2 col-form-label"> Vehicle Number </label>
+              <div class="col-sm-4">
+                <input type="text" name="number_of_vehicle" id="number_of_vehicle" class="form-control" placeholder="Enter Vehicle Number Ex: MP 09 " value="<%= transportdata.number_of_vehicle %>">
+                <span for="number_of_vehicle"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+           
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+              <div class="col-sm-4">
+ 
+              <textarea class="form-control" rows="10" id="descriptions" placeholder="Enter Description" name="descriptions"><%= transportdata.description %></textarea>
+               
+              </div>
+
+
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Route Fare</label>
+              <div class="col-sm-4">
+                <input type="name" class="form-control" id="route_fare" placeholder="Enter  Route Fare" value="<%= transportdata.route_fare %>" name="route_fare">
+              </div>
+            </div>
+
+            <div class="col-sm-12" align="center"> 
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+            <br><br>
+          <% if(transport_list!=''){ %>
+        <div class="table-responsive">
+          <table class="table table-bordered" id="myTable">
+            <thead>
+              <tr>
+                <th>
+                  #
+                </th>
+                <th>
+                  Route Name
+                </th>
+                <th>
+                  Number Of Vehicle
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Route Fare
+                </th>
+                <th>
+                  Action
+                </th>
+                
+              </tr>
+            </thead>
+            <tbody>
+            <%  var i=1; transport_list.forEach(function(transport_list){ %>
+              <tr id="tr_<%= i %>">
+                <td>
+                  <%= i %>
+                </td>
+                <td>
+                  <%= transport_list.route_name %>
+                </td>
+                <td>
+                  <%= transport_list.number_of_vehicle %>
+                </td>
+                
+                <td>
+                  <%= transport_list.description %>
+                </td>
+                <td>
+                  <%= transport_list.route_fare %>
+                </td>
+                <td>
+                 <a href="/transport/?id=<%= transport_list.transport_id %>">
+                  <button type="button" class="btn btn-dark btn-fw">
+                              <i class="mdi mdi-cloud-download"></i>Edit
+                              </button>
+                             </a>
+                             <a href="#"  onclick="delete_record('<%= transport_list.transport_id %>','<%= i %>','tbl_transport','transport_id')" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+              </tr>
+            <% i++; })%>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+    
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,264 @@
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Registration</h2>
+					 
+				 
+                    
+                    
+                    
+						<div id="accountant" style="display: block;">
+						<form class="form-sample" id="accountant_register" method="Post" action="/admin/accountantDetail"> 	
+							<input type="hidden" class="form-check-input userregister" name="userregister" value=""> 
+							 <input type="hidden" value="<%= accountantdata.registration_id%>" name="registration_id"> 
+							<div class="col-md-12" align="right">
+								<a href="/admin/accountantList"><span class="btn btn-primary">Accountant List</span></a>
+							</div>
+							<p class="card-description">
+								<h3><b><u>Accountant info</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Account Name</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Accountant Name" name="accountant_name"  id="accountant_name" value="<%= accountantdata.name  %>"     />
+											<span for="accountant_name"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Gender</label>
+										<div class="col-sm-9">
+
+											<select class="form-control" name="accountant_gender" id="accountant_gender"  >
+												<option <% if(accountantdata.sex=="male"){  %> selected <% } %> value="male">Male</option>
+												<option <% if(accountantdata.sex=="female"){  %> selected <% } %> value="female" >
+												  Female</option>
+											</select>
+											<span for="accountant_gender"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>               
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Email</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Accountant Email" name="accountant_email" id="accountant_email" value="<%= accountantdata.email  %>"      />
+											<span for="accountant_email"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<!-- <div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Password</label>
+										<div class="col-sm-9">
+										 <input type="password" name="accountant_password" id="accountant_password" class="form-control"   >
+										 <span for="accountant_password"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>     --> 
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Phone Number </label>
+										<div class="col-sm-9">
+											<input type="number" name="accountant_phone" id="accountant_phone" class="form-control" placeholder="Enter accountant Phone Number" value="<%= accountantdata.phone  %>"  >
+											<span for="accountant_phone"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>          
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Address</label>
+										<div class="col-sm-9">
+											<input type="text" name="accountant_address" id="accountant_address" class="form-control" placeholder="Enter Address"  value="<%= accountantdata.address  %>"  >
+											<span for="accountant_address"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								
+
+
+							</div>
+
+							<p class="card-description">
+								<h3><b><u>Education Qualification</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Academics</label>
+										<div class="col-sm-9">
+											<input type="text" name="accountant_academics" id="accountant_academics" class="form-control" placeholder="Enter Teacher academics" value="<%= accountantdata.academics  %>"   >
+											<span for="accountant_academics"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Profession</label>
+										<div class="col-sm-9">
+
+											<input type="text" name="accountant_profession" id="accountant_profession" class="form-control" placeholder="Enter Teacher profession" value="<%= accountantdata.profession  %>"  >
+											<span for="accountant_profession"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<br>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<input type="submit" id="registerbutton"  name="submit" value="submit" class="form-control btn btn-primary" >
+
+									</div>
+								</div>
+								
+							</div>
+						</form>	
+						</div>
+					
+                    
+						<!-- <div id="librarian" style="display: none">
+                         <form class="form-sample" id="librarian_register" method="Post" action="/admin/registration"> 
+                         	
+                         	<input type="hidden" class="form-check-input userregister" name="userregister" value=""> 
+
+							<div class="col-md-12" align="right">
+								<a href="/admin/librarianList"><span class="btn btn-primary">Librarian List</span></a>
+							</div>
+							<p class="card-description">
+								<h3><b><u>Librarian info</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Librarian Name</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Librarian Name" name="librarian_name"  id="librarian_name"  />
+											<span for="librarian_name"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Gender</label>
+										<div class="col-sm-9">
+
+											<select class="form-control" name="librarian_gender" id="librarian_gender"  >
+												<option>Male</option>
+												<option>Female</option>
+											</select>
+											<span for="librarian_gender"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>               
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Email</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Librarian Email" name="librarian_email" id="librarian_email"  />
+											<span for="librarian_email"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Password</label>
+										<div class="col-sm-9">
+										 <input type="password" name="librarian_password" id="librarian_password" class="form-control"  >
+										 <span for="librarian_password"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>               
+							</div> 
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Address</label>
+										<div class="col-sm-9">
+											<input type="text" name="librarian_address" id="librarian_address" class="form-control" placeholder="Enter Address"  >
+											<span for="librarian_address"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Phone Number </label>
+										<div class="col-sm-9">
+											<input type="number" name="librarian_phone" id="librarian_phone" class="form-control" placeholder="Enter Librarian Phone Number"  >
+											<span for="librarian_phone"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+
+							<p class="card-description">
+								<h3><b><u>Education Qualification</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Academics</label>
+										<div class="col-sm-9">
+											<input type="text" name="librarian_academics" id="librarian_academics" class="form-control" placeholder="Enter Librarian academics"  >
+											<span for="librarian_academics"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Profession</label>
+										<div class="col-sm-9">
+
+										    <input type="text" name="librarian_profession" id="librarian_profession" class="form-control" placeholder="Enter Librarian profession"  >
+										    <span for="librarian_profession"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<br>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<input type="submit" id="registerbutton"  name="submit" value="submit" class="form-control btn btn-primary" >
+									</div>
+								</div>
+								
+							</div>
+						</form>
+						</div> -->
+						
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ 
+<script>
+
+ 
+</script>

@@ -1,0 +1,77 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Shift Student Section</u></b></h1>
+          <p class="card-description">
+          <!-- <a href="/admin/attendenceList"><button class="btn btn-inverse-dark btn-fw">Attendence List</button></a> -->
+          </p>
+          
+          <form class="forms-sample" method="post" action="/addAttendence" enctype="multipart/form-data">
+ 
+            <div id="attendence_student">
+              <div class="form-group row">
+              
+                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+                <div class="col-sm-2">
+                 <select class="form-control" id="class_id" name="class_id">
+                 	<option value="">Select Class</option>
+                 	<%  class_list.forEach(function(class_list){ %>
+                  <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+  				        
+                 	<%   }) %>
+                 </select>
+                </div>
+                <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
+                <div class="col-sm-2">
+                 <select class="form-control" name="section_id" id="section_id_stop" onchange="getStudentToshift(this.value)();" >
+                   <option>Select Section</option>
+                 </select>
+                </div>
+<!--                 <label for="exampleInputPassword2" class="col-sm-1 	col-form-label">Date</label>
+                <div class="col-sm-2">
+                 <input type="text" name="attendence_date" id="attendence_date" class="form-control attendence_date" onchange="getStudentAttendence(this.value)">
+                </div> -->
+              </div>
+              <br><br><br>
+              <div  style="display: none;" id="attendenceTable">
+                <div class="col-sm-12" align="center">
+                  <span class="btn btn-primary" onclick="setStatus('1')">Mark All Present</span>
+                  <span class="btn btn-primary" onclick="setStatus('2')">Mark All Absent</span>
+                </div>
+                <br><br><br><br>
+                <table class="display responsive nowrap" id="attendence" style="width: 100%" >
+                  <thead>
+                    <tr>
+                      <th>
+                        #
+                      </th>
+                      <th>
+                         Name
+                      </th>
+                      <th>
+                        Status
+                      </th>
+                      
+                      
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                   
+                  </tbody>
+                </table>
+              </div>
+            </div>  
+ 
+           
+            <br><br><br>
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

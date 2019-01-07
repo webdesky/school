@@ -1,0 +1,164 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      	<div class="card">
+	        <div class="card-body">
+  	          <h2 class="card-title">Exam Schedule</h2>
+              <p class="card-description">
+                <a href="/admin/exam_schedule_list"><button class="btn btn-inverse-dark btn-fw">Exam Schedule List</button></a>
+              </p>
+             
+             <form class="form-sample" id="form_examschedule" method="Post" action="/admin/add_exam_schedule">       
+                  <p class="card-description">
+                    <h3><b><u>Exam Schedule</u></b></h3>
+                  </p>
+           
+                  <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Select Class</label>
+                        <div class="col-sm-4">
+                          <select class="form-control" name="class_id" id="class_id" >
+                            <option value="">Select Class</option>
+                              <%  class_list.forEach(function(class_list){ %>
+                              <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                              <%   }) %>
+                            </select>
+                            <span for="class_id"  class="error below" style="display: none"></span>
+                        </div>
+                        <label class="col-sm-2 col-form-label">Select Section</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="exam_section_id" id="exam_section_id" onchange="get_all_exam_data(this.value)">
+                               <option value="">Select Section</option>                    
+                             </select>
+                             <span for="exam_section_id"  class="error below" style="display: none"></span>
+                        </div>
+                  </div>
+                    
+                  <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">Select Subject</label>
+                        <div class="col-sm-4">
+                          <select class="form-control" name="subject_id" id="subject_id">
+                            <option value="">Select Subject</option>                       
+                          </select>
+                          <span for="subject_id"  class="error below" style="display: none"></span>
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">Select Exam</label>
+                        <div class="col-sm-4">
+                          <select class="form-control" name="exam_id" id="exam_id">
+                            <option value="">Select Exam</option>                       
+                          </select>
+                          <span for="exam_id"  class="error below" style="display: none"></span>
+                        </div>
+                  </div>
+
+                   <div class="form-group row">
+                      <label class="col-sm-2 col-form-label"> Date</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="date" id="date" class="attendence_date form-control">
+                          <span for="date"  class="error below" style="display: none"></span>                          
+                        </div>
+                       <label class="col-sm-2 col-form-label">Total Marks</label>
+                        <div class="col-sm-4">
+                          <input type="text" name="total_marks" id="total_marks" placeholder="Enter Total Marks" class="form-control">
+                          <span for="total_marks"  class="error below" style="display: none"></span>
+                        </div>
+                  </div>
+                  
+                    
+                  <div class="col-sm-12" align="center">
+                      <button type="submit" class="btn btn-success mr-2">Submit</button>
+                      <button class="btn btn-light">Cancel</button>   
+                  </div>         
+             </form> 
+
+
+             <% if(exam_schedule!=''){ %>
+              <div class="table-responsive">
+                <table class="table table-bordered" id="myTable">
+                  <thead>
+                    <tr>
+                      <th>
+                        #
+                      </th>
+                      <th>
+                        Class Name
+                      </th>
+                      <th>
+                        Section Name
+                      </th>
+                      <th>
+                        Subject Name
+                      </th>
+                      <th>
+                        Exam Name
+                      </th>
+                       <th>
+                        Exam Date
+                      </th>
+
+                      <th>
+                        Total Marks
+                      </th>
+                      <th>
+                        Action
+                      </th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <%  var i=1; exam_schedule.forEach(function(exam_schedule){ %>
+                    <tr id="tr_<%= i %>">
+                      <td >
+
+                        <%= i %>
+                      </td>
+                      <td>
+                        <%= exam_schedule.class_name %>
+                      </td>
+                      <td>
+                        <%= exam_schedule.section_name %>
+                      </td>
+                      <td>
+                        <%= exam_schedule.subject_name %>
+                      </td>
+                      <td>
+                        <%= exam_schedule.exam_name %>
+                      </td>
+                      <td>
+                        <%= exam_schedule.date %>
+                      </td>
+                      <td>
+
+                        <%= exam_schedule.totalmarks %>
+                      </td>
+
+                      <td>
+                       <a href="#">
+
+                        <button type="button" class="btn btn-dark btn-fw">
+                                    <i class="mdi mdi-cloud-download"></i>Edit
+                                    </button>
+                                   </a>
+                                   
+
+                                     <a href="#"  onclick="delete_record('<%= exam_schedule.id %>','<%= i %>','tbl_exam_schedule','id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                   
+
+
+                                   </td>
+
+                      
+                    </tr>
+                  <% i++; })%>
+                  </tbody>
+                </table>
+              </div>
+
+              <% } %>
+
+          </div>           
+       </div>
+    </div>
+  </div>
+</div>

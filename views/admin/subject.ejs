@@ -1,0 +1,99 @@
+<div class="content-wrapper">
+ <div class="col-lg-12 grid-margin stretch-card">
+   <div class="card">
+     <div class="card-body">
+
+        <h1 class="card-title"><b><u>Add Subject</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/subjectList"><button class="btn btn-inverse-dark btn-fw">Subject List</button></a>
+          </p>
+          <%= message %>
+          <form class="forms-sample" id="form_subject" method="post" action="/admin/addSubject">
+            <input type="hidden" value="<%=subject_list.subject_id%>" name="subject_id">
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Class Name</label>
+              <div class="col-sm-6">
+               <select class="form-control" id="classid" name="class_id" onchange="get_subjectlist()">
+                <option value="">Select Class</option>
+                          <%  class_list.forEach(function(class_list){ %>
+                  <option <% if(subject_list.class_id==class_list.class_id){%> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                          <%   }) %>
+               </select>
+               <span for="classid"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Subject Name</label>
+              <div class="col-sm-6">
+               <input type="text" name="subject_name" id="subject_name" placeholder="Enter Subject Name Like a,b" class="form-control" value="<%= subject_list.name %>">
+               <span for="subject_name"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+
+
+            <div class="form-group row ">
+              <label class="col-sm-3 col-form-label">Subject Type</label>
+              <div class="col-sm-2">
+                <div class="form-radio abc" id="stud">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input abc" name="subject_type" id="subject_type" value="1" <% if(subject_list.subject_type==1){%>checked <% }%> > Main Subject
+
+                  </label>
+                  <span for="subject_type"  class="error below" style="display: none"></span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-radio" id="teach">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input " name="subject_type" <% if(subject_list.subject_type==0){%>checked <% }%> value="0"> Other Subject
+                  </label>
+                </div>
+              </div>
+              
+            </div>
+            <div class="col-sm-12" align="center">
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+          <br><br>
+          
+           <% if(subject_list!=''){ %>
+          <div class="table-responsive subjecttable">
+            <table class="table table-bordered subjectlistTable" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                    Class Name
+                  </th>
+                  <th>
+                    Subject Name
+                  </th>
+                  <th>
+                    Subject Type
+                  </th>
+                  
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+          <% } %>  
+            
+     </div>
+   </div>
+ </div>    
+</div>
+
+
+
+ 

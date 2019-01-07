@@ -1,0 +1,132 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Fees Structure</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/fees_structure_list"><button class="btn btn-inverse-dark btn-fw">Fees Structure List</button></a>
+          </p>
+          
+          <form class="forms-sample" id="form_section" method="post" action="/add_fees_structure">
+            <div class="form-group row">
+          
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-4">
+               <select class="form-control"  name="class_id" onchange="get_fees_tt(this.value)" id="fees_class_id">
+               	<option value="">Select Class</option>
+               	<%  class_list.forEach(function(class_list){ %>
+				          <option value="<%= class_list.class_id  %>" <% if(fee_data.class_id==class_list.class_id) { %> selected="selected" <% } %> ><%= class_list.class_name; %></option>
+               	<%   }) %>
+               </select>
+               <span for="class_id"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Fees Amount</label>
+              <div class="col-sm-4">
+               <input type="hidden" name="fees_id" <% if(fee_data.fees_id){%> value="<%= fee_data.fees_id%>"<% }  %>>
+               <input type="text" name="fees_amount" id="fees_amount" required="required" class="form-control" placeholder="Enter Fee Amount" <% if(fee_data.fees_amount){%> value="<%= fee_data.fees_amount%>"<% }  %> >
+               <span for="fee_type"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+          
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Type Name</label>
+              <div class="col-sm-4">
+               <select class="form-control"  name="fees_type_id" id="fee_type_id">
+                <option value="">Select Fees Type</option>
+                <% if(fee_data!=''){ %>
+                  <%  fees_type.forEach(function(fees_type){ %>
+                  <option value="<%= fees_type.fee_type_id  %>" <% if(fee_data.fees_type_id==fees_type.fee_type_id) { %> selected="selected" <% } %> ><%= fees_type.fee_type; %></option>
+                <%   }) %>
+                <% } %>
+               </select>
+               <span for="class_id"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Term Name</label>
+              <div class="col-sm-4">
+              
+               <select class="form-control"  name="fees_term_id" id="fees_term_id">
+                <option value="">Select Fees Term</option>
+                 <% if(fee_data!=''){ %>
+                  <%  fees_term.forEach(function(fees_term){ %>
+                  <option value="<%= fees_term.term_id  %>" <% if(fee_data.fees_term_id==fees_term.term_id) { %> selected="selected" <% } %> ><%= fees_term.term_name; %></option>
+                <%   }) %>
+                <% } %>
+               </select>
+               <span for="fee_type"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            <div class="col-sm-12" align="center">
+              
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+          <br><br>
+          <% if(fees_structure!=''){ %>
+          <div class="table-responsive">
+              <table class="table table-bordered" id="myTable">
+                <thead>
+                  <tr>
+                    <th>
+                      #
+                    </th>
+                    <th>
+                      Class name
+                    </th>
+                    <th>
+                      Fees Type Name
+                    </th>
+                    <th>Fees Term Name</th>
+                    <th>Amount</th>
+                    <th>
+                      Action
+                    </th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                <%  var i=1; fees_structure.forEach(function(fees_type){ %>
+                  <tr id="tr_<%= i %>">
+                    <td >
+
+                      <%= i %>
+                    </td>
+                    <td>
+                      <%= fees_type.class_name %>
+                    </td>
+                    <td>
+                      <%= fees_type.fee_type %>
+                    </td>
+                    <td>
+                       <%= fees_type.term_name %>
+                    </td>
+                    <td>
+                      <%= fees_type.fees_amount %>
+                    </td>
+                    <td>
+                     <a href="/admin/fee_structure/?id=<%= fees_type.fees_id %>">
+
+                      <button type="button" class="btn btn-dark btn-fw">
+                                  <i class="mdi mdi-cloud-download"></i>Edit
+                                  </button>
+                                 </a>
+                                 
+                                 <a href="#"  onclick="delete_record('<%= fees_type.fees_id %>','<%= i %>','tbl_fees_structure','fees_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                 </td>
+
+                    
+                  </tr>
+                <% i++; })%>
+                </tbody>
+              </table>
+          </div>
+          <% } %>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,495 @@
+    <style type="text/css">
+                        .comman-popup {
+                            background-color: rgba(0, 0, 0, 0.46);
+                        }
+                        .comman-popup .modal-content{
+                            background-color: #fff;
+                        }
+                        .comman-popup .table-bordered th, .comman-popup .table-bordered td {
+                            border: 1px solid #d5d5d5;
+                            padding: 18px 10px;
+                            vertical-align: middle;
+                            border-top: 1px solid #f2f2f2;
+                            font-size: 14px!important;
+                        }
+                        .comman-popup #payment_data tr th, .comman-popup #payment_data tr td {
+                            padding: 10px!important;
+                        }
+                        .comman-popup input {
+                            margin-top: 0;
+                            border: 1px solid #ccc;
+                            height: 30px;
+                        }
+                        .comman-popup button.open-popup{
+                            margin-top: 20px;
+                            font-size: 15px;
+                        }
+                        .comman-popup .modal-footer{
+                            padding: 5px;
+                        }
+
+                        #fees_receipt_modal{
+                            margin-top: 20px;
+                            overflow-x: hidden!important;
+                        }
+                        #fees_receipt_modal table thead th, #fees_receipt_modal tr td{
+                            padding: 10px!important;
+                            font-size: 14px!important;
+                        }
+                        #fees_receipt_modal .modal-content{
+                            padding: 25px 0px!important;
+                            width: 915px;
+                            margin: auto;
+                        }
+                        .comman-popup{
+                            overflow-y: hidden;
+                        }
+                        .comman-popup .btn, #fees_receipt_modal .btn{
+                            border: 1px solid #41d1d5;
+                            background-color: #41d1d5;
+                            color: #fff
+                        }
+                        #fees_receipt_modal .model-footer{
+                            padding: 4px!important;
+                        }
+
+                        
+  @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+
+
+    }
+    @media print {
+    .hiderow {
+      display: none;
+    }
+                    </style>
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Payment</u></b></h2>
+			<p class="card-description">
+				<a href="/admin/AssignTeacher"><button class="btn btn-inverse-dark btn-fw">Payment Report</button></a>
+				
+			</p>
+			<div class="table-responsive">
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Name 
+							</th>
+							<th>
+								Class Name
+							</th>	
+							<th>Section Name</th>
+							<th>
+								Dob 
+							</th>
+							<th>
+								Gender 
+							</th>
+							<th>
+								Email
+							</th>
+							<th>Phone</th>
+							<th>Action</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					<%  var i=1; student_information.forEach(function(data){ %>
+						<tr id="tr_<%= i %>">
+							<td >
+
+								<%= i %>
+							</td>
+							<td>
+								<%= data.name %>
+							</td>
+							<td>
+								<%= data.class_name %>
+							</td>
+							<td>
+								<%= data.section_name %>
+							</td>
+							<td>
+								<%= data.dob %>
+							</td>
+							
+							<td>
+								<%= data.sex %>
+							</td>
+							<td>
+								<%= data.email %> 
+							</td>
+							<td>
+								<%= data.phone %>
+							</td>
+							<td>
+								
+								<a href="#"  onclick="get_payment_information('<%= data.registration_id  %>','<%= data.class_id %>')" class="btn btn-sm btn-primary">View</a>
+							</td>
+							
+
+							
+						</tr>
+					<% i++; })%>
+					</tbody>
+				</table>
+			</div>
+
+
+
+			 <!-- Modal Fees PAy -->
+					<div class="modal my-modal-1 fade comman-popup" id="myModal11" role="dialog">
+						<div class="modal-dialog">
+						
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title"><b>Student Fees</b></h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+								</div>
+								<div class="modal-body">
+									<!-- <p>Some text in the modal.</p> -->
+									<span id="error" style="color: red;"></span>
+									<div class="table-responsive">
+									<table class="table table-bordered" id="payment_data">
+									</table>
+								 </div>
+								 <button class="btn btn-primary open-popup" onclick="pay_fees()">Pay Fees</button>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- fees receipt model -->
+
+					<div id="printSection">
+
+
+					<div class="modal my-modal-1 fade" id="fees_receipt_modal_parent" role="dialog">
+						<div class="modal-dialog">
+							
+							<!-- Modal content-->
+							<div class="modal-content">
+								 <div class="page-containeras popup1" id="printSection" style=" width: 900px;margin: auto;border: solid 1px #bbb;padding: 20px 10px;">
+											
+								 	<div class="col-xs-12 col-sm-3">
+								 	<img src="" height="100px" width="100px" id="school_logo">
+								 	</div>
+											
+
+								 	<div class="col-xs-12 col-sm-9">
+								 		<h1 style="text-align: center;margin-top: 0; font-size: 24px;" id="school_name"></h1>
+											<p style="text-align: center;font-size: 18px; margin-bottom: 2px;" id="school_address"></p>
+											<p style="text-align: center;font-size: 18px;">Ph Numbers:+91 <span id="school_phone"></span> </p>
+											<h5 style="text-align: center;font-size: 18px;margin-bottom: 10px;">Fee Receipt</h5> 
+								 	</div>
+
+											<div class="table-manages" style="padding: 7px;text-align: left;font-size: 19px;width: 100%;">  
+												 <table style="border: 1px solid #ccc; width: 100%; border-collapse: collapse"> 
+													 <tbody><tr>  
+														 <td style=" border: 1px solid #cacaca; width:22%;  color: #484848; padding:15px;" class="bolds">Receipt No.</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;"><span id="receipt_number"></span> </td>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">Payment Date:</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;"><spa id="payment_date"></span></td>
+													 </tr>
+													 <tr>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">Student Name</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;"><span id="student_name"></span></td>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">S/o. / D/o. </td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;"><span id="parent_name"></span></td>
+													 </tr>
+													 <tr>
+														 <td style=" border: 1px solid #cacaca;width:22%;  color: #484848; padding:15px;" class="bolds">Student ID</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;">2</td>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">Class &amp; Section Name: </td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;"><span id="class_name"></span> <span id="section_name"></span></td>
+													 </tr>
+												 </tbody></table>
+												 
+
+
+
+
+
+
+												 <table style="border: 1px solid #ccc; width: 100%; margin-top: 30px; border-collapse: collapse; border-color: #ccc" id="fees_receipt_data"> 
+													 <thead>
+													 <tr>  
+														 <td rowspan="3" style=" border: 1px solid #cacaca; color: #484848; width: 20px; padding:15px;" class="bolds">S. No.</td>
+														 <td colspan="2" style=" border: 1px solid #cacaca; color: #484848; padding:15px;" class="bolds">Fee Particulars 
+														 
+														 </td>
+														
+														 <td rowspan="3" style=" border: 1px solid #cacaca; color: #484848; width: 40px; padding:15px;" class="bolds">Amount</td>
+													 </tr>
+													 <tr class="gaurav"><td>Fees Type</td><td>Fees Term</td></tr>
+													 </thead>
+													 <tbody>
+													<!--  <tr>
+														 <td style=" border: 1px solid #cacaca;  padding:15px;" class="bolds">1.</td> 
+														 <td style=" border: 1px solid #cacaca;  padding:15px;" class="bolds">Transport Fees</td>
+														 <td style=" border: 1px solid #cacaca;  padding:15px;">2000</td>
+													 </tr>
+													 
+													
+														<tr>
+														 <td class="bolds" colspan="2" style=" border: 1px solid #cacaca;  padding:15px;  text-align: center;">Total</td>
+														 <td style=" border: 1px solid #cacaca;  padding:15px;">2000</td>
+													 </tr> -->
+												 </tbody></table>
+
+												 
+																 
+														<div class="margs" style="font-size: 18px!important; float: left;color: #000; font-weight: 600;margin-top: 15px;margin-right: 8px;"> Amount Paid in Words: </div>
+														<div style="font-size: 18px;float: left; margin-top: 15px">
+														 <span id="number_word"></span>          </div> 
+														<br>
+														<div style="clear: both;"></div>
+												 <div style="float:left; font-size: 18px;color: #000; font-weight: 600;margin-top: 15px;margin-right: 8px;"> Payment Mode:  </div>
+												 <div style="float:left; margin-top: 15px;"><span id="type"></span></div>
+
+												 <div style="clear: both;"></div>
+
+												 <div class="authors">
+														<div class="span1 autho" style="width: 50%;float: left; margin-top: 60px;margin-bottom: 15px;">STAMP</div>
+														<div class="span2 autho" style="width: 50%;float: left; text-align: right; margin-top: 60px;margin-bottom: 15px;">Authorised Signature</div> 
+												 </div>
+
+											</div>
+											<div class="modal-footer">
+											<a class="hiderow" href="javascript:void(0)"  onclick="PrintElem()">Print</a>
+												<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											</div>
+									 </div>   
+							</div>
+						</div>
+					</div>
+					</div>
+
+
+					<!-- transport model -->
+					<div class="modal my-modal-1 fade comman-popup" id="transport_model" role="dialog">
+						<div class="modal-dialog">
+						
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title"><b>Transport  Fees</b></h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+
+								</div>
+								<div class="modal-body">
+									<!-- <p>Some text in the modal.</p> -->
+									<span id="error" style="color: red;"></span>
+									<div class="table-responsive">
+									<table class="table table-bordered" id="transport_payment_data">
+									</table>
+								 </div>
+									<span id="transport_error" style="color: red;"></span>
+								 <button class="btn btn-primary open-popup" onclick="insert_transport_fees()">Pay Fees</button>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Transport Receipt Modal -->
+					<div class="modal my-modal-1 fade" id="transport_receipt_modal" role="dialog">
+						<div class="modal-dialog">
+						
+							<!-- Modal content-->
+							<div class="modal-content">
+								 <div class="page-containeras popup1" id="printSection" style=" width: 900px;margin: auto;border: solid 1px #bbb;padding: 30px;">
+											<h1 style="text-align: center;margin-top: 0; font-size: 24px;">Pushpa high school</h1>
+											<p style="text-align: center;font-size: 18px; margin-bottom: 2px;"> V Nagar, Nellore, Sri Eatairagatik Nellore, Andhra Pradesh - 560102</p>
+											<p style="text-align: center;font-size: 18px;">Ph Numbers:+91 9826856913 </p>
+											<h5 style="text-align: center;font-size: 18px;margin-bottom: 10px;">Fee Receipt</h5> 
+
+											<div class="table-manages" style="padding: 7px;text-align: left;font-size: 19px;width: 100%;">  
+												 <table style="border: 1px solid #ccc; width: 100%; border-collapse: collapse"> 
+													 <tbody><tr>  
+														 <td style=" border: 1px solid #cacaca; width:22%;  color: #484848; padding:15px;" class="bolds">Receipt No.</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;">t20181220021226000000 </td>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">Payment Date:</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;">20/12/2018</td>
+													 </tr>
+													 <tr>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">Student Name</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;">Naidu</td>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">S/o. / D/o.</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;">raj</td>
+													 </tr>
+													 <tr>
+														 <td style=" border: 1px solid #cacaca;width:22%;  color: #484848; padding:15px;" class="bolds">Student ID</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;">2</td>
+														 <td style=" border: 1px solid #cacaca; width:22%; color: #484848; padding:15px;" class="bolds">Class &amp; Section Name: </td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;">Class 1 Section A</td>
+													 </tr>
+												 </tbody></table>
+												 
+												 <table style="border: 1px solid #ccc; width: 100%; margin-top: 30px; border-collapse: collapse; border-color: #ccc" id="detail_table"> 
+													 <thead><tr>  
+														 <td style=" border: 1px solid #cacaca; color: #484848; width: 20px; padding:15px;" class="bolds">S. No.</td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; padding:15px;" class="bolds">Fee Particulars </td>
+														 <td style=" border: 1px solid #cacaca; color: #484848; width: 40px; padding:15px;" class="bolds">Amount</td>
+													 </tr>
+													 <thead>
+													 <tbody>
+													 
+													 
+													
+													 <!--  <tr>
+														 <td class="bolds" colspan="2" style=" border: 1px solid #cacaca;  padding:15px;  text-align: center;">Total</td>
+														 <td style=" border: 1px solid #cacaca;  padding:15px;">2000</td>
+													 </tr> -->
+												 </tbody></table>
+
+												 
+																		 
+														<div class="margs" style="font-size: 18px!important; float: left;color: #000; font-weight: 600;margin-top: 15px;margin-right: 8px;"> Amount Paid in Words: </div>
+														<div style="font-size: 18px;float: left; margin-top: 15px">
+														 two thousand Rupees             </div> 
+														<br>
+														<div style="clear: both;"></div>
+												 <div style="float:left; font-size: 18px;color: #000; font-weight: 600;margin-top: 15px;margin-right: 8px;"> Payment Mode:  </div>
+												 <div style="float:left; margin-top: 15px;">Cash</div>
+
+												 <div style="clear: both;"></div>
+
+												 <div class="authors">
+														<div class="span1 autho" style="width: 50%;float: left; margin-top: 60px;margin-bottom: 15px;">STAMP</div>
+														<div class="span2 autho" style="width: 50%;float: left; text-align: right; margin-top: 60px;margin-bottom: 15px;">Authorised Signature</div> 
+												 </div>
+
+											</div>
+
+									 </div>   
+							</div>
+						</div>
+					</div>
+					<!-- modal -->
+					<div id="fees_detail" style="display: none;" class="table-responsive">
+						<table id="fees_detail_table" class="table table-bordered">
+							<h2>Fees To Collect</h2>
+							<thead>
+								<tr>
+								
+									<th> id           </th>
+									<th> Fees Type    </th>
+									<th> Fees Term    </th>
+									<th> Total Amount </th>
+									<th> Paid         </th>
+									<th>Discount</th>
+									<th>Balance</th>
+									<th>Status</th>
+								 
+							
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+						<br>
+					
+					</div>
+					<br><br>
+					<div id="transport_fees" style="display: none;" class="table-responsive">
+						<table id="transport_fees_table" class="table table-bordered">
+							<h2>Transport Fees</h2>
+							<thead>
+								<tr>
+									
+									<th> id           </th>
+									<th> Route Name    </th>
+									<th> Total Amount </th>
+									<th>Paid</th>
+									<th>Discount </th>
+									<th>Balance</th>
+									<th>Payment Status</th>
+								 
+							
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+						<br>
+						 
+					</div>
+
+					<br><br>
+					<div id="fees_receipt" style="display: none;" class="table-responsive">
+						<table id="fees_receipt_table" class="table table-bordered">
+							<h2>Fees Receipt</h2>
+							<thead>
+								<tr>
+								
+									<th>id </th>
+									<th>Collected By</th>
+									<th>Receipt Number</th>
+									<th>Total Amount</th>
+									<th>Action</th>
+							
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+					</div>
+
+
+					<br><br>
+					<div id="transport_receipt" style="display: none;" class="table-responsive">
+						<table id="transport_receipt_table" class="table table-bordered">
+							<h2>Transport Receipt</h2>
+							<thead>
+								<tr>
+								
+									<th>id </th>
+									<th>Collected By</th>
+									<th>Receipt Number</th>
+									<th>Total Amount</th>
+									<th>Action</th>
+							
+								</tr>
+							</thead>
+							<tbody>
+								
+							</tbody>
+						</table>
+					</div>
+
+		
+					
+		</div>
+	</div>
+</div>

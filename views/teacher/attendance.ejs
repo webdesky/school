@@ -1,0 +1,99 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Attendence</u></b></h1>
+          <p class="card-description">
+          <!-- <a href="/admin/attendenceList"><button class="btn btn-inverse-dark btn-fw">Attendence List</button></a> -->
+          </p>
+          
+          <form class="forms-sample" method="post" action="/teacher/addAttendence" enctype="multipart/form-data">
+            <div class="col-sm-12">
+            <div class="form-group row">
+             
+              <div class="col-sm-2">
+                <div class="form-radio abc" id="stud">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input abc" name="attendence" id="attendence" value="student" checked> Student
+                  </label>
+                </div>
+              </div>
+             <!--  <div class="col-sm-2">
+                <div class="form-radio" id="teach">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input " name="attendence" value="teacher"> Teacher
+                  </label>
+                </div>
+              </div>
+        -->
+            </div>
+          </div>
+            <div id="attendence_student">
+              <div class="form-group row ">
+              
+                <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+                <div class="col-sm-2">
+                 <select class="form-control" id="Teacher_class_id" name="Teacher_class_id">
+                  <option value="">Select Class</option>
+                  <%  class_list.forEach(function(class_list){ %>
+                  <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                  
+                  <%   }) %>
+                 </select>
+                </div>
+                <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
+                <div class="col-sm-2">
+                 <select class="form-control" name="Teacher_section_id" id="Teacher_section_id" >
+                   <option>Select Section</option>
+                 </select>
+                </div>
+                <label for="exampleInputPassword2" class="col-sm-1  col-form-label">Date</label>
+                <div class="col-sm-2">
+                 <input type="text" name="teacher_attendence_date" id="teacher_attendence_date  " class="form-control attendence_date" onchange="getTeacherStudentAttendence(this.value)">
+                </div>
+              </div>
+              <br><br><br>
+              <div  style="display: none;" id="attendenceTable">
+                <div class="col-sm-12" align="center">
+                  <span class="btn btn-primary" onclick="setStatus('1')">Mark All Present</span>
+                  <span class="btn btn-primary" onclick="setStatus('2')">Mark All Absent</span>
+                </div>
+                <br><br><br><br>
+                <table class="display responsive nowrap" id="attendence" style="width: 100%" >
+                  <thead>
+                    <tr>
+                      <th>
+                        #
+                      </th>
+                      <th>
+                         Admission Number
+                      </th>
+                      <th>
+                         Name
+                      </th>
+                      <th>
+                        Status
+                      </th>
+                      
+                      
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                   
+                  </tbody>
+                </table>
+              </div>
+            </div>  
+            
+           
+            <br><br><br>
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

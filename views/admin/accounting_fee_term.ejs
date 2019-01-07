@@ -1,0 +1,117 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Accounting Fee Term</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/fees_term_list"><button class="btn btn-inverse-dark btn-fw">Fees Term List</button></a>
+          </p>
+          
+          <form class="forms-sample" id="form_section" method="post" action="/add_fee_term">
+            <div class="form-group row">
+              <!-- onchange="get_student_by_class(this.value)" -->
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-4">
+               <select class="form-control"  name="class_id" required="required" >
+               	<option value="">Select Class</option>
+               	<%  class_list.forEach(function(class_list){ %>
+				          <option value="<%= class_list.class_id  %>" <% if(fee_data.class_id==class_list.class_id) { %> selected="selected" <% } %> ><%= class_list.class_name; %></option>
+               	<%   }) %>
+               </select>
+               <span for="class_id"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Term Name</label>
+              <div class="col-sm-4">
+               <input type="hidden" name="term_id" <% if(fee_data.term_id){%> value="<%= fee_data.term_id%>"<% }  %>>
+               <input type="text" name="term_name" id="term_name" required="required" class="form-control" placeholder="Enter Fee Term" <% if(fee_data.term_name){%> value="<%= fee_data.term_name%>"<% }  %> >
+               <span for="term_name"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <!-- onchange="get_student_by_class(this.value)" -->
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Start Date</label>
+              <div class="col-sm-4">
+               <input type="text" name="start_date" id="start_date" class="form-control attendence_date" placeholder="Start Date" <% if(fee_data.start_date){%> value="<%= fee_data.start_date%>"<% }  %>>
+               <span for="start_date"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">End Date</label>
+              <div class="col-sm-4">
+                <input type="text" name="end_date" id="end_date" class="form-control attendence_date" placeholder="End Date" <% if(fee_data.end_date){%> value="<%= fee_data.end_date%>"<% }  %>>
+                <span for="end_date"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            <div class="col-sm-12" align="center">
+              
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+          <br><br>
+          <% if(fees_term!=''){ %>
+          <div class="table-responsive">
+              <table class="table table-bordered" id="myTable">
+                <thead>
+                  <tr>
+                    <th>
+                      #
+                    </th>
+                    <th>
+                      Class name
+                    </th>
+                    <th>
+                      Fees Term Name
+                    </th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>
+                      Action
+                    </th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                <%  var i=1; fees_term.forEach(function(fees_type){ %>
+                  <tr id="tr_<%= i %>">
+                    <td >
+
+                      <%= i %>
+                    </td>
+                    <td>
+                      <%= fees_type.class_name %>
+                    </td>
+                    <td>
+                      <%= fees_type.term_name %>
+                    </td>
+                    <td>
+                      <%= fees_type.start_date %>
+                    </td>
+                    <td>
+                      <%= fees_type.end_date %>
+                    </td>
+                    <td>
+                     <a href="/admin/accounting_term/?id=<%= fees_type.term_id %>">
+
+                      <button type="button" class="btn btn-dark btn-fw">
+                                  <i class="mdi mdi-cloud-download"></i>Edit
+                                  </button>
+                                 </a>
+                                 
+                                 <a href="#"  onclick="delete_record('<%= fees_type.term_id %>','<%= i %>','tbl_fees_term','term_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                                 </td>
+
+                    
+                  </tr>
+                <% i++; })%>
+                </tbody>
+              </table>
+          </div>
+          <% } %>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

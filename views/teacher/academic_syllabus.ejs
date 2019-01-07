@@ -1,0 +1,146 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Study Material</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/Studymaterial_list"><button class="btn btn-inverse-dark btn-fw">StudyMaterial List</button></a>
+          </p>
+          
+          <form class="forms-sample" id="form_studymaterial" method="post" action="/teacher/academic_syllabus" enctype="multipart/form-data">
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-4">
+               <select class="form-control" id="Teacher_class_id" name="Teacher_class_id" onchange="TeachergetSubject(this.value)">
+               	<option value="">Select Class</option>
+               	<%  class_list.forEach(function(class_list){ %>
+                <option <% if(syllabus_list.class_id==class_list.class_id){ %> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+				        
+               	<%   }) %>
+               </select>
+               <span for="Teacher_class_id"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Subject Name</label>
+              <div class="col-sm-4">
+               <select class="form-control" name="Teacher_subject_id" id="Teacher_subject_id" onchange="
+               TeacherGetAcademicSyllabus()">
+                 <option>Select Subject</option>
+               </select>
+               <span for="subject_id"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
+              <div class="col-sm-4">
+               <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title">
+               <span for="title"  class="error below" style="display: none"></span>
+              </div>
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">File</label>
+              <div class="col-sm-4">
+                <input type="file" name="file" id="file" class="form-control">
+                <span for="file"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-4">
+                  <textarea class="form-control" id="descriptions" name="descriptions"></textarea>
+                  <span for="descriptions"  class="error below" style="display: none"></span>
+                </div>
+            </div>
+
+            <br><br><br>
+              <div class="col-sm-12" align="center">
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+              </div>
+           
+            <br><br>
+          </form>
+
+         
+
+          <% if(syllabus_list!=''){ %>
+
+          <div class="table-responsive" >
+            <table class="table table-bordered syllabustable" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                   Class Name
+                  </th>
+                  <th>
+                    Subject Name
+                  </th>
+                  <th>
+                    Title
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <%  var i=1; syllabus_list.forEach(function(syllabus_list){ %>
+                 <tr id="tr_<%= i %>">
+                  <td><%= i %></td>
+                  <td><%=syllabus_list.class_name %></td>
+                  <td><%=syllabus_list.name %></td>
+                  <td><%=syllabus_list.title %></td>
+                  <td><%=syllabus_list.description %></td>
+                  
+                  <td><a href="#" onclick="Teacher_delete_record('<%= syllabus_list.academic_syllabus_id %>','<%=i%>','tbl_academic_syllabus','academic_syllabus_id')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a><td>
+                  <tr>
+                <% i++; })%>
+              </tbody>
+            </table>
+          </div>
+          <% } %>
+
+
+          <div class="table-responsive" id="divsyllabustable" style="display: none" >
+            <table class="table table-bordered syllabustable" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                   Class Name
+                  </th>
+                  <th>
+                    Subject Name
+                  </th>
+                  <th>
+                    Title
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                 
+              </tbody>
+            </table>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

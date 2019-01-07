@@ -1,0 +1,47 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Section</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/sectionList"><button class="btn btn-inverse-dark btn-fw">Section List</button></a>
+          </p>
+
+           <form action="/frontend_setting" method="post" enctype="multipart/form-data">
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
+                        <div class="col-sm-4">
+                        <input type="hidden" name="type" value="events">
+                        <input type="hidden" name="event_id" value="<%= Events.frontend_events_id %>">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title" value="<%= Events.title %>">
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
+                        <div class="col-sm-4">
+                           <input type="text" name="event_date" id="datepickers" class="form-control attendence_date" placeholder="Event date" value="<%= Events.event_date %>">
+                        </div>
+                      </div>  
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-4">
+                         <select class="form-control" name="status" va>
+                           <option value="0" <% if(Events.status==0) { %> selected="selected" <% } %>>InActive</option>
+                           <option value="1" <% if(Events.status==1) { %> selected="selected" <% } %>>Active</option>
+                         </select>
+                        </div>
+                         
+                      </div> 
+                      <div class="clearfix"></div>
+                      
+                      <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="submit" class="form-control btn btn-primary">
+                   </div>
+            </form>
+
+        </div>
+      </div>
+    </div>
+ </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add Dormitory</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/dormitoryList"><button class="btn btn-inverse-dark btn-fw">Dormitory List</button></a>
+          </p>
+          
+          <form class="forms-sample" method="post" id="form_dormitory" action="/addDormitory">
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label"> Name</label>
+              <div class="col-sm-4">
+                <input type="hidden" value="<%=dormitoryData.dormitory_id %>" name="dormitory_id">
+                <input type="name" class="form-control" id="name" placeholder="Enter Name" name="name" value="<%= dormitoryData.name %>">
+                <span for="name"  class="error below" style="display: none"></span>
+              </div>
+
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Number Of Room</label>
+              <div class="col-sm-4">
+               <select class="form-control" id="number_of_room" name="number_of_room">
+                 <option value="">Select Number Of Room  </option>
+                 <% for($i=1;$i<=100;$i++){%>
+                 <option value="<%= $i %>" <% if(dormitoryData.number_of_room==$i){%> selected <% } %>><%= $i %></option>
+                 <% } %>
+                 <option></option>
+               </select>
+               <span for="number_of_room"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            
+
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
+              <div class="col-sm-4">
+ 
+              <textarea class="form-control" rows="10" id="descriptions" placeholder="Enter Description" name="descriptions"><%= dormitoryData.description %></textarea>
+ 
+               
+              </div>
+            </div>
+
+
+           <div class="col-sm-12" align="center"> 
+            <button type="submit" class="btn btn-success mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+            </div>
+          </form>
+          <br><br>
+          <% if(dormitory_list!=''){ %>
+          <div class="table-responsive">
+            <table class="table table-bordered" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    Number Of Room
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <%  var i=1; dormitory_list.forEach(function(dormitory_list){ %>
+                <tr id="tr_<%= i %>">
+                  <td>
+                    <%= i %>
+                  </td>
+                  <td>
+                    <%= dormitory_list.name %>
+                  </td>
+                  <td>
+                    <%= dormitory_list.number_of_room %>
+                  </td>
+                  
+                  <td>
+                    <%= dormitory_list.description %>
+                  </td>
+                  <td>
+                           <a href="/dormitory/?id=<%= dormitory_list.dormitory_id %>">
+                            <button type="button" class="btn btn-dark btn-fw">
+                                        <i class="mdi mdi-cloud-download"></i>Edit
+                                        </button>
+                           </a>
+                           <a href="#"  onclick="delete_record('<%= dormitory_list.dormitory_id %>','<%= i %>','tbl_dormitory','dormitory_id')" class="btn btn-sm btn-danger">Delete</a>
+                  </td>
+                </tr>
+                <% i++; })%>
+              </tbody>
+          </table>
+         </div>
+         <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

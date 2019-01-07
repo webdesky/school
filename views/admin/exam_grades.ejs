@@ -1,0 +1,172 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      	<div class="card">
+	        <div class="card-body">
+  	          <h2 class="card-title">Exam Grades</h2>
+              <p class="card-description">
+                <a href="/admin/exam_grades_list"><button class="btn btn-inverse-dark btn-fw">Exam Grades List</button></a>
+              </p>
+             
+
+             <form class="form-sample" id="form_grade" method="Post" action="/admin/exam_grades">       
+                  <p class="card-description">
+                    <h3><b><u>Exam Grades</u></b></h3>
+                  </p>
+
+                  <input type="hidden" value="<%= gradedata.grade_id %>" name="grade_id">
+                  <div class="form-group row">
+                    <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+                    <div class="col-sm-4">
+                     <select class="form-control" id="class_id" name="class_id" onchange="get_all_exam_name(this.value)">
+                      <option value="">Select Class</option>
+                      <%  class_list.forEach(function(class_list){ %>
+                      <option <% if(class_list.class_id== gradedata.class_id ){%> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                      
+                      <%   }) %>
+                     </select>
+                      <span for="class_id"  class="error below" style="display: none"></span> 
+                    </div>
+                     <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Exam Name</label>
+                    <div class="col-sm-4">
+
+                      <select class="form-control" id="exam_id" name="exam_id" >
+                          <option value="">Select Exam Name</option>
+                          <% if(gradedata.exam_id){ %>
+                          <option selected value="<%= gradedata.exam_id %>"> <%= gradedata.exam_name %></option>
+                          <% } %> 
+                      </select>
+                      <span for="exam_id"  class="error below" style="display: none"></span> 
+                    <!--  <select class="form-control" name="section_id" id="section_id" onchange="get_all_exam_data(this.value)">
+                       <option>Select Section</option>
+                       <% if(gradedata.section_id){ %>
+                          <option selected value="<%= gradedata.section_id %>"> <%= gradedata.section_name %></option>
+                       <% } %>
+                     </select> -->
+                     <span for="section_id"  class="error below" style="display: none"></span> 
+                    </div>
+                  </div>
+                   
+                  <div class="form-group row">
+                    
+
+                    <label class="col-sm-2 col-form-label">Grade Name</label>
+                      <div class="col-sm-4">
+                          <input type="text" value="<%=gradedata.name %>"  name="name" id="name" class="form-control" placeholder="Enter Grade Name">
+                          <span for="name"  class="error below" style="display: none"></span> 
+                      </div>
+
+                     <label class="col-sm-2 col-form-label">Comment</label>
+                     <div class="col-sm-4">
+                          <textarea class="form-control" name="comment" id="comment" placeholder="Enter Comment"><%=  gradedata.comment %></textarea>
+                          <span for="comment"  class="error below" style="display: none"></span> 
+                     </div>
+                          
+                  </div> 
+
+                  <div class="form-group row">
+                        
+                        <label class="col-sm-2 col-form-label">Mark From</label>
+                        <div class="col-sm-4">
+                           <input type="text" value="<%=gradedata.mark_from %>" name="mark_from" id="mark_from" class="form-control" placeholder="Enter Mark From">
+                           <span for="mark_from"  class="error below" style="display: none"></span> 
+                        </div>
+                        <label class="col-sm-2 col-form-label">Mark Upto</label>
+                        <div class="col-sm-4">
+                          <input type="text" value="<%=gradedata.mark_upto %>" name="mark_upto" id="mark_upto" class="form-control" placeholder="Enter Mark Upto">
+                          <span for="mark_upto"  class="error below" style="display: none"></span> 
+                        </div>
+                  </div>
+                
+
+                    
+                  <div class="col-sm-12" align="center">
+                      <button type="submit" class="btn btn-success mr-2">Submit</button>
+                      <button class="btn btn-light">Cancel</button>   
+                  </div>         
+             </form> 
+              
+              <% if(exam_grades!=''){ %>
+
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="myTable">
+                    <thead>
+                      <tr>
+                        <th>
+                          #
+                        </th>
+                        <th>
+                          Class
+                        </th>
+                       
+                        <th>
+                          Name
+                        </th>
+                        <th>
+                          Exam Name
+                        </th>
+                        <th>
+                          Mark From
+                        </th>
+                        <th>
+                          Mark UpTo
+                        </th>
+                        <th>
+                          Comment
+                        </th>
+                        <th>
+                          Action
+                        </th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%  var i=1; exam_grades.forEach(function(exam_grades){ %>
+                      <tr id="tr_<%= i  %>">
+
+                        <td>
+                          <%= i %>
+                        </td>
+                        <td>
+                          <%= exam_grades.class_name %>
+                        </td>
+                        <td>
+                          <%= exam_grades.exam_name %>
+                        </td>
+                        <td>
+
+                          <%= exam_grades.name %>
+                        </td>
+                        <td>
+                          <%= exam_grades.mark_from %>
+                        </td>
+                        
+                        <td>
+                          <%= exam_grades.mark_upto %>
+                        </td>
+                        <td>
+                          <%= exam_grades.comment %>
+                        </td>
+                        <td>
+                             <a href="/exam_grades?grade_id=<%=exam_grades.grade_id%>">
+                              <button type="button" class="btn btn-dark btn-fw"><i class="mdi mdi-cloud-download"></i>Edit</button>
+                             </a>
+                             <a href="#" onclick="delete_record('<%= exam_grades.exam_id %>','<%= i %>','tbl_exam_grades','grade_id')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button>
+                             </a>
+            
+
+                        
+                        </td>
+                      </tr>
+                      <% i++; })%>
+                    </tbody>
+                </table>
+               </div>
+              <% } %>
+
+           
+          </div>           
+       </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Academic Syllabus List</u></b></h2>
+			<p class="card-description">
+				<a href="/admin/academic_syllabus"><button class="btn btn-inverse-dark btn-fw">Add Academic Syllabus</button></a>
+				
+			</p>
+			<div class="table-responsive">
+            <table class="table table-bordered" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                   Class Name
+                  </th>
+                  <th>
+                    Subject Name
+                  </th>
+                  <th>
+                    Title
+                  </th>
+                  <th>
+                    Description
+                  </th>
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <%  var i=1; academic_syllabus.forEach(function(academic_syllabus){ %>
+                <tr id="tr_<%= i %>">
+                  <td>
+                    <%= i %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.class_name %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.name %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.title %>
+                  </td>
+                  <td>
+                    <%= academic_syllabus.description %>
+                  </td>
+                  <td>
+                      <a href="/academic_syllabus/?id=<%= academic_syllabus.academic_syllabus_id %>">
+                          <button type="button" class="btn btn-dark btn-fw">
+                            <i class="mdi mdi-cloud-download"></i>Edit
+                            </button>
+                           </a>
+                      <a href="#"  onclick="delete_record('<%= academic_syllabus.academic_syllabus_id %>','<%= i %>','tbl_academic_syllabus','academic_syllabus_id')" class="btn btn-sm btn-danger">Delete</a>
+                  </td>
+                </tr>
+                <% i++; })%>
+              </tbody>
+            </table>
+          </div>
+		</div>
+	</div>
+</div>

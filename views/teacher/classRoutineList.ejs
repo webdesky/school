@@ -1,0 +1,136 @@
+	
+<div class="col-lg-12 grid-margin stretch-card">
+		<div class="card">
+			<div class="card-body">
+				<h2 class="card-title"><b><u>Class Routine List</u></b></h2>
+			 
+				 	<form class="forms-sample" method="post" action="/teacher/classroutineList">
+			            <div class="form-group row">
+			             
+			              <label for="exampleInputEmail2" class="col-sm-1 col-form-label">Class Name</label>
+			              <div class="col-sm-3">
+			            
+			               <select class="form-control" id="Teacher_class_id" name="Teacher_class_id">
+			                <option value="">Select Class</option>
+			                <%  class_list.forEach(function(class_list){ %>
+			                <option <% if(routinedata.class_id == class_list.class_id){%>  selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+			                
+			                <%   }) %>
+			               </select>
+			              </div>
+			              <label for="exampleInputPassword2" class="col-sm-1 col-form-label">Section Name</label>
+			              <div class="col-sm-3">
+			              
+<!-- <<<<<<< HEAD -->
+			               <select class="form-control" name="Teacher_section_id"  id="Teacher_section_id">
+<!-- =======
+			               <select class="form-control" name="Teacher_section_id" onchange="get_studentlist()" id="Teacher_section_id">
+>>>>>>> a75c827c22ed16435fcd7b1205fb3a0b415ac69a -->
+			               	<% if(routinedata.section_id){%>  
+			               	 <option value="<%= routinedata.section_id %>"><%= routinedata.section_name %></option>
+			               	<% } %>
+			                 <option>Select Section</option>
+			               </select>
+			              </div>
+
+			              <div class="col-sm-3">
+			               	<button class="btn btn-primary" value="Submit" >Search</button>
+
+			              </div>
+			        </form>
+			        <br><br><br>
+
+			        <% if(class_routine!=''){ %>
+					<div class="table-responsive">
+						<table class="table table-bordered" id="myTable">
+							<thead>
+								<tr>
+									<th>
+										#
+									</th>
+									<th>
+										Day
+									</th>
+									<th>
+										Routine
+									</th>
+									
+									
+								</tr>
+							</thead>
+							<tbody>
+							<% for(let i = 0; i < class_routine.length; i++) { %>
+								<tr>
+								<td><%= i+1 %></td>
+								<% if(i==0){ %> 
+									<td>
+									<%= 'SUNDAY' %>
+									</td>
+								<%  } %>
+								<% if(i==1){ %> 
+									<td>
+									<%= 'MONDAY' %>
+									</td>
+								<%  } %>
+								<% if(i==2){ %> 
+									<td>
+									<%= 'TUESDAY' %>
+									</td>
+								<%  } %>
+								<% if(i==3){ %> 
+									<td>
+									<%= 'WEDNESDAY' %>
+									</td>
+								<%  } %>
+								<% if(i==4){ %> 
+									<td>
+									<%= 'THURSDAY' %>
+									</td>
+								<%  } %>
+								<% if(i==5){ %> 
+									<td>
+									<%= 'FRIDAY' %>
+									</td>
+								<%  } %>
+								<% if(i==6){ %> 
+									<td>
+									<%= 'SATURDAY' %>
+									</td>
+								<%  } %>
+								<td>
+									<table>
+								<%  for(let j = 0; j < class_routine[i].length; j++) { %>
+								         <tr>
+								        <td><%= class_routine[i][j].class_name %></td> 
+										<td><%= class_routine[i][j].section_name %></td> 
+										<td><%= class_routine[i][j].subject_name %></td>
+										<td>
+										 
+
+		 								<%= class_routine[i][j].time_start %>	
+										<%= ':' %>
+										<%= class_routine[i][j].time_start_min %>
+										<%= '-' %>
+										<%=  class_routine[i][j].time_end %>
+										<%= ':' %>
+										<%= class_routine[i][j].time_end_min %>
+										 
+									    </td>
+										<td><%= class_routine[i][j].teacher_name %>
+
+										</td>
+
+								<%	 }	%>
+							</table>
+
+								</td>
+								</tr>
+						      				  
+						   <% } %>
+							</tbody>
+						</table>
+					</div>
+					<% } %>
+			</div>
+		</div>
+</div>

@@ -1,0 +1,126 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      	<div class="card">
+	        <div class="card-body">
+	          <h2 class="card-title"><b><u>Exam</u></b></h2>
+            <p class="card-description">
+            <a href="/admin/exam_list"><button class="btn btn-inverse-dark btn-fw">Exam List</button></a>
+           </p>
+     
+     
+       
+	        
+       <form class="form-sample" id="form_addexam" method="Post" action="/admin/exam">       
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Select Class</label>
+                <input type="hidden" name="exam_id" <% if(examdata){ %> value="<%=  examdata.exam_id  %>" <% }%>>
+                <div class="col-sm-4">
+                  <select class="form-control" name="class" id="class" onchange="get_all_data(this.value)">
+                    <option value="">Select Class</option>
+                    <%  class_list.forEach(function(class_list){ %>
+
+                    <option <% if(examdata.class_id == class_list.class_id){ %>  selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                    <%   }) %>
+                  </select>
+                  <span for="class"  class="error below" style="display: none"></span>
+                </div>
+                <label class="col-sm-2 col-form-label">Select Exam</label>
+                <div class="col-sm-4">
+                 <!--  <select class="form-control" name="section_id" id="section_id">
+                    <option value="">Select Section</option>                   
+                   </select>
+                   <span for="section_id"  class="error below" style="display: none"></span> -->
+                   <select class="form-control" name="name" id="exam_name" onchange="getexamcode()">
+
+                    <option <% if(examdata.exam_name=='FORMATIVE-I'){ %>  selected <% } %> value="FORMATIVE-I" data-value="FA1">FORMATIVE-I</option>
+                    <option <% if(examdata.exam_name=='FORMATIVE-II'){ %>  selected <% } %> value="FORMATIVE-II" data-value="FA2">FORMATIVE-II</option>
+                    <option <% if(examdata.exam_name=='FORMATIVE-III'){ %>  selected <% } %> value="FORMATIVE-III" data-value="FA3">FORMATIVE-III</option>
+                    <option <% if(examdata.exam_name=='FORMATIVE-IV'){ %>  selected <% } %> value="FORMATIVE-IV" data-value="FA4">FORMATIVE-IV</option>
+                    <option <% if(examdata.exam_name=='SUMMATIVE-I'){ %>  selected <% } %> value="SUMMATIVE-I" data-value="SA1">SUMMATIVE-I</option>
+                    <option <% if(examdata.exam_name=='SUMMATIVE-II'){ %>  selected <% } %> value="SUMMATIVE-II" data-value="SA2">SUMMATIVE-II</option>
+                    <option <% if(examdata.exam_name=='ANNUAL'){ %>  selected <% } %> value="ANNUAL" data-value="AN">ANNUAL</option>
+                    <option <% if(examdata.exam_name=''){ %>  selected <% } %> value="Others" data-value="OT" id="other">OTHERS</option>   
+                   </select>
+                   
+                   <span for="name"  class="error below" style="display: none"></span>
+                   <input type="hidden" id="exam_code" name="exam_code" value="">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-group row othername" style="display:none" >
+        		<label class="col-sm-2 col-form-label">Other Exam</label>
+                <div class="col-sm-4">
+                   <input type="text" name="othername" value="" id="name" class="form-control">
+                </div>
+  
+            </div>
+                 
+            <div class="col-sm-12" align="center">
+                  <button type="submit" class="btn btn-success mr-2">Submit</button>
+                  <button class="btn btn-light">Cancel</button>   
+            </div>         
+       </form>
+       <% if(exam_list!=''){ %>
+       	<div class="table-responsive">
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Class Name
+							</th>
+							<th>
+								Exam Name
+							</th>
+							<th>
+								Action
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					<%  var i=1; exam_list.forEach(function(exam_list){ %>
+						<tr id="tr_<%= i %>">
+							<td >
+
+								<%= i %>
+							</td>
+							<td>
+								<%= exam_list.class_name %>
+							</td>
+							
+							<td>
+								<%= exam_list.exam_name %>
+							</td>
+							<td>
+							 <a href="/admin/exam/?exam_id=<%= exam_list.exam_id %>">
+
+							           <button type="button" class="btn btn-dark btn-fw">
+
+                         	 	<i class="mdi mdi-cloud-download"></i>Edit
+                         	 	</button>
+                         	 </a>
+                         	 
+                         	 <a href="#"  onclick="delete_record('<%= exam_list.exam_id %>','<%= i %>','tbl_exam_master','exam_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                         	 </td>
+
+							
+						</tr>
+					<% i++; })%>
+					</tbody>
+				</table>
+		</div>
+
+       <% } %>
+       
+       </div>           
+       </div>
+    </div>
+  </div>
+</div>
+
+ 

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>School Management System</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.addons.css">
+       
+ <!--  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <link rel="stylesheet" type="text/css" href="../../css/sweetalert.min.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+
+
+  
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+        <a class="navbar-brand brand-logo" href="#">
+          
+
+          <img src="../../../images/45c666d4635d2a4d36d810cf.csv" alt="logo"  style="height: 67px;" />
+          
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="index.html">
+          <img src="../../images/logo-mini.svg" alt="logo" />
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        
+        <ul class="navbar-nav navbar-nav-right">
+          
+         
+          <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                
+              <span class="profile-text">Hello, Admin !</span>
+              
+
+              <img class="img-xs rounded-circle" src="../.../../images/faces/dummy.png" alt="Profile image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+             
+             <!--  <a class="dropdown-item mt-2">
+                Manage Accounts
+              </a>
+              <a class="dropdown-item">
+                Change Password
+              </a>
+              <a class="dropdown-item">
+                Check Inbox
+              </a> -->
+              <a class="dropdown-item">
+               <a href="/logout"> Sign Out</a>
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+<div class="container-fluid page-body-wrapper">
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          
+          <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+                  
+                  <img src="../../../images/faces/dummy.png" alt="profile image">
+
+                </div>
+                <div class="text-wrapper">
+               
+                  <p class="profile-name">ADMIN</p>
+                  <div>
+                    <small class="designation text-muted">admin</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                  
+                </div>
+              </div>
+              
+            </div>
+          </li>
+         
+          <li class="nav-item">
+
+            <a class="nav-link" href="/admin/dashboard">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#shift" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-account"></i>
+              <span class="menu-title">Registration</span>
+              <i class="menu-arrow"></i>
+            </a>
+
+            <div class="collapse" id="shift">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/Registration"> Add </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/Shiftsection">  Shift section </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/promotion">  Promotion </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/bulkimport"> Bulk Import</a>
+                </li>
+
+              </ul>
+            </div>
+          </li>
+
+            
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/bonafide">
+              <i class="menu-icon mdi mdi-certificate"></i>
+              <span class="menu-title">Bonafied</span>
+            </a>
+          </li>  
+
+          <li class="nav-item">
+
+            <a class="nav-link" href="/admin/transport">
+              <i class="menu-icon mdi mdi-airplane"></i>
+              <span class="menu-title">Transport</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/dormitory">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dormitory</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#class" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-clipboard-flow"></i>
+              <span class="menu-title">Class & Sections</span>
+              <i class="menu-arrow"></i>
+            </a>
+
+            <div class="collapse" id="class">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/class">  Class </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="/admin/classList"> View Class </a>
+                </li> -->
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/section">  Section </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/academic_syllabus">  Academic Syllabus </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="/admin/sectionList"> View Section </a>
+                </li>  -->               
+              </ul>
+            </div>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/Subject">
+              <i class="menu-icon mdi mdi-library-books"></i>
+              <span class="menu-title">Subject</span>
+            </a>
+          </li>  
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/AssignTeacher">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">AssignTeacher</span>
+            </a>
+          </li>  
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/HomeWork">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">HomeWork</span>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/classRoutine">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">Class Routine</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/attendence">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">Attendence</span>
+            </a>
+          </li> 
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/study_material">
+              <i class="menu-icon mdi mdi-plus-network"></i>
+              <span class="menu-title">Study Material</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#exam" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-clipboard-flow"></i>
+              <span class="menu-title">Exam</span>
+              <i class="menu-arrow"></i>
+            </a>
+
+            <div class="collapse" id="exam">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/exam">  Exam  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/exam_schedule">  Exam  Schedule</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/exam_grades">  Exam  Grades</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/manage_marks">  Manage Marks</a>
+                </li>
+
+              </ul>
+            </div>
+          </li>   
+
+               
+          
+           
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/sendmessage">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">Message</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/user_rights">
+              <i class="menu-icon mdi  mdi-account"></i>
+              <span class="menu-title">User Rights</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/setting">
+              <i class="menu-icon mdi  mdi-settings"></i>
+              <span class="menu-title">Setting</span>
+            </a>
+          </li>
+
+
+
+        </ul>
+</nav>
+<div class="main-panel">
+
+
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Import Student records</u></b></h1>
+          <p class="card-description">
+          
+          </p>
+          
+          <form class="forms-sample" method="post" id="form_bulimport" action="/bulkimport" enctype="multipart/form-data">
+
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Download file Format</label>
+              <div class="col-sm-4">
+                <a href="../../bulkimport/Default_csv/bulkimport.csv" class="btn btn-success mr-2" download> Download File  </a>
+              </div>
+            </div>
+          
+            
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Import Student record</label>
+              <div class="col-sm-4">
+                <input type="file" name="bulkfile" id="bulkfile" class="form-control">
+                <span for="bulkfile"  class="error below" style="display: none"></span> 
+              </div>
+            </div>
+            
+             
+
+            <br><br><br>
+              <div class="col-sm-12" align="center">
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+              </div>
+           
+            <br><br>
+          </form>
+           
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018
+              <a href="http://webdesky.com/" target="_blank">WebdeskyInfotech</a>. All rights reserved.</span>
+           
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="../../vendors/js/vendor.bundle.base.js"></script>
+  <script src="../../vendors/js/vendor.bundle.addons.js"></script>
+
+  
+  <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script><!-- for jquery validation -->
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script><!-- for jquery validation -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../../ckeditor/ckeditor.js"></script>
+
+   <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+   <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js
+"></script>
+<!--    <script type="text/javascript" src="../../js/sweetalert.min.js"></script>
+ -->  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="../../js/off-canvas.js"></script>
+  <script src="../../js/misc.js"></script>
+  <script src="../../js/ajax.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+  
+  <script src="../../js/validation.js"></script>
+
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="../../js/dashboard.js"></script>
+  <!-- End custom js for this page-->
+
+  <script src="../../js/sweetalert.min.js"></script>
+
+
+  
+
+
+</body>
+
+</html>
+
+
+

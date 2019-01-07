@@ -1,0 +1,68 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Website Content</u></b></h1>
+          <p class="card-description">
+          <a href="#"><button class="btn btn-inverse-dark btn-fw">Edit Notice</button></a>
+          </p>
+          <% if(noticeBoard.notice_id!=''){ %>
+          <form action="/frontend_setting?id=<%= noticeBoard.notice_id %>" method="post" enctype="multipart/form-data">
+
+          <% }else { %>
+
+           <form action="/frontend_setting" method="post" enctype="multipart/form-data">
+          <% } %>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
+                        <div class="col-sm-4">
+                        <input type="hidden" name="type" value="notice_board">
+                         <input type="hidden" name="notice_id" value="<%= noticeBoard.notice_id %>">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title" value="<%= noticeBoard.notice_title %>">
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
+                        <div class="col-sm-4">
+                           <input type="text" name="date" id="datepicker" class="form-control attendence_date" placeholder="notice date" value="<%= noticeBoard.notice_date %>" >
+                        </div>
+                      </div>  
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Show On Website</label>
+                        <div class="col-sm-4">
+                         <select class="form-control" name="show_website">
+                           <option value="1" <% if(noticeBoard.show_on_website==1) { %> selected="selected" <% } %>>Yes</option>
+                           <option value="0" <% if(noticeBoard.show_on_website==0) { %> selected="selected" <% } %>>No</option>
+                         </select>
+                        </div>
+                        
+                        
+                      </div> 
+                      <div class="clearfix"></div>
+                      <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Notice</label>
+                        <div class="col-sm-4">
+                         <textarea class="form-control" name="notice" placeholder="Enter Notice" rows="6"><%= noticeBoard.notice %></textarea>
+                        </div>
+                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Image</label>
+                        <div class="col-sm-4">
+                           <input type="file" accept="images/*" name="file" id="file" class="form-control">
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                      <%  if(noticeBoard.image!=''){ %>
+                      <div class="form-group row">
+                          <img src="../../../images/<%= noticeBoard.image %>">
+                      </div>  
+                      <% } %>
+                      <br>
+                   <div class="col-sm-2 col-sm-offset-5">
+                   <input type="submit" name="submit" value="Submit" class="form-control btn btn-primary">
+                   </div>
+                  </form>
+         
+        </div>
+     </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,810 @@
+<div class="content-wrapper">
+	<div class="row">
+		<div class="col-12 grid-margin">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Registration</h2>
+					<!-- <form class="form-sample" id="form_register" method="Post" action="/admin/registration"> -->
+					<div class="col-md-12">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Register</label>
+							<div class="col-sm-2">
+								<div class="form-radio abc" id="stud">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="register" id="register" value="student" checked > Student
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-radio" id="teach">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="register" value="teacher"> Teacher
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-radio" id="acc">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="register" value="accountant"> Accountant
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-radio" id="lib">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="register" value="librarian"> Librarian
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="student">
+					 <form class="form-sample" id="student_register" method="Post" action="/admin/registration">	
+					 	<input type="hidden" class="form-check-input userregister" name="userregister" value=""> 
+					 	<input type="hidden" value="<%=studentdata.registration_id%>" name="registration_id">
+					 	<input type="hidden" value="<%= studentdata.parent_id%>" name="parent_id">
+					 	
+							<div class="col-md-12" align="right">
+								<a href="/admin/studentList"><span class="btn btn-primary">Student List</span></a>
+							</div>
+							<p class="card-description">
+								<h3><b><u>Student info</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Student Name</label>
+										<div class="col-sm-9">
+ 
+											<input type="text" for="student_name" class="form-control" id="student_name" placeholder="Enter Student Name" name="student_name" value="<%= studentdata.name %>"     />
+											<span for="student_name" class="error below" style="display: none"></span>
+ 
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Gender</label>
+										<div class="col-sm-9">
+
+											<select class="form-control" name="student_gender" for="student_gender" id="student_gender" aria-invalid="true" >
+											<% if(studentdata.sex=='female') %>
+												<option <% if(studentdata.sex=='male') { %> selected <% } %> value="male">Male</option>
+												<option <% if(studentdata.sex=='female') { %> selected <% } %> value="female">Female</option>
+											</select>
+											<span for="student_gender" class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+								
+								
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Caste </label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter  Caste" id="caste" name="caste" value="<%= studentdata.caste %>" />
+											<span for="caste" class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Sub Caste </label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Sub Caste" id="sub_caste" name="sub_caste"  value="<%= studentdata.subcaste %>"  />
+											<span for="sub_caste" class="error below" style="display: none"></span>
+										</div>
+										<!--  <label class="col-sm-3 col-form-label">Date of Birth</label>
+										<div class="col-sm-9">
+											<input class="form-control" placeholder="dd/mm/yyyy"  value="<%= studentdata.dob %>"  />
+										</div> -->
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Select Class</label>
+										<div class="col-sm-9">
+											<select class="form-control" name="class_id" id="class_id"  >
+												
+												<option value="">Select Class</option>
+												<%  class_list.forEach(function(class_list){ %>
+												<option <% if(studentdata.class_id== class_list.class_id){ %> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+												<%   }) %>
+											</select>
+											<span for="class_id" class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Select Section</label>
+										<div class="col-sm-9">
+											<select class="form-control" name="section_id" id="section_id"  >
+                                               <% if(studentdata.section_name){ %>
+                                                <option value="<%= studentdata.section_id %>"><%= studentdata.section_name %></option> 
+                                               <% }else{ %>
+												<option value="">Select Section</option>
+											   <% }%>	
+												
+												
+											</select>
+											<span for="section_id" class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Adhar Number</label>
+										<div class="col-sm-9">
+											<input type="text" name="adhar_number" id="adhar_number" class="form-control" placeholder="Enter Adhar Number" value="<%= studentdata.aadhar_number %>" >
+											<span for="section_id" class="error below" style="display: none"></span>
+										</div>
+										
+								 
+								</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Date Of Birth</label>
+										<div class="col-sm-9">
+
+											<input type="text" name="student_dob" id="datepicker" class="form-control attendence_date"  value="<%= studentdata.dob %>" >
+										</div>
+										<span for="datepicker" class="error below" style="display: none"></span>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Transport Route</label>
+										<div class="col-sm-9">
+											<select class="form-control" id="transport_id" name="transport_id"  >
+												
+												<option value="">Select Transport Route</option>
+												<%if(transport_list){ %>
+												<%  transport_list.forEach(function(transport_list){ %>
+												<option <% if(studentdata.transport_id== transport_list.transport_id) { %> selected <% } %> value="<%= transport_list.transport_id   %>"><%= transport_list.route_name; %></option>
+												<%   }) %>
+												<%}%>
+											</select>
+											<span for="transport_id" class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Dormitory </label>
+										<div class="col-sm-9">
+											<select class="form-control" id="dormitory_id" name="dormitory_id"   >
+												
+												<option value="">Select Dormitory</option>
+												<% if(dormitory_list) { %>
+												<%  dormitory_list.forEach(function(dormitory_list){ %>
+												<option <% if(studentdata.dormitory_id == dormitory_list.dormitory_id) { %> selected <% } %> value="<%= dormitory_list.dormitory_id   %>"><%= dormitory_list.name; %></option>
+												<%   }) %>
+												<% } %>
+											</select>
+											<span for="dormitory_id" class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Address</label>
+										<div class="col-sm-9">
+											<input type="text" name="address" id="address" class="form-control" placeholder="Enter Address" value="<%= studentdata.address %>"  >
+											<span for="address"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Phone Number </label>
+										<div class="col-sm-9"> 
+											<input  name="student_phone" id="student_phone" class="form-control" placeholder="Enter Student Phone Number" value="<%= studentdata.phone %>"  >
+											<span for="student_phone"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Email</label>
+										<div class="col-sm-9">
+											<input type="email" name="student_email" id="student_email" class="form-control" placeholder="Enter Student Email" value="<%= studentdata.email %>"   > 
+											<span for="email"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Password </label>
+										<div class="col-sm-9">
+											<input type="password" name="student_password" id="student_password" class="form-control" placeholder="Enter Student Passoword"  >
+											<span for="student_password"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+								
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Admission Number </label>
+										<div class="col-sm-9">
+											<input type="text" name="admission_number" id="admission_number" class="form-control" placeholder="Enter Student Code" value="<%= studentdata.admission_number %>"   >
+											<span for="admission_number"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Blood Group </label>
+										<div class="col-sm-9">
+											<input type="text" name="blood_group" id="blood_group" class="form-control" placeholder="Enter Blood Group" value="<%= studentdata.blood_group %>">
+											<span for="blood_group"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+
+								
+							</div>
+							<!-- <div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Adhar Number</label>
+										<div class="col-sm-9">
+											<input type="text" name="adhar_number" id="adhar_number" class="form-control" placeholder="Enter Adhar Number" >
+										</div>
+										
+									</div>
+								</div>
+							</div> -->
+
+							
+							<p class="card-description">
+								<h3><b><u>Parent info</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Parent Name</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control"  name="parent_name" id="parent_name" placeholder="Enter Parent Name" value="<%= studentdata.parent_name %>"  />
+											<span for="parent_name"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Mother Name</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control"  name="mother_name" id="mother_name" placeholder="Enter Mother Name" value="<%= studentdata.mother_name %>"   />
+											<span for="mother_name"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Address</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" id="parent_address" name="parent_address" placeholder="Enter Parent Address"  value="<%= studentdata.parent_address %>"  />
+											<span for="parent_address"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Phone Number</label>
+										<div class="col-sm-9">
+											<input type="number" class="form-control"  name="parent_number" id="parent_number" placeholder="Enter Parent Phone Number"  value="<%= studentdata.parent_number %>"  />
+										<span for="parent_number"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Email</label>
+										<div class="col-sm-9">
+											<input type="email" class="form-control"  name="parent_email" id="parent_email" placeholder="Enter Parent Email" value="<%= studentdata.parent_email %>" />
+											<span for="parent_email"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Password</label>
+										<div class="col-sm-9">
+											<input type="password" name="parent_password" id="parent_password" class="form-control" placeholder="Enter Parent Password" >
+											<span for="parent_password"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Profession</label>
+										<div class="col-sm-9">
+
+											<input type="text" class="form-control" id="parent_profession" name="parent_profession" placeholder="Enter Profession Like doctor,Software Developer" value="<%= studentdata.parent_profession %>"  />
+											<span for="parent_profession"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								
+							</div>
+							<div class="clearfix"></div>
+							<br>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<input type="submit" id="registerbutton"  name="submit" value="submit" class="form-control btn btn-primary" >
+
+									</div>
+								</div>
+								
+							</div>
+						</form>
+						</div>
+					
+						
+						<div id="teacher" style="display: none">
+						<form class="form-sample" id="teacher_register" method="Post" action="/admin/registration">	
+						 <input type="hidden" class="form-check-input userregister" name="userregister" value=""> 
+							<div class="col-md-12" align="right">
+								<a href="/admin/TeacherList"><span class="btn btn-primary">Teacher List</span></a>
+							</div>
+							<p class="card-description">
+								<h3><b><u>Teacher info</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Teacher Name</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Teacher Name" name="teacher_name" id="teacher_name"  />
+											<span for="teacher_name"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Gender</label>
+										<div class="col-sm-9">
+
+											<select class="form-control" name="teacher_gender" id="teacher_gender" >
+												<option value="male">Male</option>
+												<option value="female">Female</option>
+											</select>
+											<span for="teacher_gender"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+								
+								
+							</div>
+							
+							
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Adhar Number</label>
+										<div class="col-sm-9">
+											<input type="text" name="teacher_adhar_no" id="teacher_adhar_no" class="form-control" placeholder="Enter Adhar Number"  >
+											<span for="teacher_adhar_no"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Date Of Birth</label>
+										<div class="col-sm-9">
+
+											<input type="text" name="teacher_dob" id="teacher_dob" class="form-control"  >
+											<span for="teacher_dob"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Show On Website</label>
+										<div class="col-sm-9">
+											<select class="form-control" name="show_website" id="show_website"  >
+												<option value="yes">Yes</option>
+												<option value="no">No</option>
+											</select>
+											<span for="show_website"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Designation</label>
+										<div class="col-sm-9">
+											<input type="text" name="teacher_designation" id="teacher_designation" class="form-control" placeholder="Enter Teacher Designation"  >
+										   <span for="teacher_designation"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Address</label>
+										<div class="col-sm-9">
+											<input type="text" name="teacher_address" id="teacher_address" class="form-control" placeholder="Enter Teacher Address"  >
+											<span for="teacher_address"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Phone Number </label>
+										<div class="col-sm-9">
+											<input type="number" name="teacher_phone" id="teacher_phone" class="form-control" placeholder="Enter Teacher Phone Number"  >
+										    <span for="teacher_phone"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Email</label>
+										<div class="col-sm-9">
+											<input type="email" name="teacher_email" id="teacher_email" class="form-control" placeholder="Enter Teacher Email"  >
+											<span for="teacher_email"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Password </label>
+										<div class="col-sm-9">
+											<input type="password" name="teacher_password" id="teacher_password" class="form-control" placeholder="Enter Teacher Passoword"  >
+											<span for="teacher_password"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<p class="card-description">
+								<h3><b><u>Education Qualification</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Academics</label>
+										<div class="col-sm-9">
+											<input type="text" name="academics" id="academics" class="form-control" placeholder="Enter Teacher academics"  >
+											<span for="academics"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Profession</label>
+										<div class="col-sm-9">
+
+											<input type="text" name="teacher_profession" id="teacher_profession" class="form-control" placeholder="Enter Teacher profession"  >
+											<span for="teacher_profession"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Staff Category</label>
+										<div class="col-sm-9">
+											<select class="form-control" name="staff_category" id="staff_category"  >
+												<option value="T">Teaching</option>
+												<option value="N">Non Teaching</option>
+											</select>
+											<span for="staff_category"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+						
+							</div>
+							<div class="clearfix"></div>
+							<br>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<input type="submit" id="registerbutton"  name="submit" value="submit" class="form-control btn btn-primary" >
+
+									</div>
+								</div>
+								
+							</div>
+						</form>	
+						</div>
+                    
+                    
+                    
+						<div id="accountant" style="display: none">
+						<form class="form-sample" id="accountant_register" method="Post" action="/admin/registration"> 	
+							<input type="hidden" class="form-check-input userregister" name="userregister" value=""> 
+							<div class="col-md-12" align="right">
+								<a href="/admin/accountantList"><span class="btn btn-primary">Accountant List</span></a>
+							</div>
+							<p class="card-description">
+								<h3><b><u>Accountant info</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Account Name</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Accountant Name" name="accountant_name"  id="accountant_name"   />
+											<span for="accountant_name"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Gender</label>
+										<div class="col-sm-9">
+
+											<select class="form-control" name="accountant_gender" id="accountant_gender"  >
+												<option>Male</option>
+												<option>Female</option>
+											</select>
+											<span for="accountant_gender"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>               
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Email</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Accountant Email" name="accountant_email" id="accountant_email"  />
+											<span for="accountant_email"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Password</label>
+										<div class="col-sm-9">
+										 <input type="password" name="accountant_password" id="accountant_password" class="form-control"  >
+										 <span for="accountant_password"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>               
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Address</label>
+										<div class="col-sm-9">
+											<input type="text" name="accountant_address" id="accountant_address" class="form-control" placeholder="Enter Address"  >
+											<span for="accountant_address"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Phone Number </label>
+										<div class="col-sm-9">
+											<input type="number" name="accountant_phone" id="accountant_phone" class="form-control" placeholder="Enter accountant Phone Number"  >
+											<span for="accountant_phone"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+
+							<p class="card-description">
+								<h3><b><u>Education Qualification</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Academics</label>
+										<div class="col-sm-9">
+											<input type="text" name="accountant_academics" id="accountant_academics" class="form-control" placeholder="Enter Teacher academics"  >
+											<span for="accountant_academics"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Profession</label>
+										<div class="col-sm-9">
+
+											<input type="text" name="accountant_profession" id="accountant_profession" class="form-control" placeholder="Enter Teacher profession"  >
+											<span for="accountant_profession"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<br>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<input type="submit" id="registerbutton"  name="submit" value="submit" class="form-control btn btn-primary" >
+
+									</div>
+								</div>
+								
+							</div>
+						</form>	
+						</div>
+					
+                    
+						<div id="librarian" style="display: none">
+                         <form class="form-sample" id="librarian_register" method="Post" action="/admin/registration"> 
+                         	
+                         	<input type="hidden" class="form-check-input userregister" name="userregister" value=""> 
+
+							<div class="col-md-12" align="right">
+								<a href="/admin/librarianList"><span class="btn btn-primary">Librarian List</span></a>
+							</div>
+							<p class="card-description">
+								<h3><b><u>Librarian info</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Librarian Name</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Librarian Name" name="librarian_name"  id="librarian_name"  />
+											<span for="librarian_name"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Gender</label>
+										<div class="col-sm-9">
+
+											<select class="form-control" name="librarian_gender" id="librarian_gender"  >
+												<option>Male</option>
+												<option>Female</option>
+											</select>
+											<span for="librarian_gender"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>               
+							</div>
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Email</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" placeholder="Enter Librarian Email" name="librarian_email" id="librarian_email"  />
+											<span for="librarian_email"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Password</label>
+										<div class="col-sm-9">
+										 <input type="password" name="librarian_password" id="librarian_password" class="form-control"  >
+										 <span for="librarian_password"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>               
+							</div> 
+
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Address</label>
+										<div class="col-sm-9">
+											<input type="text" name="librarian_address" id="librarian_address" class="form-control" placeholder="Enter Address"  >
+											<span for="librarian_address"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Phone Number </label>
+										<div class="col-sm-9">
+											<input type="number" name="librarian_phone" id="librarian_phone" class="form-control" placeholder="Enter Librarian Phone Number"  >
+											<span for="librarian_phone"  class="error below" style="display: none"></span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+
+							<p class="card-description">
+								<h3><b><u>Education Qualification</u></b></h3>
+							</p>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Academics</label>
+										<div class="col-sm-9">
+											<input type="text" name="librarian_academics" id="librarian_academics" class="form-control" placeholder="Enter Librarian academics"  >
+											<span for="librarian_academics"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Profession</label>
+										<div class="col-sm-9">
+
+										    <input type="text" name="librarian_profession" id="librarian_profession" class="form-control" placeholder="Enter Librarian profession"  >
+										    <span for="librarian_profession"  class="error below" style="display: none"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<br>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<input type="submit" id="registerbutton"  name="submit" value="submit" class="form-control btn btn-primary" >
+									</div>
+								</div>
+								
+							</div>
+						</form>
+						</div>
+						
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ 
+<script>
+
+ 
+</script>

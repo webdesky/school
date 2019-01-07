@@ -1,0 +1,58 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Section List</u></b></h2>
+			<p class="card-description">
+				<a href="/admin/section"><button class="btn btn-inverse-dark btn-fw">Add Section</button></a>
+				
+			</p>
+			<div class="table-responsive">
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Class Name
+							</th>
+							<th>
+								Section Name
+							</th>
+							<th>
+								Action
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+					<%  var i=1; section_list.forEach(function(section_list){ %>
+						<tr id="tr_<%= i %>">
+							<td>
+								<%= i %>
+							</td>
+							<td>
+								<%= section_list.class_name %>
+							</td>
+							<td>
+								<%= section_list.section_name %>
+							</td>
+							<td>
+							 <a href="/admin/section/?id=<%= section_list.section_id%>">
+								<button type="button" class="btn btn-dark btn-fw">
+                         	 	<i class="mdi mdi-cloud-download"></i>Edit
+                         	 	</button>
+                         	 </a>
+                         	 <a href="#"  onclick="delete_record('<%= section_list.section_id %>','<%= i %>','tbl_section','section_id')" class="btn btn-sm btn-danger">Delete</a>
+
+                         	 </td>
+                         	  
+							
+						</tr>
+					<% i++; })%>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

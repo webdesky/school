@@ -1,0 +1,216 @@
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title"><b><u>Student Information</u></b></h2>
+            <p class="card-description">
+                <a href="#"><button class="btn btn-inverse-dark btn-fw">Student Information</button></a>
+
+            </p>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Class Name
+                            </th>
+                            <th>Section Name</th>
+                            <th>
+                                Dob
+                            </th>
+                            <th>
+                                Gender
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>Phone</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  var i=1; student_information.forEach(function(data){ %>
+                            <tr id="tr_<%= i %>">
+                                <td>
+
+                                    <%= i %>
+                                </td>
+                                <td>
+                                    <%= data.name %>
+                                </td>
+                                <td>
+                                    <%= data.class_name %>
+                                </td>
+                                <td>
+                                    <%= data.section_name %>
+                                </td>
+                                <td>
+                                    <%= data.dob %>
+                                </td>
+
+                                <td>
+                                    <%= data.sex %>
+                                </td>
+                                <td>
+                                    <%= data.email %>
+                                </td>
+                                <td>
+                                    <%= data.phone %>
+                                </td>
+                                <td>
+
+                                    <a href="#" onclick="get_student_information('<%= data.registration_id  %>')" class="btn btn-sm btn-primary">View</a>
+                                </td>
+
+
+
+                            </tr>
+                            <% i++; })%>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal my-modal-1 fade comman-popup std-info" id="student_information" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"><b>Student Detail</b></h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                        </div>
+                        <div class="modal-body">
+                            <!-- <p>Some text in the modal.</p> -->
+                            <div class="profile-env">
+
+                                <header class="row">
+
+                                    <!-- <div class="col-sm-12">
+
+                                        <a href="#" class="profile-picture">
+                            				<img src="" 
+                                            	class="img-responsive img-circle" />
+                            			</a>
+
+                                    </div> -->
+
+                                    <div class="col-sm-12">
+
+                                        <ul class="profile-info-sections">
+                                            <li style="padding:0px; margin:0px;list-style: none;text-align: center;">
+                                                <div class="profile-name">
+                                                    <h3 id="student_name"></h3>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+
+
+                                </header>
+                                <style type="text/css">
+                                    .std-info .profile-info-tabs .center-table{
+                                        width: 600px;
+                                        margin: auto;
+                                        display: block;
+                                    }
+                                    .std-info .modal-header{
+                                        background-color: #41d4d5;
+                                    }
+                                    .std-info .modal-header h4{
+                                        width: 100%;
+                                        text-align: center;
+                                        color: #fff;
+                                    }
+                                    .std-info #student_name{
+                                        margin-bottom: -25px;
+                                        margin-top: 25px;
+                                        color: #41d4d5;
+                                    }
+                                    .std-info h3{
+                                        text-transform: uppercase;
+                                    }
+                                    .std-info .btn{
+                                        background-color: #41d4d5;
+                                    }
+                                </style>
+                                <section class="profile-info-tabs">
+
+                                    <div class="row">
+
+                                        <div class="center-table">
+                                            <br>
+                                            <table class="table table-bordered">
+
+
+                                                <tr>
+                                                    <td>Class</td>
+                                                    <td><b id="class_name"></b></td>
+                                                </tr>
+
+
+
+                                                <tr>
+                                                    <td>Section</td>
+                                                    <td><b id="section_name"></b></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>Date Of Birth</td>
+                                                    <td><b id="dob"></b></td>
+                                                </tr>
+
+
+
+                                                <tr>
+                                                    <td>Gender</td>
+                                                    <td><b id="gender"></b></td>
+                                                </tr>
+
+
+
+
+                                                <tr>
+                                                    <td>Phone</td>
+                                                    <td><b id="phone"></b></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>Email</td>
+                                                    <td><b id="email"></b></td>
+                                                </tr>
+
+
+
+                                                <tr>
+                                                    <td>Address</td>
+                                                    <td><b id="address"></b>
+                                                    </td>
+                                                </tr>
+
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

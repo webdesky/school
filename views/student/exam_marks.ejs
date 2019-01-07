@@ -1,0 +1,49 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>Exam Marks</u></b></h2>
+			<p class="card-description">
+				<a href="#"><button class="btn btn-inverse-dark btn-fw">Exam Marks</button></a>
+				
+			</p>
+			
+			<div class="row">
+				<div class="col-sm-2">
+					<select class="form-control" id="student_exam_id" onchange="getStudentExamCode()">
+						<option value="">Select Exam</option>
+							<% if(exam_list!=''){ %>
+								<%  var i=1; exam_list.forEach(function(data){ %>
+								<option  data-value="<%= data.exam_code %>" value="<%= data.exam_id %>"><%= data.exam_name; %></option>
+								<% }); %>
+							<% } %>
+					</select>
+
+					<input type="hidden" id="student_exam_code">
+				</div>
+				<div class="col-sm-2">
+				<span class="btn btn-primary" onclick="get_student_exam_marks('<%= exam_list[0].class_id %>','<%= exam_list[0].section_id %>')">Search</span>
+				</div>
+			</div>
+			<br><br>
+			<div id="print_tabular">
+			<div class="table-responsive" id="tabulationsheet" style="display: none;">
+              <h1> Tabulation Sheet </h1>
+               <p class="card-description">
+               	<a class="hiderow" href="javascript:void(0)"  onclick="PrintTabularSheet()">Print</a>
+             
+                </p>
+
+              <table class="table table-bordered tabulation_table" id="myTable">
+                <thead >
+                  <!--  <tr id="tabulation_thead"><th>#</th><th>Student Name</th></tr> -->
+                </thead>
+                <tbody id="tabulation_tbody">
+                 
+                </tbody>
+              </table>
+          </div>
+          </div>
+
+		</div>
+	</div>
+</div>

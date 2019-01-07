@@ -1,0 +1,113 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Import Student records</u></b></h1>
+          <p class="card-description">
+          
+          </p>
+          
+          <form class="forms-sample" method="post" id="form_bulimport" action="/bulkimport" enctype="multipart/form-data">
+
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Download file Format</label>
+              <div class="col-sm-4">
+                <a href="../../bulkimport/Default_csv/bulkimport.csv" class="btn btn-success mr-2" download> Download File  </a>
+              </div>
+            </div>
+          
+            
+            <div class="form-group row">
+              <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Import Student record</label>
+              <div class="col-sm-4">
+                <input type="file" name="bulkfile" id="bulkfile" class="form-control">
+                <span for="bulkfile"  class="error below" style="display: none"></span> 
+              </div>
+            </div>
+            
+             
+
+            <br><br><br>
+              <div class="col-sm-12" align="center">
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+              </div>
+           
+            <br><br>
+          </form>
+           
+          <% if(rejected_list!=''){ %>
+          <h1> Rejection List </h1>
+          <div class="table-responsive">
+              <table class="table table-bordered" id="myTable">
+                <thead>
+                  <tr>
+                    <th>
+                      #
+                    </th>
+                    <th>
+                      Student Name
+                    </th>
+                    <th>
+                      Parent Name
+                    </th>
+                    <th>
+                      Aadhar Number
+                    </th>
+                    <th>
+                      Class Name
+                    </th>
+                    <th>
+                      Section Name
+                    </th>
+                    <th>
+                      Student Email
+                    </th>
+                     <th>
+                      Rejection Reason 
+                    </th>
+                     
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                <%  var i=1; rejected_list.forEach(function(rejected_list){ %>
+                  <tr id="tr_<%= i %>">
+                    <td >
+
+                      <%= i %>
+                    </td>
+                    <td>
+                      <%= rejected_list.student_name %>
+                    </td>
+                    <td>
+                      <%= rejected_list.parent_name%>
+                    </td>
+                    <td>
+                      <%= rejected_list.aadhar_number%>
+                    </td>
+                    <td>
+                      <%= rejected_list.class_name%>
+                    </td>
+                    <td>
+                      <%= rejected_list.section_name%>
+                    </td>
+                    <td>
+                      <%= rejected_list.student_email%>
+                    </td>
+                     <td>
+                      <%= rejected_list.rejection_reason%>
+                    </td>
+                  </tr>
+                <% i++; })%>
+                </tbody>
+              </table>
+          </div>
+          <% } %>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

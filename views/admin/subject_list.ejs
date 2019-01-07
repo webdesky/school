@@ -1,0 +1,93 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+
+		<div class="card-body1">
+		   
+		      <form class="forms-sample" method="post" action="/addHomeWork" enctype="multipart/form-data">
+		     <div class="form-group row">
+		             <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+		             <div class="col-sm-2">
+		               <select class="form-control" id="classid" name="class_id" onchange="get_subjectlist()">
+		                <option value="">Select Class</option>
+		                <%  class_list.forEach(function(class_list){ %>
+		                <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+		                
+		                <%   }) %>
+		               </select>
+		             </div>
+ 		      </div>
+		 </form>
+
+	</div>
+
+		<div class="card-body subjecttable" style="display: none">
+			<h2 class="card-title"><b><u>Subject List</u></b></h2>
+			<p class="card-description">
+				<a href="/admin/subject"><button class="btn btn-inverse-dark btn-fw">Add Subject</button></a>
+				
+			</p>
+			<div class="table-responsive subjecttable">
+				<table class="table table-bordered table-1 subjectlistTable" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Class Name
+							</th>
+							<th>
+								Subject Name
+							</th>
+							<th>
+								Subject Type
+							</th>
+							
+							<th>
+								Action
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%  var i=1; subject_list.forEach(function(subject_list){ %>
+						<tr id="tr_<%= i %>">
+							<td>
+								<%= i %>
+							</td>
+							<td>
+								<%= subject_list.class_name %>
+							</td>
+							<td>
+								<%= subject_list.name %>
+							</td>
+							<td>
+
+							<%  if(subject_list.subject_type==0){ %>
+								Other  Subject	
+							<% }else{ %>
+							   Main Subject
+							<% } %>
+							</td>
+							
+							
+							<td>
+							 <a href="#">
+								<button type="button" class="btn btn-dark btn-fw">
+                         	 	<i class="mdi mdi-cloud-download"></i>Edit
+                         	 	</button>
+                         	 </a>
+                         	 <a href="#">
+
+                         	 <button type="button" onclick="delete_hospital('1','2')" class="btn btn-danger btn-fw">
+                         		 <i class="mdi mdi-alert-outline"></i>Delete
+                         	 </button>
+                         	 </a>
+							</td>
+						</tr>
+						<% i++; })%>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

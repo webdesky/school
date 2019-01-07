@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>School Management System</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="../../vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="../../vendors/css/vendor.bundle.addons.css">
+       
+ <!--  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+
+ <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+ 
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <link rel="stylesheet" type="text/css" href="../../css/sweetalert.min.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
+
+  <script src="../../ckeditor/ckeditor.js"></script>
+  
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+        <a class="navbar-brand brand-logo" href="#">
+          <% if(session.user_role==1){ %>
+
+          <img src="../../../images/<%= session.logo %>" alt="logo"  style="height: 67px;" />
+          <% }else if(session.user_role==2){ %>
+          <img src="../../../images/parent.png" alt="logo"  style="height: 67px;" />
+          <% }else if(session.user_role==3){ %>
+          <img src="../../../images/student.png" alt="logo"  style="height: 67px;" />
+          <% }else if(session.user_role==4){  %>
+          <img src="../../../images/teacher.png" alt="logo"  style="height: 67px;" />
+          <% } %>
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="index.html">
+          <img src="../../images/logo-mini.svg" alt="logo" />
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        
+        <ul class="navbar-nav navbar-nav-right">
+          
+         
+          <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <% if(session.user_role==1){ %>
+              <span class="profile-text">Hello, Admin !</span>
+              <% }else if(session.user_role==2){%>
+               <span class="profile-text">Hello, Parent !</span>
+
+              <% }else if(session.user_role==3){ %>
+               <span class="profile-text">Hello, Student !</span>
+              <%  }else if(session.user_role==4){  %>
+              <span class="profile-text">Hello, Teacher !</span>
+              <% } %>
+
+              <img class="img-xs rounded-circle" src="../.../../images/faces/dummy.png" alt="Profile image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+             
+             <!--  <a class="dropdown-item mt-2">
+                Manage Accounts
+              </a>
+              <a class="dropdown-item">
+                Change Password
+              </a>
+              <a class="dropdown-item">
+                Check Inbox
+              </a> -->
+              <a class="dropdown-item">
+               <a href="/logout"> Sign Out</a>
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
