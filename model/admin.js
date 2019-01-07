@@ -175,7 +175,7 @@ module.exports.findExam=function(obj, cb){
 	//console.log(obj);
 	con.connect(function(err){
 		var que = "SELECT * FROM "+obj.table+"  LEFT JOIN tbl_class ON tbl_class.class_id="+obj.table+".class_id";// LEFT JOIN tbl_section ON tbl_section.section_id="+obj.table+".section_id";
-		 console.log('ddddddddddddddddddddddd',que);
+		 //console.log('ddddddddddddddddddddddd',que);
 		con.query(que, cb);
 	});
 }
@@ -334,6 +334,14 @@ module.exports.getPresentAttendence=function(table,obj, cb){
 	});
 }
 
+/**
+****  get student attendence Report 
+*/
+
+
+
+
+
 
 module.exports.findPayment=function(table,obj, cb){
 	
@@ -440,7 +448,7 @@ module.exports.get_receipt_detail=function(table,obj ,cb){
 	
 		con.connect(function(err){
 		
-		var que = "SELECT tbl_student_payment_master.*,tbl_registration.name as student_name,tbl_parent.name as parent_name,tbl_fee_type.fee_type,tbl_fees_term.term_name,tbl_class.class_name,tbl_section.section_name,tbl_fees_structure.fees_amount	 FROM tbl_student_payment_master INNER JOIN tbl_registration ON tbl_registration.registration_id = tbl_student_payment_master.student_id                                                                       INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id=tbl_registration.parent_id                                                       INNER JOIN tbl_fees_structure ON tbl_student_payment_master.fees_id=tbl_fees_structure.fees_id              INNER JOIN tbl_fee_type ON tbl_fees_structure.fees_type_id=tbl_fee_type.fee_type_id                         INNER JOIN tbl_fees_term ON tbl_fees_term.term_id=tbl_fees_structure.fees_term_id                           INNER JOIN tbl_enroll ON tbl_enroll.registration_id=tbl_registration.registration_id                         INNER JOIN tbl_class ON tbl_class.class_id = tbl_enroll.class_id                                             INNER JOIN tbl_section ON tbl_section.section_id = tbl_enroll.section_id   WHERE tbl_student_payment_master.student_id='"+obj.student_id+"' AND tbl_student_payment_master.receipt_number='"+obj.receipt_number+"'";
+		var que = "SELECT tbl_student_payment_master.*,tbl_registration.name as student_name,tbl_parent.name as parent_name,tbl_fee_type.fee_type,tbl_fees_term.term_name,tbl_class.class_name,tbl_section.section_name,tbl_fees_structure.fees_amount	 FROM tbl_student_payment_master INNER JOIN tbl_registration ON tbl_registration.registration_id = tbl_student_payment_master.student_id  INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id=tbl_registration.parent_id                                                       INNER JOIN tbl_fees_structure ON tbl_student_payment_master.fees_id=tbl_fees_structure.fees_id              INNER JOIN tbl_fee_type ON tbl_fees_structure.fees_type_id=tbl_fee_type.fee_type_id                         INNER JOIN tbl_fees_term ON tbl_fees_term.term_id=tbl_fees_structure.fees_term_id                           INNER JOIN tbl_enroll ON tbl_enroll.registration_id=tbl_registration.registration_id                         INNER JOIN tbl_class ON tbl_class.class_id = tbl_enroll.class_id                                             INNER JOIN tbl_section ON tbl_section.section_id = tbl_enroll.section_id   WHERE tbl_student_payment_master.student_id='"+obj.student_id+"' AND tbl_student_payment_master.receipt_number='"+obj.receipt_number+"'";
 
 	    //console.log(que);
 		 con.query(que, cb);
@@ -450,7 +458,7 @@ module.exports.get_transport_detail=function(table,obj ,cb){
 	
 		con.connect(function(err){
 		
-		var que = "SELECT tbl_registration.name as student_name,tbl_parent.name as parent_name,tbl_transport_payment_master.date as date,tbl_transport_payment_master.amount as amount,tbl_transport_payment_master.discount as discount,tbl_class.class_name,tbl_section.section_name,tbl_transport_payment_master.receipt_number,tbl_transport_payment_master.type,tbl_transport.route_fare FROM tbl_transport_payment_master                                                                                INNER JOIN tbl_registration ON tbl_transport_payment_master.student_id = tbl_registration.registration_id    INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id = tbl_transport_payment_master.student_id                                                                      INNER JOIN tbl_enroll ON tbl_registration.registration_id  = tbl_enroll.registration_id                     INNER JOIN tbl_class ON tbl_enroll.class_id = tbl_class.class_id      INNER JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id                                         INNER JOIN tbl_section  ON tbl_enroll.section_id = tbl_section.section_id WHERE tbl_transport_payment_master.student_id='"+obj.student_id+"' AND tbl_transport_payment_master.receipt_number='"+obj.receipt_number+"'";
+		var que = "SELECT tbl_registration.name as student_name,tbl_parent.name as parent_name,tbl_transport_payment_master.date as date,tbl_transport_payment_master.amount as amount,tbl_transport_payment_master.discount as discount,tbl_class.class_name,tbl_section.section_name,tbl_transport_payment_master.receipt_number,tbl_transport_payment_master.type,tbl_transport.route_fare FROM tbl_transport_payment_master  INNER JOIN tbl_registration ON tbl_transport_payment_master.student_id = tbl_registration.registration_id    INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id = tbl_transport_payment_master.student_id                                                                      INNER JOIN tbl_enroll ON tbl_registration.registration_id  = tbl_enroll.registration_id                     INNER JOIN tbl_class ON tbl_enroll.class_id = tbl_class.class_id      INNER JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id                                         INNER JOIN tbl_section  ON tbl_enroll.section_id = tbl_section.section_id WHERE tbl_transport_payment_master.student_id='"+obj.student_id+"' AND tbl_transport_payment_master.receipt_number='"+obj.receipt_number+"'";
 
 	   // console.log(que);
 		 con.query(que, cb);
@@ -462,8 +470,16 @@ module.exports.getStudentAttendence=function(table,obj, cb){
 	con.connect(function(err){
 		console.log('obh',obj)
 		//var que = "SELECT *  FROM "+table.tablename+" WHERE "+table.tablename+".class_id="+obj.class_id+" AND "+table.tablename+".section_id="+obj.section_id+" AND "+table.tablename+".attendence_date='"+obj.attendence_date+"' AND "+table.tablename+".registration_id="+obj.student_id+" ";
-        var que = "SELECT *  FROM "+table.tbl_attendance+"                                    LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"' AND "+table.tbl_attendance+".attendence_date='"+obj.attendence_date+"' AND "+table.tbl_attendance+".registration_id='"+obj.student_id+"' AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+        var que = "SELECT *  FROM "+table.tbl_attendance+"   LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"' AND "+table.tbl_attendance+".attendence_date='"+obj.attendence_date+"' AND "+table.tbl_attendance+".registration_id='"+obj.student_id+"' AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
         console.log(que)	
+		con.query(que, cb);
+	});
+}
+module.exports.getAdminStudentAttendence=function(table,obj, cb){
+
+	con.connect(function(err){
+        var que = "SELECT *  FROM "+table.tbl_attendance+"  LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"'  AND MONTH("+table.tbl_attendance+".attendence_date) ="+obj.month+" AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+        //console.log('----------------------',que)	
 		con.query(que, cb);
 	});
 }
@@ -513,7 +529,7 @@ module.exports.getStudent=function(table,obj, cb){
 		// rajendra sir query
         // var que = "SELECT *  FROM "+table.tbl_attendance+" INNER JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id  INNER JOIN "+table.tbl_registration+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id="+obj.class_id+" AND "+table.tbl_attendance+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
 
-         var que = "SELECT tbl_registration.registration_id,tbl_registration.name,tbl_registration.admission_number  FROM "+table.tbl_registration+" LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id  LEFT JOIN "+table.tbl_attendance+" ON "+table.tbl_registration+".registration_id="+table.tbl_attendance+".registration_id WHERE "+table.tbl_enroll+".class_id="+obj.class_id+" AND "+table.tbl_enroll+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+         var que = "SELECT DISTINCT(tbl_registration.registration_id) as registration_id ,tbl_registration.name,tbl_registration.admission_number  FROM "+table.tbl_registration+" LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id  LEFT JOIN "+table.tbl_attendance+" ON "+table.tbl_registration+".registration_id="+table.tbl_attendance+".registration_id WHERE "+table.tbl_enroll+".class_id="+obj.class_id+" AND "+table.tbl_enroll+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
 
 		 console.log(que); 
 		con.query(que, cb);
@@ -847,6 +863,16 @@ module.exports.updateImg=function(where, obj, cb){
 	var que = "UPDATE user SET image='"+obj.img+"' WHERE id = "+where.id;
 	con.connect(function(err){
 		con.query(que, cb);
+	});
+}
+
+module.exports.getenrollstudentlist=function(obj,where, cb){
+	  
+	   con.connect(function(err){
+	 	var que = "SELECT * FROM  "+obj.tbl_registration+" INNER JOIN  "+obj.tbl_enroll+" ON "+obj.tbl_enroll+".registration_id= "+obj.tbl_registration+".registration_id INNER JOIN "+obj.tbl_class +" ON "+obj.tbl_enroll+".class_id="+obj.tbl_class+".class_id INNER JOIN "+obj.tbl_section+" ON "+obj.tbl_section+".class_id="+obj.tbl_class+".class_id    WHERE "+obj.tbl_enroll+".bonafide_status=0  AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' AND "+obj.tbl_registration+".user_role=3 " ; 
+	 	
+       console.log('Student List ',que);
+	 	con.query(que, cb);
 	});
 }
 

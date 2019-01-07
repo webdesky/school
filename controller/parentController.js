@@ -824,11 +824,13 @@ router.get("/attendence",function(req,res){
   		var session_year         = req.session.session_year; 
   		var y 					 = session_year.split("-");
   		var year                 = y[0];
+  		var nextyear                 = y[1];
   		var tableobj = {tablename:'tbl_registration'};
     	parent.getStudentInfomationByParentId(tableobj,{ parent_id : parent_id}, function(err, result){
-    		 var pagedata = {title : "Welcome Admin", pagename : "parent/attendence", message : req.flash('msg'),student_information:result,month:month,year:year};
+
+    		 var pagedata = {title : "Welcome Admin", pagename : "parent/attendence", message : req.flash('msg'),student_information:result,month:month,year:year,nextyear:nextyear};
 	         res.render("admin_layout", pagedata);
-  		console.log (result);
+  		  
     	});
 		
 	}else{
@@ -848,20 +850,24 @@ router.get("/get_parent_student_attendance",function(req,res){
    if(req.session.user_role==2){
 		var class_id 	      =  req.query.class_id
 		var section_id 	      =  req.query.section_id
+		var month             =  req.query.month
 		var session_year      =  req.session.session_year; 
 		var registration_id   =  req.query.registration_id;
-		var student_id        = {};
-		var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
+		var student_id        =  {};
+		var table             =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance' };
 					
-     	parent.getStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year},function(err, result1){
-									console.log('sas',result1)
+     	parent.getStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year,month:month},function(err, result1){
+									//console.log('sas',result1)
 								  	if(result1==undefined || result1==''){
-								  		   student_id['attendence']='';
+								  		   student_id['attendence'] = '';
 								  	}else{
-								  		   student_id['attendence']=result1[0].status;
+								  		   student_id['attendence'] = result1[0].status;
 								  	}
 
-								  console.log('attendence',student_id)
+								  var attendance= result1;
+
+								  console.log('attendence',result1);
+								  res.send({student_attendance : result1})
 								  
 								   
 		});

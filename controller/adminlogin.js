@@ -1758,15 +1758,10 @@ router.get("/logout", function(req, res){
 
 router.get("/studentList", function(req, res){
 	if(req.session.user_role==1){
-		
 		var class_id =req.query.class_id
 	    var table = {tablename:'tbl_registration'};
-	    
-        
-
-	    admin.findAll({table:'tbl_class'},function(err, result){
+        admin.findAll({table:'tbl_class'},function(err, result){
 		    var class_list 	 = result;
-		    //console.log(class_list);	
 			 admin.findWhere(table,{user_role:'3'},function(err, result){
 			 	var student_list = result;
 			 	var pagedata 	 = {title : "Welcome Admin", pagename : "admin/student_list", message : req.flash('msg'),student_list :student_list,class_list:class_list};
@@ -2749,6 +2744,105 @@ router.get("/attendence", function(req, res){
 	}
 });
 
+/* 
+*** Get Student Attendence Report 
+*/
+router.get("/studentattendencereport",function(req,res){
+   	if(req.session.user_role==1){
+  		 
+  		var parent_id = req.session.uid;
+  		var month     = {
+  			'1' : 'January',
+  			'2' : 'February',
+  			'3' : 'March',
+  			'4' : 'April',
+  			'5' : 'May',
+  			'6' : 'June',
+  			'7' : 'July',
+  			'8' : 'August',
+  			'9' : 'September',
+  			'10': 'October',
+  			'11': 'November',
+  			'12': 'December'
+
+  		}
+  		var session_year         = req.session.session_year; 
+  		var y 					 = session_year.split("-");
+  		var year                 = y[0];
+  		var nextyear                 = y[1];
+  		var tableobj = {tablename:'tbl_registration'};
+    	// admin.getStudentInfomationByParentId(tableobj,{ parent_id : parent_id}, function(err, result){
+
+    	// 	 var pagedata = {title : "Welcome Admin", pagename : "admin/studentattendencereport", message : req.flash('msg'),student_information:result,month:month,year:year,nextyear:nextyear};
+	    //      res.render("admin_layout", pagedata);
+  		  
+    	// });
+    	var class_id =req.query.class_id
+	    var table = {tablename:'tbl_registration'};
+        admin.findAll({table:'tbl_class'},function(err, result){
+		    var class_list 	 = result;
+
+		   // var table = {tbl_registration:'tbl_registration',tbl_enroll:'tbl_enroll',tbl_class:'tbl_class',tbl_section:'tbl_section'};
+			// admin.getenrollstudentlist(table,{session_year:session_year},function(err, result){
+			 	//var student_list = result; 
+                 
+			 	var pagedata 	 = {title : "Welcome Admin", pagename : "admin/studentattendencereport", message : req.flash('msg'),student_information :"",class_list:class_list,month:month,year:year,nextyear:nextyear};
+	            res.render("admin_layout", pagedata);
+
+
+			//});
+		});
+		
+	}else{
+	        admin.select(function(err,result){
+	     
+		    res.render('admin/index');
+			  
+		 	});
+	}
+});
+
+router.get("/get_admin_student_attendance",function(req,res){
+
+   if(req.session.user_role==1){
+		var class_id 	      =  req.query.class_id
+		var section_id 	      =  req.query.section_id
+		var month             =  req.query.month
+		var session_year      =  req.session.session_year; 
+		var registration_id   =  req.query.registration_id;
+		var student_id        =  {};
+		var table             =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance' };
+					
+     	admin.getAdminStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year,month:month},function(err, result1){
+									//console.log('sas',result1)
+								  	if(result1==undefined || result1==''){
+								  		   student_id['attendence'] = '';
+								  	}else{
+								  		   student_id['attendence'] = result1[0].status;
+								  	}
+
+								  var attendance= result1;
+
+								  console.log('attendence',result1);
+								  res.send({student_attendance : result1})
+								  
+								   
+		});
+	             
+			
+ 	}else{
+	        admin.select(function(err,result){
+	     
+		    res.render('admin/index');
+			  
+		 	});
+	}
+});
+
+
+/* ********************************** */
+
+
 router.get("/academic_syllabus", function(req, res){
 	if(req.session.user_role==1){
 		
@@ -2890,7 +2984,7 @@ router.get("/getStudentAttendence", function(req, res){
 		
 		var class_id   			= req.query.class_id
 		var section_id 			= req.query.section_id
-		var attendence_date		= req.query.attendence_date
+		var attendence_date		= moment(req.query.attendence_date).format('YYYY-MM-DD');//req.query.attendence_date
 		var session_year	    = req.session.session_year
        // console.log(req.query);
 
@@ -2901,14 +2995,11 @@ router.get("/getStudentAttendence", function(req, res){
         	var n 			= 0;    
 			admin.getStudent(table,{class_id:class_id,section_id:section_id,session_year:session_year},function(err, result){
 						var student_id  = result;
+
 						console.log(student_id)
 						async.each(student_id, function (item, done) {
 
-						 		//console.log(item.registration_id)
-						 		
-						 //		var tbl_attendence = {tablename : 'tbl_attendance'}
-
-								admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:item.registration_id,session_year:session_year},function(err, result1){
+						  	admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:item.registration_id,session_year:session_year},function(err, result1){
 									console.log('sas',result1)
 								  	if(result1==undefined || result1==''){
 								  		   student_id[n].attendence='';
@@ -2922,7 +3013,7 @@ router.get("/getStudentAttendence", function(req, res){
 								});
 						}, function(){
 
-					//	console.log(student_id)
+					 	console.log("##############",student_id)
 						res.send(student_id)
 					
 						});
@@ -2994,16 +3085,18 @@ router.get("/getTeacherAttendence", function(req, res){
 });
 
 router.post("/addAttendence", function(req, res){
+
+ console.log(req.body);
 	if(req.session.user_role==1){
 		var type 				= req.body.attendence;
 		if(type=='student'){
 			var class_id  			= req.body.class_id;
 			var section_id 			= req.body.section_id;
-			var attendence_date		= req.body.attendence_date;
-			var student_id			= parseInt(req.body.student_id);
+			var attendence_date		= moment(req.body.attendence_date).format('YYYY-DD-MM');
+ 			var student_id			= parseInt(req.body.student_id);
 			var status				= req.body.status;
 			var session_year	    = req.session.session_year;
-			var check  = Array.isArray(student_id);
+			var check               = Array.isArray(student_id);
 			if(check==false){
 				var data = {
 						class_id 		: class_id,
@@ -3017,9 +3110,8 @@ router.post("/addAttendence", function(req, res){
 					}
 
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
-					
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id,session_year:session_year},function(err, result1){
-		  				console.log('abcbdsdd',result1);
+		  				//console.log('abcbdsdd',result1);
 		  				if(result1=='' || result1==undefined){
 		  					
 		  				}else{
@@ -3029,11 +3121,7 @@ router.post("/addAttendence", function(req, res){
 				            admin.deletewhere(table,findObj,function(err,result){
 	                        });
 		  				}
-
-		  				
 		  			});
-
-		  			
 		  			admin.insert_all(table,data,function(err, result){
 			  			
 			  		});
@@ -3051,8 +3139,10 @@ router.post("/addAttendence", function(req, res){
 						user_role		: 3
 					}
 
+					console.log(data);
+					return false;
+
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
-					
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id[k]},function(err, result1){
 		  				console.log(result1);
 		  				if(result1=='' || result1==undefined){
@@ -3068,7 +3158,7 @@ router.post("/addAttendence", function(req, res){
 		  				
 		  			});
 
-		  			console.log('avbc',data);return false;
+		  			//console.log('avbc',data);return false;
 		  			admin.insert_all(table,data,function(err, result){
 			  			
 			  		});

@@ -161,7 +161,7 @@ $('#Teacher_section_id').on('change',function(){
 
 
 $('input[name="register"]').change(function(){
-
+  
     var radio = $(this).val();
     if(radio=='student'){
         $('#teacher').hide();
@@ -223,70 +223,6 @@ $('input[name="attendence"]').change(function(){
 
 });
 
-$(document).ready( function () {
- 
-   //  $('#myTable').DataTable({
-
-   //      buttons: [
-   //          'copyHtml5',
-   //          'excelHtml5',
-   //          'csvHtml5',
-   //          'pdfHtml5'
-   //      ]
-   //  });
-
-   //  $('#fees_report_table').DataTable();
-   //   $( ".attendence_date" ).datepicker({
-   //        dateFormat: 'dd-mm-yy'
-   //   });
-
- 
-   //   //CKEDITOR.replace('descriptionstudent');
-   //   CKEDITOR.replace('descriptionteacher', {
-   //          toolbar: [
-   //          //{ name: 'document', items: [  'NewPage', 'Preview', '-', 'Templates' ] }, // Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
-   //          [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],          // Defines toolbar group without name.
-   //          '/',                                                                                    // Line break - next group will be placed in new line.
-   //          { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
-
-   //      ]
-   //   });
-   //   CKEDITOR.replace('descriptionparent', {
-   //          toolbar: [
-   //          //{ name: 'document', items: [  'NewPage', 'Preview', '-', 'Templates' ] }, // Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
-   //          [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],          // Defines toolbar group without name.
-   //          '/',                                                                                    // Line break - next group will be placed in new line.
-   //          { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
-
-   //      ]
-   //   });
-
-   //   CKEDITOR.replace( 'descriptionstudent', {
-   //          toolbar: [
-   //          //{ name: 'document', items: [  'NewPage', 'Preview', '-', 'Templates' ] }, // Defines toolbar group with name (used to create voice label) and items in 3 subgroups.
-   //          [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],          // Defines toolbar group without name.
-   //          '/',                                                                                    // Line break - next group will be placed in new line.
-   //          { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
-
-   //      ]
-   //   });
-   // // $('#example').DataTable();
-
-
-
-   //   $("#start_date").datepicker({
-   //       dateFormat: 'dd-mm-yy'
-   //   });
-     
-   //   $("#end_date").datepicker({
-   //       dateFormat: 'dd-mm-yy'
-   //   });
-
-   //   CKEDITOR.replace('description');
-   // // $('#example').DataTable();
-
-
-});
 $("#add").click(function() {
    $("#app").append('<div class="clearfix"></div><div><div class="form-group row"><label for="exampleInputEmail2" class="col-sm-2 col-form-label" >Title</label><div class="col-sm-4"><input type="text" name="slider_title" class="form-control" placeholder="Enter Title"> </div><label for="exampleInputPassword2" class="col-sm-2 col-form-label">Slider Image</label> <div class="col-sm-4"> <input type="file" name="slider_image" class="form-control"></div></div><div class="clearfix"></div><div class="form-group row"><label for="exampleInputPassword2" class="col-sm-2 col-form-label">Description</label><div class="col-sm-10"><textarea class="form-control" name="slider_description" placeholder="Enter Slider Description" rows="8"></textarea></div></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div>');
 });

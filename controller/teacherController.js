@@ -916,7 +916,7 @@ router.post("/addAttendence", function(req, res){
 		
 			var class_id  			= req.body.Teacher_class_id;
 			var section_id 			= req.body.Teacher_section_id;
-			var attendence_date		= req.body.teacher_attendence_date;
+			var attendence_date		= moment(req.body.attendence_date).format('YYYY-MM-DD');
 			var student_id			= req.body.student_id;
 			var status				= req.body.status;
 			var session_year        = req.session.session_year;

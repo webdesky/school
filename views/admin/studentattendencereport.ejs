@@ -28,37 +28,52 @@
 				
 			</p>
 			<div class="table-responsive">
-				<div class="select">
-						 
-						
-						
+				<div class="">
 					<form class="form-inline" action="/action_page.php">
-					  <div class="form-group">
-					    <label for="email">Month</label>
-					    <select class="form-control" id="month_id">
-					    <%  Object.keys(month).forEach(function (key){ %>
-					    	<option value="<%= key %>"><%= month[key] %></option>
-					    	
-					    <% }) %>
-					    </select>
-					  </div>
-					  <div class="form-group">
-					    <label for="pwd">Year</label>
-					    <select class="form-control" id="currentyear" name="year"> 
-					    	<option value="<%= year %>"><%= year %></option>
-					    	<option value="<%= nextyear %>"><%= nextyear %></option>
-					    	
-					    </select>
+					  <div class="form-group" style="width: 100%;">
+                       
+                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+			              <div class="col-sm-2">
+			               <select class="form-control" id="class_id" name="class_id">
+			                <option value="">Select Class</option>
+			                <%  class_list.forEach(function(class_list){ %>
+			                <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+			                
+			                <%   }) %>
+			               </select>
+			              </div>
+			            <label for="exampleInputPassword2" class="col-sm-0 col-form-label">Section Name</label>
+			            <div class="col-sm-2">
+			               <select class="form-control" name="section_id"  id="section_id_stop" onchange="get_studentlist_attendance()">
+			                 <option>Select Section</option>
+			               </select>
+			            </div>
+
+                        <label class="col-sm-1 col-form-label" for="email">Month</label>
+                        <div class="col-sm-2">
+						    <select class="form-control" id="month_id">
+						    <%  Object.keys(month).forEach(function (key){ %>
+						    	<option value="<%= key %>"><%= month[key] %></option>
+						    	
+						    <% }) %>
+						    </select>
+					     </div>
+
+						<label class="col-sm-1 col-form-label" for="pwd">Year</label>
+					    <div class="col-sm-1">
+						    <select class="form-control" id="currentyear" name="year" > 
+						    	<option value="<%= year %>"><%= year %></option>
+						    	<option value="<%= nextyear %>"><%= nextyear %></option>
+						    	
+						    </select>
+					    </div>
 					  </div>
 					</form>
 				</div>
-
-
-				
-
-
-
-				<table class="table table-bordered" id="myTable">
+				<br><br>
+				<div class="clearfix"></div>
+				 
+				<table class="table table-bordered table-1 studentlistTable" id="myTable">
 					<thead>
 						<tr>
 							<th>
@@ -86,6 +101,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					<% if(student_information!=""){ %>	
 					<%  var i=1; student_information.forEach(function(data){ %>
 						<tr id="tr_<%= i %>">
 							<td >
@@ -121,11 +137,14 @@
 
 							
 						</tr>
-					<% i++; })%>
+					<% i++; })
+				     }
+					%>
 					</tbody>
 				</table>
+			  </div>
 			</div>
-			<br><br>
+			 
 			<div id="attendance" style="display: none;">
 				<h2>Attendance Report </h2>
 				<div class="table-responsive">
