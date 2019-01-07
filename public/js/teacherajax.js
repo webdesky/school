@@ -114,6 +114,50 @@ $('#section_id').on('change',function(){
     });
 });
 
+$('#Teacher_section_id').on('change',function(){
+    var section_id = $(this).val();
+    var class_id   = $('#Teacher_class_id').val();
+
+    if(class_id==''){
+        alert('please select Class');
+        return false;
+    }
+    if(section_id==''){
+        alert('please select Section');  
+        return false; 
+    }
+    //alert(class_id);
+
+     $.ajax({
+        url: "/teacher/Teacher_getSubject",
+        method: "GET",
+        dataType: "json",
+        data: {
+            class_id: class_id,
+            section_id :section_id
+           
+        },
+        success: function(response) {
+            var subject  = response.subject_list;
+
+            $('#subjectTable tbody').html('');
+            for (var i = 0; i < subject.length; i++) {
+                var count = i+1;
+                
+                   $('#subjectTable tbody').append('<tr><td>'+count+'</td><td>'+subject[i].name+'</td><td><input type="hidden" Class="form_control" name="subject_id"  id="subject_id" value="'+subject[i].subject_id+'"><input type="text" name="task" id="task" class="form_control"></td><td><textarea class="form_control" name="task_description" id="task_description" cols="50" rows="3"></textarea></td><td><input type="file" name="subject_file" id="subject_file"></td></tr>');
+ 
+            }
+            $('#tableId').show();
+            /* Enabled days drop down after section select on class routine page */
+            $("#day").prop("disabled",false);
+
+        },
+        error: function() {
+            alert("error");
+        }
+    });
+});
+
 
 
 $('input[name="register"]').change(function(){

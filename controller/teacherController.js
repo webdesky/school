@@ -201,7 +201,7 @@ router.get("/subjectList", function(req, res){
 /* Get All subject List on select of class name */
 router.get("/classsection_subjectList", function(req, res){  // Ajax Call 
 	if(req.session.user_role==4){
-		console.log('Hello');
+		//console.log('Hello');
 	   var table = 'tbl_subject';
 		    var class_id =req.query.class_id;
 		    var year= req.session.session_year;
@@ -321,7 +321,7 @@ router.get("/study_material", function(req, res){
 	        var registration_id = req.session.uid;
 	        var session_year=  req.session.session_year;
 
-
+     
 	        obj={registration_id:registration_id,session_year:session_year}   
 
 		     if(req.query.document_id != undefined ) 
@@ -336,7 +336,7 @@ router.get("/study_material", function(req, res){
 					res.render("admin_layout", pagedata);
 				});
 		     }
-		     
+		      console.log('......',obj);
 			 teacher.findStudyMaterial(tbl_document,obj,function(err, result){
 			 
 			    var document_list 	 = result;
@@ -1283,6 +1283,246 @@ router.get("/check_password",function(req,res){
 	}
 
 });
+
+
+// router.get("/Teacher_homemwork",functio(req,res){
+ 
+
+
+// });
+router.get("/homemwork", function(req, res){
+	if(req.session.user_role==4){
+		
+        var table  = 'tbl_class';
+        tableobj= { tbl_class_routine:' tbl_class_routine',tbl_class:'tbl_class',tbl_section:'tbl_section'} 
+
+        groupby= {class_id:'tbl_class_routine.class_id'}
+        orderby= {class_name:'tbl_class.class_name', order:'ASC'}
+		teacher.FindTeacherClass(tableobj,groupby,orderby,function(err, result){
+		   var class_list 	 = result;
+
+		//  var table = 'tbl_homework';
+	  //  	  teacher.findhomework({table:table},function(err, result){
+			//  	console.log(result);
+			//     var homework_list 	 = result;
+			// 	var pagedata 	 	 = {Title : "", pagename : "teacher/homework", message : req.flash('msg'),homework_list:homework_list,class_list:class_list};
+			// 	res.render("admin_layout", pagedata);
+			// });
+          var registration_id= req.session.uid;
+		  var table = 'tbl_homework';
+		  var session_year = req.session.session_year;
+		  var where={session_year:session_year,teacher_id:registration_id}
+	   	  teacher.Teacherfindhomework({table:table},where,function(err, result){
+			 	 console.log(result);
+			    var homework_list 	 = result;
+				//var pagedata 	 	 = {Title : "", pagename : "teacher/homework", message : req.flash('msg'),homework_list:homework_list,class_list:class_list};
+				var pagedata = {title : "Welcome Admin", pagename : "teacher/homework", message : req.flash('msg'),class_list:class_list,homework_list:homework_list};
+				res.render("admin_layout", pagedata);
+		  });
+			
+		});
+    }else{
+	        teacher.select(function(err,result){
+	     
+		    res.render('admin/index');
+			  
+		 	});
+	}
+});
+
+ 
+
+router.get("/Teacher_getSubject", function(req, res){
+	if(req.session.user_role==4){
+		var class_id 	= req.query.class_id
+		var section_id  = req.query.section_id
+		var session_year= req.session.session_year;
+		var registration_id= req.session.uid;
+
+	    var table = {table:'tbl_subject'};
+			teacher.getteachersubjectlist(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year},function(err, result){
+				console.log('HoemWork List ',result);
+			 	var subject_list = result;
+			 	res.send({subject_list:subject_list});
+			});
+	}else
+	{
+	        teacher.select(function(err,result){
+		    res.render('admin/index');
+		 	});
+	}
+});
+
+router.post("/addHomeWork", function(req, res){
+	
+  if(req.session.user_role==4){
+
+  	var class_id            = req.body.Teacher_class_id;
+  	var section_id          = req.body.Teacher_section_id;
+  	
+  	var subject_id  		= req.body.subject_id;
+  	var task        		= req.body.task;
+  	var task_description    = req.body.task_description;
+
+  	var moment 				= require('moment');
+	var dates 				= moment().format('YYYY-MM-DD:hh:mm:ss');
+	var session_year = req.session.session_year;
+	var teacher_id = req.session.uid;
+  	
+  	var file = req.files.subject_file;
+  	
+  	var data = [];
+
+    
+	 
+	
+	 
+	for(var k in subject_id){
+	  		 
+	  		if(Array.isArray(file)) 
+	  		{
+	  			file1= file[k];
+	  		    var newname = changename(file[k].name);
+			    var filepath = path.resolve("public/homework_image/"+newname);
+				file1.mv(filepath, function(err){
+					if(err){
+						console.log(err);
+						return;
+					}
+				});
+			}
+			else
+			{
+				file1= file;
+	  		    var newname = changename(file.name);
+			    var filepath = path.resolve("public/homework_image/"+newname);
+				file1.mv(filepath, function(err){
+					if(err){
+						console.log(err);
+						return;
+					}
+				});
+			}
+			if(task_description[k]!="" && file[k]!="")
+			{
+		  		 data = {
+		  		 	class_id 			: class_id,
+		  		 	section_id			: section_id,
+		  		 	teacher_id			: teacher_id,
+		  			subject_id 			: subject_id[k],
+		  			task       			: task[k],
+		  			description    		: task_description[k],
+		  			file_name     	    : newname,
+		  			homework_date	    : dates,
+		  			created_date	    : dates,
+		  			session_year        : session_year,
+	  			 }
+		  		var table   = {tablename:'tbl_homework'};
+		  
+		  		teacher.insert_all(table,data,function(err, result){
+
+					
+				});	
+	  	   }
+		}
+	 
+	 // else
+	 // {
+           
+  //          file1= file;
+	 //  		var newname = changename(file.name);
+		// 	var filepath = path.resolve("public/homework_image/"+newname);
+			
+		// 	file1.mv(filepath, function(err){
+		// 		if(err){
+		// 			console.log(err);
+		// 			return;
+		// 		}
+		// 	});
+			
+	 //  		 data = {
+	 //  		 	class_id 			: class_id,
+	 //  		 	section_id			: section_id,
+	 //  		 	teacher_id			: teacher_id,
+	 //  			subject_id 			: subject_id[k],
+	 //  			task       			: task[k],
+	 //  			description    		: task_description[k],
+	 //  			file_name     	    : newname,
+	 //  			homework_date	    : dates,
+	 //  			created_date	    : dates,
+	 //  			session_year        : session_year,
+
+	 //  		}
+	 //  		var table   = {tablename:'tbl_homework'};
+	  
+	 //  		teacher.insert_all(table,data,function(err, result){
+
+		// 	});	
+	 // }
+
+  	
+
+  		var table  = 'tbl_class';
+/*
+		teacher.findAll({table:table},function(err, result){
+		    var class_list 	 = result;
+	  		  var table = 'tbl_homework';
+			  var session_year = req.session.session_year;
+			  var where={class_id:class_id,section_id:section_id,session_year:session_year}
+		   	  teacher.Teacherfindhomework({table:table},where,function(err, result){
+				 	//console.log(result);
+				    var homework_list 	 = result;
+					//var pagedata 	 	 = {Title : "", pagename : "teacher/homework", message : req.flash('msg'),homework_list:homework_list,class_list:class_list};
+					var pagedata = {title : "Welcome Admin", pagename : "teacher/homework", message : req.flash('msg'),class_list:class_list,homework_list:homework_list};
+					res.render("admin_layout", pagedata);
+				});
+	
+
+		}); */
+		res.redirect('/teacher/homemwork')
+
+
+     }else{
+	        teacher.select(function(err,result){
+	     
+		    res.render('admin/index');
+			  
+		 	});
+	}
+});
+
+
+router.get("/homeworkList", function(req, res){
+	if(req.session.user_role==4){
+
+		  var registration_id= req.session.uid;
+		  var table = 'tbl_homework';
+		  var session_year = req.session.session_year;
+		  var where={session_year:session_year,teacher_id:registration_id}
+	   	  teacher.Teacherfindhomework({table:table},where,function(err, result){
+			 	 //console.log(result);
+			    var homework_list 	 = result;
+				//var pagedata 	 	 = {Title : "", pagename : "teacher/homework", message : req.flash('msg'),homework_list:homework_list,class_list:class_list};
+				var pagedata = {title : "Welcome Admin", pagename : "teacher/homework_list", message : req.flash('msg'),homework_list:homework_list};
+				res.render("admin_layout", pagedata);
+		  });
+		
+	  //   	var table = 'tbl_homework';
+	 
+			//  admin.findhomework({table:table},function(err, result){
+			//  	console.log(result);
+			//     var homework_list 	 = result;
+			// 	var pagedata 	 	 = {Title : "", pagename : "admin/homework_list", message : req.flash('msg'),homework_list:homework_list};
+			// 	res.render("admin_layout", pagedata);
+			// });
+	}else{
+	      
+		    res.render('admin/index');
+		
+	}
+});
+
+
 module.exports=router;
 
 

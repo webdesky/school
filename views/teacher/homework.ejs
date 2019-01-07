@@ -1,0 +1,144 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Add HomeWork</u></b></h1>
+          <p class="card-description">
+          <a href="/teacher/homeworkList"><button class="btn btn-inverse-dark btn-fw">HomeWork List</button></a>
+          </p>
+          
+          <form class="forms-sample" method="post" action="/teacher/addHomeWork" enctype="multipart/form-data">
+            <div class="form-group row">
+              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
+              <div class="col-sm-2">
+               <select class="form-control" id="Teacher_class_id" name="Teacher_class_id">
+               	<option value="">Select Class</option>
+               	<%  class_list.forEach(function(class_list){ %>
+                <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+				        
+               	<%   }) %> 
+               </select>
+               <span for="Teacher_class_id"  class="error below" style="display: none"></span>
+              </div>
+               <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
+              <div class="col-sm-2">
+               <select class="form-control" name="Teacher_section_id" id="Teacher_section_id">
+                 <option>Select Section</option>
+               </select>
+               <span for="Teacher_section_id"  class="error below" style="display: none"></span>
+              </div>
+            </div>
+            <br><br><br>
+            <div  style="display: none;" id="tableId">
+              <h2>Enter Home Work</h2>
+              <table class="display responsive nowrap" id="subjectTable" style="width: 100%" >
+                <thead>
+                  <tr>
+                    <th>
+                      #
+                    </th>
+                    <th>
+                       Name
+                    </th>
+                    <th>
+                      Task
+                    </th>
+                    <th>
+                      Description
+                    </th>
+                    <th>File</th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                 
+                </tbody>
+              </table>
+
+            <br><br><br>
+              <div class="col-sm-12" align="center">
+              <button type="submit" class="btn btn-success mr-2">Submit</button>
+              <button class="btn btn-light">Cancel</button>
+              </div>
+            </div> 
+            <br><br>
+          </form>
+
+          <% if(homework_list!=''){ %>
+          <div class="table-responsive" >
+            <table class="table table-bordered" id="myTable">
+              <thead>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                    Class
+                  </th>
+                  <th>
+                    Section
+                  </th>
+                  <th>
+                    Subject
+                  </th>
+                  <th>
+                    Task
+                  </th>
+                  <th>
+                    Home Work Date
+                  </th>
+                  <th>
+                    Action
+                  </th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <%  var i=1; homework_list.forEach(function(homework_list){ %>
+                <tr id="tr_<%= i %>">
+                  <td>
+                    <%= i %>
+                  </td>
+                  <td>
+                    <%= homework_list.class_name %>
+                  </td>
+                  <td>
+                    <%= homework_list.section_name %>
+                  </td>
+                  
+                  <td>
+                    <%= homework_list.name %>
+                  </td>
+                  <th>
+                    <%= homework_list.task %>
+                  </th>
+                  <th>
+                    <%= homework_list.date %>
+                  </th>
+                  
+                  <td>
+                    <!--  <a href="#">
+                        <button type="button" class="btn btn-dark btn-fw">
+                         <i class="mdi mdi-cloud-download"></i>Edit
+                        </button>
+                      </a> --> 
+                      <a href="../../homework_image/<%= homework_list.file_name %>"download="">
+                              <button type="button" class="btn btn-success"> Download File </button>  
+                      </a>
+                      <a href="#" onclick="Teacher_delete_record('<%= homework_list.homework_id %>','<%= i %>','tbl_homework','homework_id')">
+                                  <button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button>
+                      </a>
+                  </td>
+                </tr>
+                <% i++; })%>
+              </tbody>
+            </table>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
