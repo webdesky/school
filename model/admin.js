@@ -478,8 +478,19 @@ module.exports.getStudentAttendence=function(table,obj, cb){
 module.exports.getAdminStudentAttendence=function(table,obj, cb){
 
 	con.connect(function(err){
-        var que = "SELECT *  FROM "+table.tbl_attendance+"  LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"'  AND MONTH("+table.tbl_attendance+".attendence_date) ="+obj.month+" AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
-        //console.log('----------------------',que)	
+        var que = "SELECT *  FROM "+table.tbl_attendance+"  LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"'  AND MONTH("+table.tbl_attendance+".attendence_date) ="+obj.month+" AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_attendance+".registration_id="+obj.registration_id+" AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+        //console.log('singlellllllllllllll',que);
+		con.query(que, cb);
+	});
+}
+
+/*   **  Get all student attendance report with registered detail **  */
+module.exports.getAllStudentAttendence=function(table,obj, cb){
+ 
+	con.connect(function(err){
+        var que= "SELECT "+table.tbl_registration+".name, "+table.tbl_attendance+".*  FROM "+table.tbl_attendance+"   LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id LEFT JOIN  "+table.tbl_registration+" ON "+table.tbl_registration+".registration_id= "+table.tbl_attendance+".registration_id  WHERE "+table.tbl_attendance+".class_id="+obj.class_id+" AND "+table.tbl_attendance+".section_id="+obj.section_id+" AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"' AND MONTH("+table.tbl_attendance+".attendence_date) ="+obj.month+" AND YEAR("+table.tbl_attendance+".attendence_date) ="+obj.year+ " ORDER BY "+table.tbl_attendance+".attendence_date" ;	
+        
+         
 		con.query(que, cb);
 	});
 }
@@ -800,8 +811,9 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 	   var key = Object.keys(where);
 	   
 	   if(key.length>0)
-
 	     que += " WHERE "+key[0]+" = '"+where[key[0]]+"'";	
+
+	 console.log('#####################',que);
        con.query(que, cb);
 	});
  
@@ -970,11 +982,11 @@ module.exports.getstudentlist_by_class=function(obj,where, cb){
 	  //
 	con.connect(function(err){
 	 	var que = "SELECT * FROM "+obj.tbl_enroll+"  INNER JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_enroll+".registration_id WHERE "+obj.tbl_enroll+".class_id="+ where.class_id + "  AND "+obj.tbl_enroll+".bonafide_status=0  AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' AND "+obj.tbl_enroll+".section_id='"+where.section_id+"' ORDER BY "+obj.tbl_registration+".name ASC" ;
-	 	//var que = "SELECT * FROM "+obj.tbl_enroll+"  INNER JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_enroll+".registration_id WHERE "+obj.tbl_enroll+".class_id="+ where.class_id + " AND "+obj.tbl_enroll+".section_id="+ where.section_id+ " AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' ORDER BY "+obj.tbl_registration+".name ASC" ;
-	 	//console.log(que);
+	 	console.log('Get student list ',que)
 	 	con.query(que, cb);
 	});
 }
+
 
 module.exports.get_fees_term=function(obj,where, cb){
 	  //

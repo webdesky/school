@@ -32,22 +32,7 @@
 					<form class="form-inline" action="/action_page.php">
 					  <div class="form-group" style="width: 100%;">
                        
-                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
-			              <div class="col-sm-2">
-			               <select class="form-control" id="class_id" name="class_id">
-			                <option value="">Select Class</option>
-			                <%  class_list.forEach(function(class_list){ %>
-			                <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
-			                
-			                <%   }) %>
-			               </select>
-			              </div>
-			            <label for="exampleInputPassword2" class="col-sm-0 col-form-label">Section Name</label>
-			            <div class="col-sm-2">
-			               <select class="form-control" name="section_id"  id="section_id_stop" >
-			                 <option>Select Section</option>
-			               </select>
-			            </div>
+                         
 
                         <label class="col-sm-1 col-form-label" for="email">Month</label>
                         <div class="col-sm-2">

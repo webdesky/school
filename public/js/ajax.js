@@ -874,9 +874,12 @@ function getsubteacher(day){
 }
 
 function getStudentAttendence(attendence_date){
-    var attendence_date         = attendence_date;
+    var attendence_date         = moment(attendence_date).format('YYYY-DD-MM'); 
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id').val();
+
+    // console.log(attendence_date);
+    // return
 
     $.ajax({
         url: "/getStudentAttendence",
@@ -3276,20 +3279,117 @@ function get_studentlist_attendance()
      var sectionid = $('#section_id_stop').find(":selected").val();
      var classname = $('#class_id').find(":selected").text();
      var sectionname = $('#section_id_stop').find(":selected").text();
+     var month = $('#month_id').find(":selected").val();
+     var year = $('#currentyear').find(":selected").val();
+     if(classid=="")
+     {
+        alert("Please select Class");
+        return false;
+     }
+     if(sectionid=="")
+     {
+        alert("Please select section");
+        return false;
+     }
      $.ajax({
-        url: "/classsection_studentList",
+        url: "/getAdminStudentAttendanceReport",
         method: "GET",
         dataType: "json",
         data: {
             class_id: classid,
-            section_id: sectionid
+            section_id: sectionid,
+            month_id : month,
+            year : year
         },
         success: function(response) {
-           
+            // students= response.student_attendance;
+            $('#student_attendance_table tbody').html('');
+              $('#student_attendance_table thead').empty();
+              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
+              var student_attendance  = response.student_attendance;
+             if(student_attendance.length>0){ 
+              var calendar = '<tr><td>Name  Day-></td>';
+              var attendance='<tr>'
+              for (var j= 0; j< student_attendance.length; j++)
+              {
+                 attendance += '<td>'+student_attendance[j].name+'</td>';
+                for (var i = 1; i <= days; i++) 
+                { 
+                   if(j==0)
+                    calendar += '<td>'+i+'</td>';
+                  flag=false;
+                 if(student_attendance[j].attendence!=undefined)
+                 {
+                   
+                    date = year+'-'+month+'-'+ i;
+                    date =moment(date).format('YYYY-MM-DD');
+                    
+
+                   stu_attendance= student_attendance[j].attendence;
+                   if(stu_attendance!=undefined)
+                   for(var k= 0; k<stu_attendance.length; k++)   
+                    { 
+                      status_date= stu_attendance[k].attendence_date;
+                        if(date==status_date)  
+                        {
+                          if(stu_attendance[k].status==1)
+                            attendance+= '<td style="background:green">P</td>';
+                          else
+                          if(stu_attendance[k].status==2)
+                            attendance+= '<td style="background:red">A</td>';
+
+                          flag=true;
+                        }
+
+                       //console.log(student_attendance[i].attendence)
+                    }
+                    if(flag==false)
+                     attendance+= '<td style="background:White">&nbsp;</td>';
+                 }
+                }
+                attendance+='</tr>'
+
+              }
+              /*
+              for (var i = 1; i <= days; i++) {
+                 
+                  calendar += '<td>'+i+'</td>';
+                  date = year+'-'+month+'-'+ i;
+                  date =moment(date).format('YYYY-MM-DD');
+                  flag=false;
+
+                  for (var j= 0; j< student_attendance.length; j++)
+                  {
+                     
+                    status_date= student_attendance[j].attendence_date;
+                    if(date==status_date)  
+                    {
+                      if(student_attendance[j].status==1)
+                        attendance+= '<td style="background:green">P</td>';
+                      else
+                      if(student_attendance[j].status==2)
+                        attendance+= '<td style="background:red">A</td>';
+
+                      flag=true;
+                    }
+
+                  }
+                  if(flag==false)
+                    attendance+= '<td style="background:White">&nbsp;</td>';
+              }
+              */
+             // attendance+='</tr>'
+              calendar+='</tr>';
+
+              $('#student_attendance_table thead').append(calendar);
+              $('#student_attendance_table tbody').append(attendance);
+              $('#attendance').show();
+
+           /*
            $(".studenttable").show();
 
           $('.studentlistTable tbody').html('');
-             students= response.student_list;
+             students= response.student_attendance;
              tablerow='';
             if(students.length>0){ 
                 mytable= "'tbl_registration'";
@@ -3300,11 +3400,13 @@ function get_studentlist_attendance()
                    tablerow+='<tr id=tr_'+count+' ><td>'+ i +'</td><td>'+students[i].admission_number+'</td><td>'+students[i].name+'</td><td>'+classname+'</td>';
                    tablerow+='<td>'+sectionname+'</td><td>'+students[i].parentname+'</td><td>'+students[i].parentphone+'</td>';
                    //tablerow+='<td><a href="/Registration?registration_id='+students[i].registration_id+'"><button type="button" class="btn btn-dark btn-fw"><i class="mdi mdi-cloud-download"></i>Edit</button>';
-                   tablerow+='<td><a href="javascript:void(0)"  onclick="get_admin_student_attendance('+students[i].class_id +','+students[i].section_id+','+students[i].registration_id+')" class="btn btn-sm btn-primary">View</a></td>'
+                   tablerow+='<td><a href="javascript:void(0)"  onclick="get_admin_student_attendance ('+students[i].class_id +','+students[i].section_id+','+students[i].registration_id+')" class="btn btn-sm btn-primary">View</a></td>'
                    
                    //delete_record('+students[i].registration_id+','+i+','+tbl_registration+','+registration_id+') 
              }
              $('.studentlistTable tbody').append(tablerow);
+
+             */
             }
             else{
                 $('.studentlistTable tbody').html('');
