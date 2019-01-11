@@ -41,28 +41,7 @@
          border: 1px #000 solid;
          border-radius: 5px;
          }
-         @page {
-         size: A4;
-         margin: 0;
-         }
-         @media print {
-         .page {
-         margin: 0;
-         border: initial;
-         border-radius: initial;
-         width: initial;
-         min-height: initial;
-         box-shadow: initial;
-         background: initial;
-         page-break-after: always;
-         }
-         }
-         @media print {
-         .hiderow {
-         display: none;
-         }
-         }
-         /*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
+             /*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
          @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,500i,700,700i');
          h1,h2,h3,h4,h5,h6{
          font-family: 'Ubuntu', sans-serif;
@@ -262,27 +241,7 @@
          border: 1px #000 solid;
          border-radius: 5px;
          }
-         @page {
-         size: A4;
-         margin: 0;
-         }
-         @media print {
-         .page {
-         margin: 0;
-         border: initial;
-         border-radius: initial;
-         width: initial;
-         min-height: initial;
-         box-shadow: initial;
-         background: initial;
-         page-break-after: always;
-         }
-         }
-         @media print {
-         .hiderow {
-         display: none;
-         }
-         }
+        
          /*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
          @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,500i,700,700i');
          h1,h2,h3,h4,h5,h6{
@@ -430,12 +389,8 @@
          float: left;
          padding: 0px 15px;
          }
-         .print-1{
-         background: #613131;
-         padding: 5px 10px;
-         border-radius: 5px;
-         cursor: pointer;
-         }
+       
+      
          .sign-div{
          width: 30%;
          float: left;
@@ -470,13 +425,33 @@
                padding: 20px 50px;
             }
 
-         @media print {
-           .break {page-break-after: always;}
-         }
+                  @page {
+                          size: A4;
+                          margin: 0;
+                      }
+                  @media print {
+                          .page {
+                              margin: 0;
+                              border: initial;
+                              border-radius: initial;
+                              width: initial;
+                              min-height: initial;
+                              box-shadow: initial;
+                              background: initial;
+                              page-break-after: always;
+                          }
 
+
+                      }
+                  @media print {
+                      .hiderow {
+                        display: none;
+                      }
       </style>
 
     <!--  Model for Marksheet  -->
+    <div id="printSection">
+
       <div class="modal my-modal-1 fade" id="markseetmodal" role="dialog">
         <div class="modal-dialog">
         
@@ -489,100 +464,87 @@
               <button type="button" class="close" data-dismiss="modal">&times;</button>
 
             </div>
-            <div class="modal-body">
-              <div class="summative-1">
-      <h1 class="heading-1"> FORMATIVE I</h1>
-      <div class="row student-info" id="studentinfo">
-        
-          
-      </div>
-
-      <!-- <div class="row student-info">
-         <div class="col-xs-6 col-sm-6">
-            <p>Name <b>........................</b></p>
-         </div>
-         <div class="col-xs-6 col-sm-2">
-            <p>Class <b>................</b></p>
-         </div>
-         <div class="col-xs-6 col-sm-2">
-            <p>Section <b>..............</b></p>
-         </div>
-         <div class="col-xs-6 col-sm-2">
-            <p>Exam <b>................</b></p>
-         </div>
-      </div> -->
-      <div class="wrapper">
-         <div class="wripper-left">
-            <table class="table table-bordered" id="Formative_modal">
-               <thead>
+               <div class="modal-body">
+                       <div class="summative-1">
+               <h1 class="heading-1"> FORMATIVE I</h1>
+               <div class="row student-info" id="studentinfo">
                  
-               </thead>
-              <tbody>
-               
-               
-               </tbody>
-            </table>
-         </div>
-         <div class="wripper-right">
-            <h2 class="heading-2">ATTENDANCE</h2>
-            <table class="table table-bordered attendance">
-               <tr>
-                  <td>Month</td>
-                  <td>No. of Working Days</td>
-                  <td>No. of Days Present</td>
-               </tr>
-              
-               <tr>
-                  <td>GRAND TOTAL</td>
-                  <td id="working_days"></td>
-                  <td id="present_days"></td>
-               </tr>
-               <tr>
-                  <td class="bold-1">TOTAL</td>
-                  <td id="total_working_days"></td>
-                  <td id="total_present_days"> </td>
-               </tr>
-            </table>
-            <table class="table table-bordered grade-rank">
-               <tr>
-                  <td width="20%" class="bold-1">RANK:</td>
-                  <td></td>
-               </tr>
-               <tr>
-                  <td class="bold-1">GRADE: </td>
-                  <td id="total_grade"></td>
-               </tr>
-               <tr>
-                  <td class="bold-1">GPA: </td>
-                  <td></td>
-               </tr>
-            </table>
-         </div>
-         <br/>
-         <br/>
-         <br/>
-         <br/>
-         <br/>
-         <div class="clearfix"></div>
-         <div class="row sign">
-            <div class="sign-div">
-               <p>.........................................<br>
-                  Sig. of Class Teacher
-               </p>
-            </div>
-            <div class="sign-div text-center">
-               <p>.........................................<br>
-                  Head of the Institution
-               </p>
-            </div>
-            <div class="sign-div text-right">
-               <p>.........................................<br>
-                  Parent / Guardian
-               </p>
-            </div>
-         </div>
-      </div>
-   </div>
+                   
+               </div>
+
+     
+                     <div class="wrapper">
+                        <div class="wripper-left">
+                           <table class="table table-bordered" id="Formative_modal">
+                              <thead>
+                                
+                              </thead>
+                             <tbody>
+                              
+                              
+                              </tbody>
+                           </table>
+                        </div>
+                        <div class="wripper-right">
+                           <h2 class="heading-2">ATTENDANCE</h2>
+                           <table class="table table-bordered attendance">
+                              <tr>
+                                 <td>Month</td>
+                                 <td>No. of Working Days</td>
+                                 <td>No. of Days Present</td>
+                              </tr>
+                             
+                              <tr>
+                                 <td>GRAND TOTAL</td>
+                                 <td id="working_days"></td>
+                                 <td id="present_days"></td>
+                              </tr>
+                              <tr>
+                                 <td class="bold-1">TOTAL</td>
+                                 <td id="total_working_days"></td>
+                                 <td id="total_present_days"> </td>
+                              </tr>
+                           </table>
+                           <table class="table table-bordered grade-rank">
+                              <tr>
+                                 <td width="20%" class="bold-1">RANK:</td>
+                                 <td></td>
+                              </tr>
+                              <tr>
+                                 <td class="bold-1">GRADE: </td>
+                                 <td id="total_grade"></td>
+                              </tr>
+                              <tr>
+                                 <td class="bold-1">GPA: </td>
+                                 <td></td>
+                              </tr>
+                           </table>
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="clearfix"></div>
+                        <div class="row sign">
+                           <div class="sign-div">
+                              <p>.........................................<br>
+                                 Sig. of Class Teacher
+                              </p>
+                           </div>
+                           <div class="sign-div text-center">
+                              <p>.........................................<br>
+                                 Head of the Institution
+                              </p>
+                           </div>
+                           <div class="sign-div text-right">
+                              <p>.........................................<br>
+                                 Parent / Guardian
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
 
              <div class="marksheet">
      
@@ -591,12 +553,13 @@
              </div>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" onclick="printDiv('print-content')" >Print</button>
+               <button type="button" class="btn btn-default" onclick="PrintElem()" >Print</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
       </div>
+   </div>
     <!--  -->
 
 
