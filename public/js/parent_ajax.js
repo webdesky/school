@@ -629,17 +629,19 @@ function get_parent_student_attendance(class_id,section_id,registration_id)
     var class_id        = class_id;
     var section_id      = section_id;
     var registration_id = registration_id;
-    var month           = $('month_id').val();
-
+    var month           = $('#month_id').val();
+    console.log(class_id)
+    console.log(section_id)
+    console.log(registration_id)
+    console.log(month)
       $.ajax({
             url: "/parent/get_parent_student_attendance",
             method: "GET",
             dataType: "json",
             data: {
                 class_id   : class_id,
-                section_id : section_id
-               // exam_id    : exam_id,
-               // exam_code  : exam_code,
+                section_id : section_id,
+             
                 registration_id : registration_id,
                 month        :month
             },

@@ -850,16 +850,18 @@ router.get("/get_parent_student_attendance",function(req,res){
 		var section_id 	      =  req.query.section_id
 		var session_year      =  req.session.session_year; 
 		var registration_id   =  req.query.registration_id;
+		var month		      =  req.query.month;
+		console.log(month)
 		var student_id        = {};
-		var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
+		var table   		  = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
 					
-     	parent.getStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year},function(err, result1){
-									console.log('sas',result1)
-								  	if(result1==undefined || result1==''){
-								  		   student_id['attendence']='';
-								  	}else{
-								  		   student_id['attendence']=result1[0].status;
-								  	}
+     	parent.getStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year,month:month},function(err, result1){
+									student_id   = result1;
+								  	// if(result1==undefined || result1==''){
+								  	// 	   student_id['attendence']='';
+								  	// }else{
+								  	// 	   student_id['attendence']=result1[0].status;
+								  	// }
 
 								  console.log('attendence',student_id)
 								  

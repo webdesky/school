@@ -337,7 +337,7 @@ module.exports.getStudentAttendence=function(table,obj, cb){
 	con.connect(function(err){
 		console.log('obh',obj)
 		//var que = "SELECT *  FROM "+table.tablename+" WHERE "+table.tablename+".class_id="+obj.class_id+" AND "+table.tablename+".section_id="+obj.section_id+" AND "+table.tablename+".attendence_date='"+obj.attendence_date+"' AND "+table.tablename+".registration_id="+obj.student_id+" ";
-        var que = "SELECT *  FROM "+table.tbl_attendance+"                                    LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"' AND "+table.tbl_attendance+".attendence_date='"+obj.attendence_date+"' AND "+table.tbl_attendance+".registration_id='"+obj.student_id+"' AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+        var que = "SELECT *  FROM "+table.tbl_attendance+"                                    LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"'  AND "+table.tbl_attendance+".registration_id='"+obj.registration_id+"' AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"' AND MONTH(attendence_date)='"+obj.month+"'";	
         console.log(que)	
 		con.query(que, cb);
 	});
