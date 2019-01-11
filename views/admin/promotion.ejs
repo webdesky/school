@@ -7,6 +7,30 @@
           <!--<p class="card-description">
            <a href="/admin/attendenceList"><button class="btn btn-inverse-dark btn-fw">Attendence List</button></a> 
           </p>-->
+
+           <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
+          
           
           <form class="forms-sample" method="post" id="form_promotion" action="/promotion" enctype="multipart/form-data">
             
@@ -66,7 +90,13 @@
                 
               </div>
                 <br>
-                <!-- <input type="checkbox" name="" id="checkAll"> -->
+                 
+               <div class="form-group">
+                <label for="exampleInputPassword2" class="col-sm-1 col-form-label">Check All</label>
+                <div class="col-sm-1">
+                  <input type="checkbox" name=""  id="checkAll"> 
+                </div>
+               </div>
                 <table class="display responsive nowrap attendence" id="myTable" style="width: 100%" >
 
                   <thead>

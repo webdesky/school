@@ -259,6 +259,8 @@ router.get("/dashboard", function(req, res){
 
 
 router.post("/registration", function(req, res){
+
+ 
  	if(req.session.user_role==1){
 
 
@@ -316,8 +318,63 @@ router.post("/registration", function(req, res){
 			 		created_date :moment().format('YYYY-MM-DD:hh:mm:ss')
 		 		}
 		 	
+		 	var table      = {tablename:'tbl_registration'};
+	 		admin.findWhere(table,{name:req.body.student_name,email:req.body.student_email,phone:req.body.student_phone},function(err, result){
+		  	 if(result.length>0)
+		  	 {
+              var studentdata= { admission_number : req.body.admission_number,
+		      	          aadhar_number:req.body.adhar_number,
+		      	          name :req.body.student_name,
+		      	          dob:req.body.student_dob ,
+		      	          sex:req.body.student_gender ,
+		      	          //religion:req.body. ,
+		      	          blood_group:req.body.blood_group ,
+		      	          address:req.body.address ,
+		      	          phone:req.body.student_phone ,
+		      	          student_email:req.body.student_email ,
+		      	          mother_name:req.body.mother_name ,
+		      	          caste:req.body.caste ,
+		      	          subcaste:req.body.sub_caste ,
+		      	          transport_id:req.body.transport_id ,
+		      	          dormitory_id:req.body.dormitory_id ,
+		      	          name :req.body.parent_name,
+                          parent_address :req.body.parent_address,
+                          parent_number :req.body.parent_number,
+                          parent_email :req.body.parent_email,
+                          parent_profession:req.body.parent_profession
+		      	        }
+              //console.log(studentdata.name);
+              //return false;
 
-		 	admin.insert_all(table,data,function(err, result){
+			    var table  = 'tbl_class';
+				
+				admin.findAll({table:table},function(err, result){
+				    var class_list 	 = result;
+
+					admin.findAll({table:'tbl_transport'},function(err,result){
+
+						 transport_list  = result;
+
+							admin.findAll({table:'tbl_dormitory'},function(err,result){
+								 dormitory_list  = result;
+                                 //onsole.log('alreadyyyyyyyyyyyyy')
+								 req.flash('error','Student already registered')
+ 								 var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success : req.flash('success'), error : req.flash('error'),class_list:class_list,transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:studentdata};
+								 res.render("admin_layout", pagedata);
+								 
+						    });	 
+						  // console.log(transport_list);
+					});
+				});	
+		  	                            
+	           
+
+	           //var  pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:$data,class_list:''};   	
+	                 
+	          }
+		  	 else
+		  	 {
+		  	 	admin.insert_all(table,data,function(err, result){
 		 		var registration_id 	= result;
 		 		var login_table  	    = {tablename:'tbl_userlogin'};
 		 		var parent_password    = sha1(req.body.parent_password)
@@ -334,57 +391,63 @@ router.post("/registration", function(req, res){
 
 		 		});
 		 		
-		 		var student_data = {
-		 			admission_number :req.body.admission_number,
-			 		name 		 :req.body.student_name,	 		
-			 		caste		 :req.body.caste,
-			 		subcaste     :req.body.sub_caste,
-			 		dob          :req.body.student_dob,
-			 		sex			 :req.body.student_gender,
-			 		address		 :req.body.address,
-			 		phone		 :req.body.student_phone,
-			 		email		 :req.body.student_email,
-			 		dormitory_id :req.body.dormitory_id,
-			 		transport_id :req.body.transport_id,
-			 		aadhar_number:req.body.adhar_number,
-			 		blood_group  :req.body.blood_group,
-			 		mother_name  :req.body.mother_name,
-			 		parent_id    :registration_id,
-			 		user_role    :3,
-			 		created_date :moment().format('YYYY-MM-DD:hh:mm:ss')
-			 	}
+			 		var student_data = {
+			 			admission_number :req.body.admission_number,
+				 		name 		 :req.body.student_name,	 		
+				 		caste		 :req.body.caste,
+				 		subcaste     :req.body.sub_caste,
+				 		dob          :req.body.student_dob,
+				 		sex			 :req.body.student_gender,
+				 		address		 :req.body.address,
+				 		phone		 :req.body.student_phone,
+				 		email		 :req.body.student_email,
+				 		dormitory_id :req.body.dormitory_id,
+				 		transport_id :req.body.transport_id,
+				 		aadhar_number:req.body.adhar_number,
+				 		blood_group  :req.body.blood_group,
+				 		mother_name  :req.body.mother_name,
+				 		parent_id    :registration_id,
+				 		user_role    :3,
+				 		created_date :moment().format('YYYY-MM-DD:hh:mm:ss')
+				 	}
+			 	
+
+				 	admin.insert_all(table,student_data,function(err, result){
+				 			var registration_id  = result
+				 			var student_password = sha1(req.body.student_password)
+					 		var login_data   = {
+					 			registration_id : registration_id,
+					 			email           : req.body.student_email,
+					 			password        : student_password,
+					 			user_role       : 3
+
+					 		}
+				 		
+					 		admin.insert_all(login_table,login_data,function(err, result){
+
+					 		});
+
+					 		var enroll_table  = {tablename:' tbl_enroll'}
+			 				var enroll_data   = {
+			 					registration_id  : registration_id,
+			 					class_id         : req.body.class_id,
+			 					section_id  	 : req.body.section_id,
+			 					session_year     : req.session.session_year,
+			 					created_date      :moment().format('YYYY-MM-DD:hh:mm:ss')
+			 				}
+			 				admin.insert_all(enroll_table,enroll_data,function(err, result){
+
+					 		});
+			 		});
+
+
+				});
+
+		  	 } //  IF Close 
+
+		  	});
+
 		 	
-
-			 	admin.insert_all(table,student_data,function(err, result){
-			 			var registration_id  = result
-			 			var student_password = sha1(req.body.student_password)
-				 		var login_data   = {
-				 			registration_id : registration_id,
-				 			email           : req.body.student_email,
-				 			password        : student_password,
-				 			user_role       : 3
-
-				 		}
-			 		
-				 		admin.insert_all(login_table,login_data,function(err, result){
-
-				 		});
-
-				 		var enroll_table  = {tablename:' tbl_enroll'}
-		 				var enroll_data   = {
-		 					registration_id  : registration_id,
-		 					class_id         : req.body.class_id,
-		 					section_id  	 : req.body.section_id,
-		 					session_year     : req.session.session_year,
-		 					created_date      :moment().format('YYYY-MM-DD:hh:mm:ss')
-		 				}
-		 				admin.insert_all(enroll_table,enroll_data,function(err, result){
-
-				 		});
-		 		});
-
-
-			});
 
 	 	}else if(register=='teacher'){
 	 		 console.log(req.body);
@@ -758,7 +821,7 @@ router.get("/Shiftsection", function(req, res){
     {
         admin.findAll({table:'tbl_class'},function(err, result){
              var class_list      = result;
-             var pagedata      = {title : "Welcome Admin", pagename : "admin/student_shift", message : req.flash('msg'),class_list:class_list};
+             var pagedata      = {title : "Welcome Admin", pagename : "admin/student_shift",success: req.flash('success'),error: req.flash('error'),class_list:class_list};
              res.render("admin_layout", pagedata); 
         });
 
@@ -780,7 +843,7 @@ router.post("/Shiftsection", function(req, res)
 	      {
             var enroll_list = req.body.enroll_id;
 	      	//var obj= { class_name : name,class_abbreviations:numeric_value}
-	      	var obj={section_id:req.body.section_id}
+	      	var obj={section_id:req.body.section_id_stop2}
 	      	var tableobj = {tablename:'tbl_enroll'};
             var n=0;  
             async.each(enroll_list, function (item, done) {
@@ -797,6 +860,7 @@ router.post("/Shiftsection", function(req, res)
                 done(null);
 				n++;
             }, function(){
+            	 req.flash('success',"Student shifted into new section successfully");
                  res.redirect('/Shiftsection');
             });
 
@@ -804,6 +868,7 @@ router.post("/Shiftsection", function(req, res)
         }
         else
         {
+        	req.flash('error',"No student selected");
             res.redirect('/Shiftsection');
         } 
     }
@@ -879,7 +944,7 @@ router.get("/promotion",function(req,res){
 			 years = year.split("-");
 			 nextyear = years[1] +'-'+ (parseInt(years[1])+1);
 			session_year= {year:year,nextyear:nextyear}
-		  var pagedata = {title : "Welcome Admin", pagename : "admin/promotion", message : req.flash('msg'),class_list:class_list,session_year:session_year};
+		  var pagedata = {title : "Welcome Admin", pagename : "admin/promotion", success: req.flash('success'),error: req.flash('error'),class_list:class_list,session_year:session_year};
 	    res.render("admin_layout", pagedata);
 		});
 
@@ -893,12 +958,13 @@ router.get("/promotion",function(req,res){
 router.post("/promotion", function(req, res){
 	if(req.session.user_role==1)
 	{
+
+
         object=req.body;  
         if(object.hasOwnProperty("chk_enroll_id")) 
         {
          if(req.body.chk_enroll_id.length>0)
 	      {
-	      	
 				var class_id  			= req.body.teacher_class_id;
 				var section_id  			= req.body.teacher_section_id;
 				var students =  req.body.chk_enroll_id;
@@ -933,6 +999,7 @@ router.post("/promotion", function(req, res){
 					});
 					 n++; 
 		 		}, function(){
+		 			req.flash('success',"Student promoted successfully");
 		 		       res.redirect('/promotion');
 		                     //res.send({student_bonafide: JSON.parse(JSON.stringify(student_list[0])) });
 				});
@@ -940,7 +1007,7 @@ router.post("/promotion", function(req, res){
 	    }
 	    else
         {
-
+            req.flash('error',"No student selected");
             res.redirect('/promotion');
         } 
 
@@ -1107,7 +1174,7 @@ router.get("/bonafide",function(req,res){
   	    tableobj={tablename:'tbl_class'}
   	    admin.findAll({table:'tbl_class'},function(err, result){
           var class_list      = result;
-          var pagedata      = {title : "Welcome Admin", pagename : "admin/student_bonafide", message : req.flash('msg'),class_list:class_list};
+          var pagedata      = {title : "Welcome Admin", pagename : "admin/student_bonafide",  success: req.flash('success'),error: req.flash('error'),class_list:class_list};
           res.render("admin_layout", pagedata);
   	    });
 	  } 	
@@ -1126,11 +1193,14 @@ router.post("/bonafide", function(req, res)
 { 
     if(req.session.user_role==1)
     {
-        object=req.body;  
+        object=req.body;
+
+
         if(object.hasOwnProperty("enroll_id")) 
         {
          if(req.body.enroll_id.length>0)
 	      {
+
             var enroll_list = req.body.enroll_id;
 	      	var moment = require('moment');
 	        var bonafide_date = moment().format('YYYY-MM-DD:hh:mm:ss');
@@ -1138,28 +1208,44 @@ router.post("/bonafide", function(req, res)
 
 	      	var tableobj = {tablename:'tbl_enroll'};
             var n=0;  
-            async.each(enroll_list, function (item, done) {
+            
+            var check = Array.isArray(enroll_list);
+            if(check)
+            {
+               async.each(enroll_list, function (item, done) {
                var where= {enroll_id:enroll_list[n]}
-               admin.updateWhere(tableobj,where,obj, function(err, result){
-		           if(result)
-		           {	 
-		           	  class_list='';
-		              
- 				   }
+	               admin.updateWhere(tableobj,where,obj, function(err, result){
+			           if(result)
+			           {	 
+			           	  class_list='';
+			              
+	 				   }
 
-		        });
-   
-                done(null);
-				n++;
-            }, function(){
+			        });
+	   
+	                done(null);
+					n++;
+	            }, function(){
+	            	 req.flash('success',"Student bonafide successfully");
+	                 res.redirect('/bonafide');
+	            });
+            }
+            else
+            {
+               var where= {enroll_id:enroll_list}
+               admin.updateWhere(tableobj,where,obj, function(err, result){
+		         req.flash('success',"Student bonafide successfully");
                  res.redirect('/bonafide');
-            });
+		       });
+            }
+            
 
 		  }
         }
         else
-        {
-             res.redirect('/bonafide');
+        {  
+  			req.flash('error',"No student selected");
+            res.redirect('/bonafide');
         } 
     }
 

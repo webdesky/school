@@ -1,6 +1,11 @@
 $('#class_id').on('change',function(){
 	var class_id = $(this).val();
 	//alert(class_id);
+    if(class_id=="")
+    {
+        alert("Please select class")
+        return false;
+    }
 
 	 $.ajax({
         url: "/getSection",
@@ -1611,6 +1616,18 @@ function getStudentTobonafide(attendence_date){
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id_stop').val();
 
+    if(class_id=="")
+    {
+        alert("Please select class");
+        return false;
+    }
+
+    if(section_id=="")
+    {
+        alert("Please select section");
+        return false;
+    }
+
     $.ajax({
         url: "/All_studentList",
         method: "GET",
@@ -1664,6 +1681,17 @@ function getStudentforpromotion(){
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id').val();
 
+    if(class_id=="")
+    {
+        alert("Please select class");
+        return false;
+    }
+
+    if(section_id=="")
+    {
+        alert("Please select section");
+        return false;
+    }
     $.ajax({
         url: "/classsection_promotion",
         method: "GET",
@@ -1755,7 +1783,7 @@ function bonafidemodal(registration_id,class_id,section_id)
 
                    modalval +='<div style="clear:both;"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> Studied in Class </span><span style="border-bottom: solid 1px #333; width: 150px; display: -webkit-inline-box;">'+student_list[i].class_name +'</span><span style="font-size: 20px; font-weight: 500;"> During the academic year </span><span style="border-bottom: solid 1px #333; width: 305px; display: -webkit-inline-box;">'+student_list[i].session_year+'</span></div>';
 
-                    modalval +='<div style="clear:both"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> His/Her Date of Birth is </span><span style="border-bottom: solid 1px #333; width: 150px; display: -webkit-inline-box;">'+student_list[i].dob +'</span><span style="font-size: 20px; font-weight: 500;"> (in words) </span><span style="border-bottom: solid 1px #333; width: 395px; display: -webkit-inline-box;">'+student_list[i].dob +'</span></div>'; 
+                    modalval +='<div style="clear:both"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> His/Her Date of Birth is </span><span style="border-bottom: solid 1px #333; width: 150px; display: -webkit-inline-box;">'+student_list[i].dob +'</span><span style="font-size: 20px; font-weight: 500;"> (in words) </span><span style="border-bottom: solid 1px #333; width: 395px; display: -webkit-inline-box;">'+convertDateInWords(student_list[i].dob)+'</span></div>'; 
 
                     modalval +='<div style="clear: both;"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> as recorded in our School / Admission Register. </span></div><div style="clear: both"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> To the best of my knowledge and belief his / her Conduct is </span><span style="border-bottom: solid 1px #333; width: 255px; display: -webkit-inline-box;"></span></div> ';
 
@@ -3219,6 +3247,12 @@ function Formative1(student_id,class_id,section_id)
     return words_string;
 }
 
+
+function convertDateInWords(date_str) {
+ var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  temp_date = date_str.split("/");
+  return temp_date[0] + " " + months[Number(temp_date[1]) - 1]+ " "+ temp_date[2] ;
+}
 
 
 
