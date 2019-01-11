@@ -56,7 +56,7 @@ module.exports.findWhere=function(tableobj, obj, cb){
 			}
 			counter++;
 		}
-		console.log(que)
+		console.log('###############',que)
 		con.query(que, cb);
 	});
 

@@ -1,9 +1,13 @@
 $(document).ready(function(){
 
 /* Get value of specific user on register page */
+
+
     
     user =$("input[type=radio][name='register']:checked").val()
+
     $(".userregister").val(user);
+    
 
     $( ".abc" ).change(function() {
        $(".userregister").val('');
@@ -27,8 +31,8 @@ $('form[id="student_register"]').validate({
           section_id : 'required',
           adhar_number : 'required',
           datepicker : 'required',
-          transport_id : 'required',
-          //dormitory_id : 'required',
+          
+          
           address : 'required',
           email : 'required',
           student_phone :{
@@ -38,9 +42,9 @@ $('form[id="student_register"]').validate({
                          },  
           student_password : 'required',
           admission_number : 'required',
-          //blood_group : 'required',
+          
           parent_name : 'required',
-          //mother_name : 'required',
+          
           parent_address : 'required',
           parent_number : {
                            required: true,
@@ -51,8 +55,7 @@ $('form[id="student_register"]').validate({
                             required: true,
                             email: true,
                          },
-          //parent_password : 'required',
-          //parent_profession : 'required',
+           
         },
         messages: {
           student_name: 'This field is required',
@@ -200,7 +203,24 @@ $('form[id="librarian_register"]').validate({
           form.submit();
         }
 });
-    
+
+$('form[id="form_shiftsection"]').validate({
+
+ rules: {
+          class_id: 'required',
+          section_id_stop: 'required',
+          section_id_stop2: 'required'
+        },
+        messages: {
+          class_id: 'This field is required',
+          section_id_stop: 'This field is required',
+          section_id_stop2: 'This field is required'
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+}); 
+
 $('form[id="form_transport"]').validate({
 
  rules: {

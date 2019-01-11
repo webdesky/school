@@ -16417,3 +16417,25 @@ p,a{
 #attendence_student .form-group.row {
     width: 100%;
 }
+
+
+/*11 Jan start code css*/
+
+
+.sidebar .nav .nav-item .nav-link .menu-title {
+    font-size: 15px;
+}
+
+.sidebar .nav.sub-menu .nav-item .nav-link {
+    font-size: 15px;
+}
+
+.form-group label, .form-control, .sidebar .nav.sub-menu .nav-item .nav-link {
+    font-size: 14px;
+}
+
+u {
+  font-size: 17px;
+}
+
+/*11 Jan end code css*/

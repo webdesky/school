@@ -7,7 +7,30 @@
           <p class="card-description">
           <!-- <a href="/admin/attendenceList"><button class="btn btn-inverse-dark btn-fw">Attendence List</button></a> -->
           </p>
-         <form class="forms-sample" method="post" action="/admin/Shiftsection" enctype="multipart/form-data">
+
+          <div class="container">
+           
+            <% if(success!=""){ %>
+            <div class="alert alert-success" id="success-alert">
+              <button type="button" class="close" data-dismiss="alert">x</button>
+              <strong><%= success %> </strong>
+              
+            </div>
+              
+           <% 
+          } %>
+          <% if(error!=""){ %>
+            
+             <div class="alert alert-danger" id="danger-alert">
+
+              
+              <button type="button" class="close" data-dismiss="alert">x</button>
+              <strong><%= error %> </strong>
+              
+            </div>
+         <% }  %>
+        </div>
+         <form class="forms-sample" method="post" id="form_shiftsection" action="/admin/Shiftsection" enctype="multipart/form-data">
             <div id="attendence_student">
               <div class="form-group row">
               
@@ -28,14 +51,18 @@
                    <option>Select Section</option>
                  </select>
                 </div>
-<!--                 <label for="exampleInputPassword2" class="col-sm-1 	col-form-label">Date</label>
-                <div class="col-sm-2">
-                 <input type="text" name="attendence_date" id="attendence_date" class="form-control attendence_date" onchange="getStudentAttendence(this.value)">
-                </div> -->
 
               </div>
+
               <br><br><br>
               <div  style="display: none;" id="shiftTable">
+
+                <div class="form-group">
+                <label for="exampleInputPassword2" class="col-sm-1 col-form-label">Check All</label>
+                <div class="col-sm-1">
+                  <input type="checkbox" name=""  id="checkAll"> 
+                </div>
+               </div>
                 
 
                 <table class="display responsive nowrap tableshift" id="myTable" style="width: 100%" >
@@ -64,12 +91,22 @@
                 <div class="form-group">
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
                 <div class="col-sm-2">
-                 <select class="form-control" name="section_id" id="section_id_stop2">
+                 <select class="form-control" name="section_id_stop2" id="section_id_stop2">
                    <option>Select Section</option>
                  </select>
                 </div>
                </div>
 
+                <br><br>
+               <div class="form-group">
+                <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
+                <div class="col-sm-2">
+                 <button type="submit" class="btn btn-success mr-2">Submit</button>
+                 <button class="btn btn-light">Cancel</button>
+                </div>
+               </div>
+ 
+              
 
               </div>
             </div>  
@@ -77,8 +114,7 @@
            
              
             
-            <button type="submit" class="btn btn-success mr-2">Submit</button>
-            <button class="btn btn-light">Cancel</button>
+            
           </form>
         </div>
       </div>
