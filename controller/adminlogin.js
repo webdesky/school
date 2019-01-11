@@ -2980,34 +2980,32 @@ router.get("/get_admin_student_attendance",function(req,res){
 router.get("/getAdminStudentAttendanceReport",function(req,res){
 
    if(req.session.user_role==1){
-		var class_id 	      =  req.query.class_id
-		var section_id 	      =  req.query.section_id
+		 
 		var month             =  req.query.month_id
 		var session_year      =  req.session.session_year; 
 		var year              =  req.query.year; 
 		var student_id        =  {};
-		var table             =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance',tbl_registration:'tbl_registration' };
+		var table             =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tbl_registration:'tbl_registration' };
      	 
-	    var table = {tbl_registration:'tbl_registration',tbl_enroll:'tbl_enroll'};
-	    admin.getstudentlist_by_class(table,{class_id:class_id,session_year:session_year,section_id:section_id},function(err, result){
-		   	var student_list = result;
-			   student_list.forEach(function(item, index){
-			 	 	  student_list[index].attendence=[];
+	    var table = {tbl_attendance:'tbl_attendance',tbl_registration:'tbl_registration'};
+	    admin.getteacherlist_by_attendence(table,{session_year:session_year,month:month,year:year,user_role:4},function(err, result){
+		   	var teacher_list = result;
+			   teacher_list.forEach(function(item, index){
+			 	 	  teacher_list[index].attendence=[];
 			 	 	 
 			 	});
 		  	 n=0;
-		    async.each(student_list, function (item, done) {
+		    async.each(teacher_list, function (item, done) {
 			  	registration_id=item.registration_id;
-	            var table  =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance' };
-	   	        admin.getAdminStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year,month:month},function(err, result1){
+	   	        admin.getAdminTeacherAttendence(table,{session_year:session_year,month:month,year:year,user_role:4,registration_id:registration_id},function(err, result1){
 	   	        	 
-	                   student_list[n].attendence =result1
+	                   teacher_list[n].attendence =result1
 			           n++
 			           done(null);
 			        });    
 	             },function(){
-		              console.log('###############',student_list)
-		              res.send({student_attendance : student_list})
+		              //console.log('###############',teacher_list)
+		              res.send({teacher_attendance : teacher_list})
 		     
 	         });        
          });	
@@ -3361,7 +3359,7 @@ router.get("/getTeacherAttendence", function(req, res){
 
 router.post("/addAttendence", function(req, res){
 
-console.log('bodyyyyyyyyyyyyyyyyyy',req.body);
+//console.log('bodyyyyyyyyyyyyyyyyyy',req.body);
 	if(req.session.user_role==1){
 		var type 				= req.body.attendence;
 		if(type=='student'){
@@ -3445,7 +3443,7 @@ console.log('bodyyyyyyyyyyyyyyyyyy',req.body);
 		}else{
 			var teacher_id  		= req.body.teacher_id;
 			var status 				= req.body.teacher_status;
-			var attendence_date		= moment().format('DD-MM-YYYY');
+			var attendence_date		= moment().format('YYYY-MM-DD');
 			var check  = Array.isArray(teacher_id);
 			if(check==false){
 					var data = {
@@ -3642,7 +3640,7 @@ router.get("/Studymaterial_list", function(req, res){
 router.post("/classRoutine", function(req, res){
   if(req.session.user_role==1){
 
- 		console.log(req.body)
+
     	var class_id            = req.body.class_id;
     	var section_id          = req.body.section_id;
      	var subject_id  		= req.body.subject_id;
@@ -3658,51 +3656,55 @@ router.post("/classRoutine", function(req, res){
  
         postdatas=[];
         rejecteddata=[];
+ 
+         if(typeof(teacher_id)!='undefined'||teacher_id!=' ' || teacher_id!= undefined )
+         {
+         	if(Array.isArray(subject_id))
+	         {
+	             for(var k in subject_id)
+		     	{
+		     		if(teacher_id[k]!='')
+		     		{
+		     		   var data  = {
+		     			class_id 		: class_id,
+		     			section_id		: section_id,
+		     			subject_id  	: subject_id[k],
+		     			registration_id : teacher_id[k],
+		     			day				: day,
+		     			time_start  	: time_start[k],
+		     			time_start_min	: time_start_min[k],
+		     		    starting_ampm	: starting_ampm[k],
+		     			time_end 		: time_end[k],
+		     			time_end_min	: time_end_min[k],
+		     			end_ampm		: end_ampm[k],
+		     			session_year	: req.session.session_year,
+		     			created_date	: created_date
+		     		  }	
+		     		  postdatas.push(data); 
+		     		}
+		     	} 
+	         }
+	         else
+	         {
+	                var data  = {
+		     			class_id 		: class_id,
+		     			section_id		: section_id,
+		     			subject_id  	: subject_id,
+		     			registration_id : teacher_id,
+		     			day				: day,
+		     			time_start  	: time_start,
+		     			time_start_min	: time_start_min,
+		     		    starting_ampm	: starting_ampm,
+		     			time_end 		: time_end,
+		     			time_end_min	: time_end_min,
+		     			end_ampm		: end_ampm,
+		     			session_year	: req.session.session_year,
+		     			created_date	: created_date
+		     		  }	
+		     		  postdatas.push(data); 
+	         }
 
-         if(Array.isArray(subject_id))
-         {
-             for(var k in subject_id)
-	     	{
-	     		if(teacher_id[k]!='')
-	     		{
-	     		   var data  = {
-	     			class_id 		: class_id,
-	     			section_id		: section_id,
-	     			subject_id  	: subject_id[k],
-	     			registration_id : teacher_id[k],
-	     			day				: day,
-	     			time_start  	: time_start[k],
-	     			time_start_min	: time_start_min[k],
-	     		    starting_ampm	: starting_ampm[k],
-	     			time_end 		: time_end[k],
-	     			time_end_min	: time_end_min[k],
-	     			end_ampm		: end_ampm[k],
-	     			session_year	: req.session.session_year,
-	     			created_date	: created_date
-	     		  }	
-	     		  postdatas.push(data); 
-	     		}
-	     	} 
-         }
-         else
-         {
-                var data  = {
-	     			class_id 		: class_id,
-	     			section_id		: section_id,
-	     			subject_id  	: subject_id,
-	     			registration_id : teacher_id,
-	     			day				: day,
-	     			time_start  	: time_start,
-	     			time_start_min	: time_start_min,
-	     		    starting_ampm	: starting_ampm,
-	     			time_end 		: time_end,
-	     			time_end_min	: time_end_min,
-	     			end_ampm		: end_ampm,
-	     			session_year	: req.session.session_year,
-	     			created_date	: created_date
-	     		  }	
-	     		  postdatas.push(data); 
-         }
+         
           
      	
      	 async.eachSeries(postdatas,function(postdata,done){
@@ -3776,6 +3778,12 @@ router.post("/classRoutine", function(req, res){
 					
 				});	  
         });
+     }
+     else
+     {
+     	 req.flash('error',"Select Any tecaher");
+     	 res.redirect("/classRoutine")
+     }
      
     }else{
 	        admin.select(function(err,result){

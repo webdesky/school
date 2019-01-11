@@ -3483,7 +3483,7 @@ function get_teacherlist_attendance()
      var classname = $('#class_id').find(":selected").text();
      var sectionname = $('#section_id_stop').find(":selected").text();
      var month = $('#month_id').find(":selected").val();
-     var year = $('#currentyear').find(":selected").val();
+     var year = $('#year').find(":selected").val();
      if(classid=="")
      {
         alert("Please select Class");
@@ -3505,28 +3505,28 @@ function get_teacherlist_attendance()
             year : year
         },
         success: function(response) {
-            // students= response.student_attendance;
+             
             $('#student_attendance_table tbody').html('');
               $('#student_attendance_table thead').empty();
               days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
-              var student_attendance  = response.student_attendance;
-             if(student_attendance.length>0){ 
+              var teacher_attendance  = response.teacher_attendance;
+             if(teacher_attendance.length>0){ 
               var calendar = '<tr><td>Name  Day-></td>';
               var attendance='<tr>'
-              for (var j= 0; j< student_attendance.length; j++)
+              for (var j= 0; j< teacher_attendance.length; j++)
               {
-                 attendance += '<td>'+student_attendance[j].name+'</td>';
+                 attendance += '<td>'+teacher_attendance[j].name+'</td>';
                 for (var i = 1; i <= days; i++) 
                 { 
                      if(j==0)
                        calendar += '<td>'+i+'</td>';
                      flag=false;
-                     if(student_attendance[j].attendence!=undefined)
+                     if(teacher_attendance[j].attendence!=undefined)
                      {
                        
                        date = year+'-'+month+'-'+ i;
                        date =moment(date).format('YYYY-MM-DD');
-                       stu_attendance= student_attendance[j].attendence;
+                       stu_attendance= teacher_attendance[j].attendence;
                        if(stu_attendance!=undefined)
                        for(var k= 0; k<stu_attendance.length; k++)   
                         { 
