@@ -1594,7 +1594,7 @@ router.get("/transport", function(req, res){
            {
               var $data =JSON.parse(JSON.stringify(result)); 
               console.log($data[0]);
-              var pagedata = {title : "Welcome Admin", pagename : "admin/transport", message : req.flash('msg'),transportdata:$data[0],transport_list:''};
+              var pagedata = {title : "Welcome Admin", pagename : "admin/transport", success: req.flash('success'),error: req.flash('error'),transportdata:$data[0],transport_list:''};
 		      res.render("admin_layout", pagedata);
            }
            });
@@ -1604,7 +1604,7 @@ router.get("/transport", function(req, res){
 	     	var table = 'tbl_transport'
 	     	admin.findAll({table:table},function(err, result){
 			 	var transport_list = result;
-			 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport", message : req.flash('msg'),transport_list :transport_list,transportdata:''};
+			 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport",success: req.flash('success'),error: req.flash('error'),transport_list :transport_list,transportdata:''};
 	                 res.render("admin_layout", pagedata);
 
 			 });
@@ -1624,7 +1624,7 @@ router.get("/transport", function(req, res){
 });
 
 
-router.post("/addTransport", function(req, res){
+router.post("/transport", function(req, res){
  	if(req.session.user_role==1){
 	var route_name          = req.body.route_name;
 	var number_of_vehicle  	= req.body.number_of_vehicle;
@@ -1640,7 +1640,8 @@ router.post("/addTransport", function(req, res){
 
 	      	if(result)
 	      	{
-	      		res.redirect("/transportList");
+                req.flash('success',"Transport route updated successfully"); 
+	      		res.redirect("/transport");
 	      	}
 
 	      });
@@ -1651,15 +1652,15 @@ router.post("/addTransport", function(req, res){
 	        if(result)
 			{
 				//var data = JSON.parse(JSON.stringify(result[0]));
-				 console.log(result);
-				 var table = 'tbl_transport'
-				 admin.findAll({table:table},function(err, result){
+				//console.log(result);
+				var table = 'tbl_transport'
+				admin.findAll({table:table},function(err, result){
 				 	var transport_list = result;
-				 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport_list", message : req.flash('msg'),transport_list :transport_list};
+                    req.flash('success',"Transport route added successfully");  
+				 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport", success: req.flash('success'),error: req.flash('error'),transport_list :transport_list,transportdata:''};
 		                 res.render("admin_layout", pagedata);
 
 				 });
-				
 			}
 			else
 			{
@@ -1684,7 +1685,7 @@ router.get("/transportList", function(req, res){
 	 var table = 'tbl_transport'
 			 admin.findAll({table:table},function(err, result){
 			 	var transport_list = result;
-			 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport_list", message : req.flash('msg'),transport_list :transport_list};
+			 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport_list",success: req.flash('success'),error: req.flash('error'),transport_list :transport_list};
 	                 res.render("admin_layout", pagedata);
 
 			 });
