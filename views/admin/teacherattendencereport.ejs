@@ -1,0 +1,104 @@
+<style type="text/css">
+	.Attendence-select{
+	position: relative;
+	}
+	.table-responsive .select{
+		position: absolute;
+		transform: translateX(-50%) translateY(-50%);
+		left: 50%;
+		top: 15%;
+		width: 460px;
+		z-index: 9999;
+	}
+	.select select{
+		width: 120px!important;
+		float: left;
+		height: 32px;
+		margin: 0px 25px 0px 5px!important;
+		border: 1px solid #ccc;
+		background-color: #fff;
+	}
+</style>
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body Attendence-select">
+			<h2 class="card-title"><b><u>Attendence</u></b></h2>
+			<p class="card-description">
+				<a href="#"><button class="btn btn-inverse-dark btn-fw">Attendence</button></a>
+				
+			</p>
+			<div class="table-responsive">
+				<div class="">
+					<form class="form-inline" action="/action_page.php">
+					  <div class="form-group" style="width: 100%;">
+                       
+                         
+
+                        <label class="col-sm-1 col-form-label" for="email">Month</label>
+                        <div class="col-sm-2">
+						    <select class="form-control" id="month_id" onchange="get_teacherlist_attendance()">
+						    <%  Object.keys(month).forEach(function (key){ %>
+						    	<option value="<%= key %>"><%= month[key] %></option>
+						    	
+						    <% }) %>
+						    </select>
+					     </div>
+
+						<label class="col-sm-1 col-form-label" for="pwd">Year</label>
+					    <div class="col-sm-1">
+						    <select class="form-control" id="currentyear" name="year" onchange="get_teacherlist_attendance()"> 
+						    	<option value="<%= year %>"><%= year %></option>
+						    	<option value="<%= nextyear %>"><%= nextyear %></option>
+						    	
+						    </select>
+					    </div>
+					  </div>
+					</form>
+				</div>
+				<br><br>
+				<div class="clearfix"></div>
+				 
+                 <div id="attendance" style="display: none;">
+					<h2>Attendance Report </h2>
+					<div class="table-responsive">
+						<table class="table table-bordered" id="student_attendance_table">
+							<thead>
+								<!-- <tr>
+									<th>
+										#
+									</th>
+									
+									<th>
+										Class Name
+									</th>	
+									
+									<th>
+										Subject Name 
+									</th>
+									<th>
+										Title 
+									</th>
+									<th>
+										Description
+									</th>
+									<th>File</th>
+									
+									
+								</tr> -->
+							</thead>
+							<tbody>
+							
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+			  </div>
+			</div>
+			 
+			
+					
+		</div>
+	</div>
+</div>

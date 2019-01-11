@@ -9,9 +9,8 @@
           </p>
           
           <form class="forms-sample" method="post" action="/addAttendence" enctype="multipart/form-data">
-            <div class="col-sm-12">
+          <div class="col-sm-12">
             <div class="form-group row">
-             
               <div class="col-sm-2">
                 <div class="form-radio abc" id="stud">
                   <label class="form-check-label">
@@ -31,6 +30,10 @@
           </div>
             <div id="attendence_student">
               <div class="form-group row ">
+                <div class="col-md-12" align="left">
+                 <a href="/admin/studentattendencereport"><span class="btn btn-primary">Attendence Report</span></a>
+                </div>
+                <br/><br/>
               
                 <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
                 <div class="col-sm-2">
@@ -55,6 +58,7 @@
               </div>
               <br><br><br>
               <div  style="display: none;" id="attendenceTable">
+
                 <div class="col-sm-12" align="center">
                   <span class="btn btn-primary" onclick="setStatus('1')">Mark All Present</span>
                   <span class="btn btn-primary" onclick="setStatus('2')">Mark All Absent</span>
@@ -88,6 +92,10 @@
               </div>
             </div>  
             <div id="attendence_teacher" style="display: none">
+               <div class="col-md-12" align="left">
+                 <a href="/admin/teacherattendencereport"><span class="btn btn-primary">Attendance Report</span></a>
+                </div>
+                <br/><br/>
               <table class="display responsive nowrap"  style="width: 100%" >
                <div class="col-sm-12" align="center">
                   <span class="btn btn-primary" onclick="setStatus('1')">Mark All Present</span>

@@ -41,7 +41,8 @@ router.get("/",function(req,res){
 		}else
 		{
 	        admin.select(function(err,result){
-	           res.render('admin/index');
+
+	           res.render('admin/index',{error : req.flash('msg')});
 		 	});
 	 	}
 });
@@ -95,16 +96,16 @@ router.post("/", function(req, res){
 			}
 			else
 			{
-				console.log('This password is incorrect');
+				console.log('This password is incorrect aaaaaa');
 				req.flash("msg", "This password is incorrect");
-				res.redirect("/adminlogin");	
+				res.redirect("admin/index");	
 			}
 		}
 		else
 		{
 			console.log('This username is incorrect');
 			req.flash("msg", "This username and password is incorrect");
-			res.redirect("/adminlogin");
+			res.redirect("admin/index");
 		}
 	});
 });
@@ -212,16 +213,18 @@ router.post("/dashboard", function(req, res){
 			}
 			else
 			{
-				console.log('This password is incorrect');
+				//console.log('This password is incorrectbbbbbbbb');
 				req.flash("msg", "This password is incorrect");
-				res.redirect("/adminlogin");	
+				 var pagedata = {title : "", pagename : "admin/index", error : req.flash('msg')};
+				res.render("admin/index",pagedata);	
 			}
 		}
 		else
 		{
 			console.log('This username is incorrect');
 			req.flash("msg", "This username and password is incorrect");
-			res.redirect("/");
+			res.render("admin/index");	
+			//res.redirect("/");
 		}
 	});
 });
@@ -248,7 +251,7 @@ router.get("/dashboard", function(req, res){
 	    }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	 	}
@@ -520,7 +523,7 @@ router.post("/registration", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -564,7 +567,7 @@ router.get("/classsection_studentList", function(req, res)
 		});
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 }); 
 /* To get student without bonafied */
@@ -605,7 +608,7 @@ router.get("/All_studentList", function(req, res)
 		});
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 }); 
 
@@ -674,7 +677,7 @@ router.get("/get_studentDetail", function(req, res)
 	 
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 }); 
 
@@ -743,7 +746,7 @@ router.get("/get_bonafidestudentDetail", function(req, res)
 	 
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 }); 
 
@@ -761,7 +764,7 @@ router.get("/Shiftsection", function(req, res){
 
     }
      else{
-            res.render('admin/index');
+            res.render('admin/index',{error : req.flash('msg')});
     }
 });
 
@@ -861,7 +864,7 @@ router.get("/classsection_promotion", function(req, res)
 		});
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -883,16 +886,14 @@ router.get("/promotion",function(req,res){
    }
    else{
 	        admin.select(function(err,result){
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		 	});
 	}
 });
 router.post("/promotion", function(req, res){
 	if(req.session.user_role==1)
 	{
-
         object=req.body;  
-
         if(object.hasOwnProperty("chk_enroll_id")) 
         {
          if(req.body.chk_enroll_id.length>0)
@@ -900,42 +901,46 @@ router.post("/promotion", function(req, res){
 	      	
 				var class_id  			= req.body.teacher_class_id;
 				var section_id  			= req.body.teacher_section_id;
-				var students = req.body.chk_enroll_id;
+				var students =  req.body.chk_enroll_id;
 		        var sessions = req.body.session_year;
-		        console.log(students);
-		        //return false;
-		        
 		        data={};
 		        var key = 'toupdate';
 		        data[key] = []; // empty Array, which you can push() values into
+		        if(Array.isArray(students))
+		        {
+		          for(i=0;i<students.length;i++)
+					{
+						str ={enroll_id:students[i],class_id:class_id,section_id:section_id ,session_year:sessions[i]};
+			            data[key].push(str); 			
+					}	
+		        }
+		        else
+		        {
+		        	str ={enroll_id:students,class_id:class_id,section_id:section_id ,session_year:sessions};
+			        data[key].push(str); 	
+		        }
 		        
-		        for(i=0;i<students.length;i++)
-				{
-					str ={enroll_id:students[i],class_id:class_id,section_id:section_id ,session_year:sessions[i]};
-		            data[key].push(str); 			
-				}
-				console.log(data);
 				 
 				data= data.toupdate;
+                 
 		        n=0;
 				async.each(data, function (item, done) {
 					var tableobj = {tablename:'tbl_enroll'}; 
 					var where= {enroll_id:data[n].enroll_id};
+					
 					admin.updateWhere(tableobj,where,data[n], function(err, result){
-						
 						 done(null);
-						
 					});
 					 n++; 
 		 		}, function(){
 		 		       res.redirect('/promotion');
 		                     //res.send({student_bonafide: JSON.parse(JSON.stringify(student_list[0])) });
 				});
-
 	      }
 	    }
 	    else
         {
+
             res.redirect('/promotion');
         } 
 
@@ -943,7 +948,7 @@ router.post("/promotion", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1049,7 +1054,7 @@ router.get("/Registration", function(req, res){
 		  }else{
 		        admin.select(function(err,result){
 		     
-			    res.render('admin/index');
+			    res.render('admin/index',{error : req.flash('msg')});
 				  
 			 	});
 		}
@@ -1111,7 +1116,7 @@ router.get("/bonafide",function(req,res){
 	else
 	{
         admin.select(function(err,result){
-           res.render('admin/index');
+           res.render('admin/index',{error : req.flash('msg')});
 		});
 	}
  
@@ -1172,7 +1177,7 @@ router.get("/bonafideList", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1191,7 +1196,7 @@ router.get("/class", function(req, res){
          admin.findWhere(tableobj,findObj,function(err,result){
           
           $data=JSON.parse(JSON.stringify(result));
-          var pagedata = {title : "Welcome Admin", pagename : "admin/class", message : req.flash('msg'),classdata:$data[0],class_list:''};   	
+          var pagedata = {title : "Welcome Admin", pagename : "admin/class", success: req.flash('success'),error: req.flash('error'),classdata:$data[0],class_list:''};   	
           res.render("admin_layout", pagedata)
          });
 	  }
@@ -1200,7 +1205,7 @@ router.get("/class", function(req, res){
 	  	var table = 'tbl_class'
 		admin.findAll({table:table},function(err, result){
 			var class_list = result;
-			var pagedata = {title : "Welcome Admin", pagename : "admin/class", message : req.flash('msg'),class_list :class_list,classdata:''};
+			var pagedata = {title : "Welcome Admin", pagename : "admin/class", success: req.flash('success'),error: req.flash('error'),class_list :class_list,classdata:''};
 		    res.render("admin_layout", pagedata);
 
 		});
@@ -1212,7 +1217,7 @@ router.get("/class", function(req, res){
 	else
 	{
         admin.select(function(err,result){
-           res.render('admin/index');
+           res.render('admin/index',{error: req.flash('error')});
 		});
 	}
 
@@ -1242,7 +1247,7 @@ router.post("/delete", function(req, res){
     {
 	        //admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	//});
 	}
@@ -1257,7 +1262,7 @@ router.post("/delete", function(req, res){
 	// }else{
 	//         admin.select(function(err,result){
 	     
-	// 	    res.render('admin/index');
+	// 	    res.render('admin/index',{error : req.flash('msg')});
 			  
 	// 	 	});
 	// }
@@ -1267,7 +1272,7 @@ router.post("/delete", function(req, res){
 
 
 
-router.post("/addClass", function(req, res){
+router.post("/Class", function(req, res){
  	if(req.session.user_role==1)
 	{
 	  var name          = req.body.name;
@@ -1285,9 +1290,9 @@ router.post("/addClass", function(req, res){
            var table = 'tbl_class'
 				 admin.findAll({table:table},function(err, result){
 				 	var class_list = result;
-				 	var pagedata = {title : "Welcome Admin", pagename : "admin/class_list", message : req.flash('msg'),class_list :class_list};
+				 	req.flash('success','Record updated successfully')
+				 	var pagedata = {title : "Welcome Admin", pagename : "admin/class_list", success : req.flash('success'), error : req.flash('error'),class_list :class_list};
 		                 res.render("admin_layout", pagedata);
-
 				 });   
 		  }
         });
@@ -1295,35 +1300,50 @@ router.post("/addClass", function(req, res){
 	  }
 	  else
 	  {
-	  	 admin.insert_class({ name : name,numeric_value:numeric_value,created_at :created_at}, function(err, result){
-          
-	 
-
-			if(result)
-			{
-				//var data = JSON.parse(JSON.stringify(result[0]));
-				 console.log(result);
-				 var table = 'tbl_class'
-				 admin.findAll({table:table},function(err, result){
-				 	var class_list = result;
-				 	var pagedata = {title : "Welcome Admin", pagename : "admin/class_list", message : req.flash('msg'),class_list :class_list};
-		                 res.render("admin_layout", pagedata);
-
-				 });
-				
-			}
-			else
-			{
-				console.log('This username is incorrect');
-				req.flash("msg", "This username and password is incorrect");
-				res.redirect("/");
-			}
-	      });
+	  	$data={class_name:name};
+	  	admin.findWhere({tablename:'tbl_class'},{class_name : name},function(err, result){
+	  	 if(result.length>0)
+	  	 {
+	  	   //console.log('already exist')
+           req.flash('error','Class already exist')
+           
+           var  pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:$data,class_list:''};   	
+                 res.render("admin_layout", pagedata);
+          	  			
 	  	 }
+	  	 else
+	  	 {
+   
+            admin.insert_class({ class_name : name,class_abbreviations:numeric_value,created_at :created_at}, function(err, result){
+			 if(result)
+				{
+					//var data = JSON.parse(JSON.stringify(result[0]));
+					 console.log(result);
+					 var table = 'tbl_class'
+					 admin.findAll({table:table},function(err, result){
+					 	var class_list = result;
+					 	req.flash('success','Class added successfully')
+					 	var pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:"",class_list :class_list};
+			                 res.render("admin_layout", pagedata);
+
+					 });
+					
+				}
+				else
+				{
+					console.log('This username is incorrect');
+					req.flash("msg", "This username and password is incorrect");
+					res.redirect("/");
+				}
+		      });
+
+	  	 }
+ 		});
+  	  }
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1342,7 +1362,7 @@ router.get("/classList", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1396,7 +1416,7 @@ router.get("/section", function(req, res){
 	 }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1450,7 +1470,7 @@ router.post("/addSection", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1469,7 +1489,7 @@ router.get("/sectionList", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1511,7 +1531,7 @@ router.get("/transport", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1567,7 +1587,7 @@ router.post("/addTransport", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1585,7 +1605,7 @@ router.get("/transportList", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1624,7 +1644,7 @@ router.get("/dormitory", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1679,7 +1699,7 @@ router.post("/addDormitory", function(req, res){
      }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1697,7 +1717,7 @@ router.get("/dormitoryList", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1718,7 +1738,7 @@ router.get("/getSection", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1743,7 +1763,7 @@ router.get("/getSubject", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -1758,15 +1778,10 @@ router.get("/logout", function(req, res){
 
 router.get("/studentList", function(req, res){
 	if(req.session.user_role==1){
-		
 		var class_id =req.query.class_id
 	    var table = {tablename:'tbl_registration'};
-	    
-        
-
-	    admin.findAll({table:'tbl_class'},function(err, result){
+        admin.findAll({table:'tbl_class'},function(err, result){
 		    var class_list 	 = result;
-		    //console.log(class_list);	
 			 admin.findWhere(table,{user_role:'3'},function(err, result){
 			 	var student_list = result;
 			 	var pagedata 	 = {title : "Welcome Admin", pagename : "admin/student_list", message : req.flash('msg'),student_list :student_list,class_list:class_list};
@@ -1777,7 +1792,7 @@ router.get("/studentList", function(req, res){
 		});	 
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -1794,7 +1809,7 @@ router.get("/teacherList", function(req, res){
 			});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 router.get("/teacherDetail", function(req, res){
@@ -1824,7 +1839,7 @@ router.get("/teacherDetail", function(req, res){
 		  });	   
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -1882,7 +1897,7 @@ router.get("/accountantList", function(req, res){
 			});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -1912,7 +1927,7 @@ router.get("/accountantDetail", function(req, res){
 		  });	   
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -1969,7 +1984,7 @@ router.get("/librarianList", function(req, res){
 			});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -1999,7 +2014,7 @@ router.get("/librarianDetail", function(req, res){
 		  });	   
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -2073,7 +2088,7 @@ router.get("/Subject", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2120,7 +2135,7 @@ router.post("/addSubject", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2147,7 +2162,7 @@ router.get("/classsection_subjectList", function(req, res){
 	  
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -2169,7 +2184,7 @@ router.get("/subjectList", function(req, res){
 	  
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -2236,7 +2251,7 @@ router.get("/AssignTeacher", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2263,7 +2278,7 @@ router.get("/class_teacherList", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2284,7 +2299,7 @@ router.get("/classRoutine", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2308,7 +2323,7 @@ router.get("/getAllData", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2372,7 +2387,7 @@ router.post("/add_assignTeacher", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2396,7 +2411,7 @@ router.get("/assignteacher_list", function(req, res){
 			});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -2415,7 +2430,7 @@ router.get("/homeworkList", function(req, res){
 			});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -2440,7 +2455,7 @@ router.get("/HomeWork", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2503,7 +2518,7 @@ router.post("/addHomeWork", function(req, res){
      }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2596,7 +2611,7 @@ router.get("/getsubjTeach", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2611,8 +2626,8 @@ router.get("/getclassroutine", function(req, res){
 		var class_id   = req.query.class_id
 		var section_id = req.query.section_id
 		var day = req.query.day
-         console.log(class_id);
-         return false;
+         //console.log(class_id);
+         //return false;
 
 	    var table = {tablename:'tbl_subject'};
         
@@ -2692,7 +2707,7 @@ router.get("/getclassroutine", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2743,11 +2758,227 @@ router.get("/attendence", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
 });
+
+/* 
+*** Get Student Attendence Report 
+*/
+router.get("/studentattendencereport",function(req,res){
+   	if(req.session.user_role==1){
+
+  		var parent_id = req.session.uid;
+  		var month     = {
+  			'1' : 'January',
+  			'2' : 'February',
+  			'3' : 'March',
+  			'4' : 'April',
+  			'5' : 'May',
+  			'6' : 'June',
+  			'7' : 'July',
+  			'8' : 'August',
+  			'9' : 'September',
+  			'10': 'October',
+  			'11': 'November',
+  			'12': 'December'
+
+  		}
+  		var session_year         = req.session.session_year; 
+  		var y 					 = session_year.split("-");
+  		var year                 = y[0];
+  		var nextyear                 = y[1];
+  		var tableobj = {tablename:'tbl_registration'};
+     
+    	var class_id =req.query.class_id
+	    var table = {tablename:'tbl_registration'};
+        admin.findAll({table:'tbl_class'},function(err, result){
+		    var class_list 	 = result;
+			 	var pagedata 	 = {title : "Welcome Admin", pagename : "admin/studentattendencereport", message : req.flash('msg'),student_information :"",class_list:class_list,month:month,year:year,nextyear:nextyear};
+	            res.render("admin_layout", pagedata);
+		});
+		
+	}else{
+	        admin.select(function(err,result){
+	     
+		    res.render('admin/index',{error : req.flash('msg')});
+			  
+		 	});
+	}
+});
+
+router.get("/get_admin_student_attendance",function(req,res){
+
+   if(req.session.user_role==1){
+		var class_id 	      =  req.query.class_id
+		var section_id 	      =  req.query.section_id
+		var month             =  req.query.month
+		var session_year      =  req.session.session_year; 
+		var registration_id   =  req.query.registration_id;
+		var student_id        =  {};
+		var table             =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance' };
+     	admin.getAdminStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year,month:month},function(err, result1){
+									//console.log('sas',result1)
+		  	if(result1==undefined || result1==''){
+		  		   student_id['attendence'] = '';
+		  	}else{
+		  		   student_id['attendence'] = result1[0].status;
+		  	}
+		  var attendance= result1;
+		  //console.log('attendence',result1);
+		  res.send({student_attendance : result1})
+		});
+ 	}else{
+        admin.select(function(err,result){
+		    res.render('admin/index',{error : req.flash('msg')});
+	 	});
+	}
+});
+
+
+/* Get Report of attendance for All student */
+router.get("/getAdminStudentAttendanceReport",function(req,res){
+
+   if(req.session.user_role==1){
+		var class_id 	      =  req.query.class_id
+		var section_id 	      =  req.query.section_id
+		var month             =  req.query.month_id
+		var session_year      =  req.session.session_year; 
+		var year              =  req.query.year; 
+		var student_id        =  {};
+		var table             =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance',tbl_registration:'tbl_registration' };
+     	 
+	    var table = {tbl_registration:'tbl_registration',tbl_enroll:'tbl_enroll'};
+	    admin.getstudentlist_by_class(table,{class_id:class_id,session_year:session_year,section_id:section_id},function(err, result){
+		   	var student_list = result;
+			   student_list.forEach(function(item, index){
+			 	 	  student_list[index].attendence=[];
+			 	 	 
+			 	});
+		  	 n=0;
+		    async.each(student_list, function (item, done) {
+			  	registration_id=item.registration_id;
+	            var table  =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance' };
+	   	        admin.getAdminStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year,month:month},function(err, result1){
+	   	        	 
+	                   student_list[n].attendence =result1
+			           n++
+			           done(null);
+			        });    
+	             },function(){
+		              console.log('###############',student_list)
+		              res.send({student_attendance : student_list})
+		     
+	         });        
+         });	
+ 	}else{
+        admin.select(function(err,result){
+		    res.render('admin/index',{error : req.flash('msg')});
+	 	});
+	}
+});
+
+
+/* ********************************** */
+
+
+
+/* 
+*** Get Student Attendence Report 
+*/
+router.get("/teacherattendencereport",function(req,res){
+   	if(req.session.user_role==1){
+
+  		var parent_id = req.session.uid;
+  		var month     = {
+  			'1' : 'January',
+  			'2' : 'February',
+  			'3' : 'March',
+  			'4' : 'April',
+  			'5' : 'May',
+  			'6' : 'June',
+  			'7' : 'July',
+  			'8' : 'August',
+  			'9' : 'September',
+  			'10': 'October',
+  			'11': 'November',
+  			'12': 'December'
+
+  		}
+  		var session_year         = req.session.session_year; 
+  		var y 					 = session_year.split("-");
+  		var year                 = y[0];
+  		var nextyear                 = y[1];
+  		var tableobj = {tablename:'tbl_registration'};
+
+
+  		
+     
+    	var class_id =req.query.class_id
+	    var table = {tablename:'tbl_registration'};
+        admin.findAll({table:'tbl_class'},function(err, result){
+		    var class_list 	 = result;
+			 	var pagedata 	 = {title : "Welcome Admin", pagename : "admin/teacherattendencereport", message : req.flash('msg'),student_information :"",class_list:class_list,month:month,year:year,nextyear:nextyear};
+	            res.render("admin_layout", pagedata);
+		});
+		
+	}else{
+	        admin.select(function(err,result){
+	     
+		    res.render('admin/index',{error : req.flash('msg')});
+			  
+		 	});
+	}
+});
+
+/* Get Report of attendance for All student */
+router.get("/getAdminTeacherAttendanceReport",function(req,res){
+
+   if(req.session.user_role==1){
+		//var class_id 	      =  req.query.class_id
+		//var section_id 	      =  req.query.section_id
+		var month             =  req.query.month_id
+		var session_year      =  req.session.session_year; 
+		var year              =  req.query.year; 
+		//var student_id        =  {};
+
+     	 
+	    var table = {tbl_registration:'tbl_registration',tbl_enroll:'tbl_enroll'};
+	    admin.getteacherlist_by_attendence(table,{session_year:session_year,user_role:4},function(err, result){
+	    	 
+             
+		   	var teacher_list = result;
+			   teacher_list.forEach(function(item, index){
+			 	 	  teacher_list[index].attendence=[];
+			 	});
+		  	 n=0;
+		    async.each(teacher_list, function (item, done) {
+			  	registration_id=item.registration_id;
+	            var table  =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance' };
+	   	        admin.getAdminStudentAttendence(table,{class_id:class_id,section_id:section_id,registration_id:registration_id,session_year:session_year,month:month},function(err, result1){
+	   	        	 
+	                   student_list[n].attendence =result1
+			           n++
+			           done(null);
+			        });    
+	             },function(){
+		              console.log('###############',student_list)
+		              res.send({student_attendance : student_list})
+		     
+	         });        
+         });	
+ 	}else{
+        admin.select(function(err,result){
+		    res.render('admin/index',{error : req.flash('msg')});
+	 	});
+	}
+});
+
+
+
+/* ****************************** */
 
 router.get("/academic_syllabus", function(req, res){
 	if(req.session.user_role==1){
@@ -2790,7 +3021,7 @@ router.get("/academic_syllabus", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2860,7 +3091,7 @@ router.post("/addAcademicSyllabus", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2880,7 +3111,7 @@ router.get("/academicSyllabus_list", function(req, res){
 			});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -2890,7 +3121,7 @@ router.get("/getStudentAttendence", function(req, res){
 		
 		var class_id   			= req.query.class_id
 		var section_id 			= req.query.section_id
-		var attendence_date		= req.query.attendence_date
+		var attendence_date		= moment(req.query.attendence_date).format('YYYY-MM-DD');//req.query.attendence_date
 		var session_year	    = req.session.session_year
        // console.log(req.query);
 
@@ -2901,14 +3132,11 @@ router.get("/getStudentAttendence", function(req, res){
         	var n 			= 0;    
 			admin.getStudent(table,{class_id:class_id,section_id:section_id,session_year:session_year},function(err, result){
 						var student_id  = result;
+
 						console.log(student_id)
 						async.each(student_id, function (item, done) {
 
-						 		//console.log(item.registration_id)
-						 		
-						 //		var tbl_attendence = {tablename : 'tbl_attendance'}
-
-								admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:item.registration_id,session_year:session_year},function(err, result1){
+						  	admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:item.registration_id,session_year:session_year},function(err, result1){
 									console.log('sas',result1)
 								  	if(result1==undefined || result1==''){
 								  		   student_id[n].attendence='';
@@ -2922,7 +3150,7 @@ router.get("/getStudentAttendence", function(req, res){
 								});
 						}, function(){
 
-					//	console.log(student_id)
+					 	console.log("##############",student_id)
 						res.send(student_id)
 					
 						});
@@ -2934,7 +3162,7 @@ router.get("/getStudentAttendence", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -2987,29 +3215,31 @@ router.get("/getTeacherAttendence", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
 });
 
 router.post("/addAttendence", function(req, res){
+
+console.log('bodyyyyyyyyyyyyyyyyyy',req.body);
 	if(req.session.user_role==1){
 		var type 				= req.body.attendence;
 		if(type=='student'){
 			var class_id  			= req.body.class_id;
 			var section_id 			= req.body.section_id;
-			var attendence_date		= req.body.attendence_date;
-			var student_id			= parseInt(req.body.student_id);
+			var attendence_date		= moment(req.body.attendence_date).format('YYYY-DD-MM');
+ 			var student_id			= req.body.student_id;
 			var status				= req.body.status;
 			var session_year	    = req.session.session_year;
-			var check  = Array.isArray(student_id);
+			var check               = Array.isArray(student_id);
 			if(check==false){
 				var data = {
 						class_id 		: class_id,
 						section_id		: section_id,
 						attendence_date	: attendence_date,
-						registration_id : student_id,
+						registration_id : parseInt(student_id),
 						status		    : status,
 						created_date 	: moment().format('YYYY-MM-DD:hh:mm:ss'),
 						session_year	: req.session.session_year,
@@ -3017,9 +3247,8 @@ router.post("/addAttendence", function(req, res){
 					}
 
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
-					
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id,session_year:session_year},function(err, result1){
-		  				console.log('abcbdsdd',result1);
+		  				//console.log('abcbdsdd',result1);
 		  				if(result1=='' || result1==undefined){
 		  					
 		  				}else{
@@ -3029,11 +3258,8 @@ router.post("/addAttendence", function(req, res){
 				            admin.deletewhere(table,findObj,function(err,result){
 	                        });
 		  				}
-
-		  				
 		  			});
-
-		  			
+		  			 
 		  			admin.insert_all(table,data,function(err, result){
 			  			
 			  		});
@@ -3044,15 +3270,16 @@ router.post("/addAttendence", function(req, res){
 						class_id 		: class_id,
 						section_id		: section_id,
 						attendence_date	: attendence_date,
-						registration_id : student_id[k],
-						status		    : status[k],
+						registration_id : parseInt(student_id[k]),
+						status		    : parseInt(status[k]),
 						created_date 	: moment().format('YYYY-MM-DD:hh:mm:ss'),
 						session_year	: req.session.session_year,
 						user_role		: 3
 					}
 
+					 
+
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
-					
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id[k]},function(err, result1){
 		  				console.log(result1);
 		  				if(result1=='' || result1==undefined){
@@ -3068,7 +3295,7 @@ router.post("/addAttendence", function(req, res){
 		  				
 		  			});
 
-		  			console.log('avbc',data);return false;
+		  			//console.log('avbc',data);return false;
 		  			admin.insert_all(table,data,function(err, result){
 			  			
 			  		});
@@ -3158,7 +3385,7 @@ router.post("/addAttendence", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3185,7 +3412,7 @@ router.get("/study_material", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3246,7 +3473,7 @@ router.post("/addStudyMaterial", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3267,7 +3494,7 @@ router.get("/Studymaterial_list", function(req, res){
 			});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -3415,7 +3642,7 @@ router.post("/classRoutine", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3493,7 +3720,7 @@ router.get("/classRoutineClone", function(req, res){
      
     }else{
 	        admin.select(function(err,result){
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		 	});
 	}
 });
@@ -3513,7 +3740,7 @@ router.get("/classroutineList", function(req, res){
 			
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -3564,7 +3791,7 @@ router.post("/classroutineList", function(req, res){
 			
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -3600,7 +3827,7 @@ router.get("/exam", function(req, res){
 		});
     }else{
 	        admin.select(function(err,result){
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		 	});
 	}
 });
@@ -3675,7 +3902,7 @@ router.post("/exam", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3698,7 +3925,7 @@ router.get("/exam_list", function(req, res){
 	      
 		   dmin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 		
@@ -3726,7 +3953,7 @@ router.get("/sheet_Formats", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3874,7 +4101,7 @@ router.post("/sheet_Formats", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3897,7 +4124,7 @@ router.get("/exam_schedule", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3942,7 +4169,7 @@ router.post("/add_exam_schedule", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -3961,7 +4188,7 @@ router.get("/exam_schedule_list", function(req, res){
 			
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		
 	}
 });
@@ -4009,7 +4236,7 @@ router.get("/exam_grades", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4083,7 +4310,7 @@ router.post("/exam_grades", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4101,7 +4328,7 @@ router.get("/exam_grades_list", function(req, res){
 
 
 	}else{
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -4125,7 +4352,7 @@ router.get("/getAllExamData", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4154,7 +4381,7 @@ router.get("/getAllExamName", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4177,7 +4404,7 @@ router.get("/getSecheduledExamName", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4198,7 +4425,7 @@ router.get("/manage_marks", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4285,7 +4512,7 @@ router.post("/add_manage_marks", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4309,7 +4536,7 @@ router.get("/getMarksExamNameList", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4384,7 +4611,7 @@ router.get("/getTabulateMarksList",function(req,res){
  	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4539,7 +4766,7 @@ router.get("/getMarsksheet",function(req,res){
  	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4561,7 +4788,7 @@ router.get("/tabulation_sheet", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4634,7 +4861,7 @@ router.get("/getStudentAllDetail", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4663,7 +4890,7 @@ router.get("/QuestionPaper", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4723,7 +4950,7 @@ router.post("/QuestionPaper", function(req, res){
      }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4748,7 +4975,7 @@ router.get("/sendmarks", function(req, res){
 		});
     }else{
 	        admin.select(function(err,result){
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		 	});
 	}
 });
@@ -4814,7 +5041,7 @@ router.post("/sendmarks", function(req, res){
      		 
     }else{
 	        admin.select(function(err,result){
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 		 	});
 	}
 });
@@ -4846,7 +5073,7 @@ router.get("/user_rights", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4871,7 +5098,7 @@ router.get("/matchperentdetail", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4893,7 +5120,7 @@ router.get("/setting", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4961,7 +5188,7 @@ router.post("/setting", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -4998,7 +5225,7 @@ router.get("/sendmessage", function(req, res){
 		});
     }else{
 	       admin.select(function(err,result){
-		      res.render('admin/index');
+		      res.render('admin/index',{error : req.flash('msg')});
   	 	   });
 	}
 });
@@ -5105,7 +5332,7 @@ router.post("/sendmessage",function(req,res){
  	{
 
         admin.select(function(err,result){
-		      res.render('admin/index');
+		      res.render('admin/index',{error : req.flash('msg')});
   	 	   });
  	}
 });
@@ -5128,7 +5355,7 @@ router.get("/bulkimport",function(req,res){
 	else
 	{
         admin.select(function(err,result){
-		      res.render('admin/index');
+		      res.render('admin/index',{error : req.flash('msg')});
   	 	   });
 	}   
 });
@@ -5786,7 +6013,7 @@ router.post("/frontend_setting", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -5822,7 +6049,7 @@ router.get("/accounting_fee_type", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -5848,7 +6075,7 @@ router.get("/get_student_by_class_id", function(req, res)
 		});
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -5902,7 +6129,7 @@ router.post("/add_fee_type", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -5920,7 +6147,7 @@ router.get("/fees_type_list", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -5959,7 +6186,7 @@ router.get("/accounting_term", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6018,7 +6245,7 @@ router.post("/add_fee_term", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6037,7 +6264,7 @@ router.get("/fees_term_list", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6088,7 +6315,7 @@ router.get("/fee_structure", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6148,7 +6375,7 @@ router.post("/add_fees_structure", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6166,7 +6393,7 @@ router.get("/fees_structure_list", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6193,7 +6420,7 @@ router.get("/get_fess_tt", function(req, res)
 		});
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -6229,7 +6456,7 @@ router.get("/student_payment", function(req, res){
 	}else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6316,7 +6543,7 @@ router.get("/ajax_get_student_fees", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -6341,7 +6568,7 @@ router.get("/ajax_get_transport_fees", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 // pay fees detail
@@ -6417,7 +6644,7 @@ router.get("/get_payment_data", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -6679,7 +6906,7 @@ router.get("/pay_fees", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -6726,7 +6953,7 @@ router.get("/insert_transport_payment", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -6824,7 +7051,7 @@ router.get("/payment_report", function(req, res){
     }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 			  
 		 	});
 	}
@@ -6935,7 +7162,7 @@ router.get("/ajax_get_payment_receipt_data", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -6961,7 +7188,7 @@ router.get("/get_receipt_detail", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -6986,7 +7213,7 @@ router.get("/get_transport_detail", function(req, res)
 		
      }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -7018,7 +7245,7 @@ router.get("/website",function(req,res){
 		});
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 router.post("/add_rights", function(req, res)
@@ -7083,7 +7310,7 @@ router.post("/add_rights", function(req, res)
         
     }else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 
 });
@@ -7110,7 +7337,7 @@ router.get("/noticeBoard",function(req,res){
             }
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -7133,7 +7360,7 @@ router.get("/Events",function(req,res){
             }
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -7149,7 +7376,7 @@ router.get("/Formative",function(req,res){
 			res.render('admin/formative');
 	}else{
 	      
-		    res.render('admin/index');
+		    res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 

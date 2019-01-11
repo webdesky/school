@@ -44,8 +44,9 @@
 					  </div>
 					  <div class="form-group">
 					    <label for="pwd">Year</label>
-					    <select class="form-control" disabled="disabled">
+					    <select class="form-control" id="currentyear" name="year"> 
 					    	<option value="<%= year %>"><%= year %></option>
+					    	<option value="<%= nextyear %>"><%= nextyear %></option>
 					    	
 					    </select>
 					  </div>
@@ -114,7 +115,7 @@
 								<%= data.phone %>
 							</td>
 							<td>
-								<a href="#"  onclick="get_parent_student_attendance('<%= data.class_id  %>','<%= data.section_id  %>','<%= data.registration_id  %>')" class="btn btn-sm btn-primary">View</a>
+								<a href="javascript:void(0)"  onclick="get_parent_student_attendance('<%= data.class_id  %>','<%= data.section_id  %>','<%= data.registration_id  %>')" class="btn btn-sm btn-primary">View</a>
 							</td>
 							
 
@@ -125,7 +126,7 @@
 				</table>
 			</div>
 			<br><br>
-	
+
 		</div>
 	</div>
 </div>

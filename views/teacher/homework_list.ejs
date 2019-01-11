@@ -1,0 +1,76 @@
+<div class="col-lg-12 grid-margin stretch-card">
+	<div class="card">
+		<div class="card-body">
+			<h2 class="card-title"><b><u>HomeWork List</u></b></h2>
+			<p class="card-description">
+				<a href="/admin/HomeWork"><button class="btn btn-inverse-dark btn-fw">Add HomeWork</button></a>
+				
+			</p>
+			<div class="table-responsive">
+				<table class="table table-bordered" id="myTable">
+					<thead>
+						<tr>
+							<th>
+								#
+							</th>
+							<th>
+								Class
+							</th>
+							<th>
+								Section
+							</th>
+							<th>
+								Subject
+							</th>
+							<th>
+								Task
+							</th>
+							<th>
+								Action
+							</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<%  var i=1; homework_list.forEach(function(homework_list){ %>
+						<tr>
+							<td>
+								<%= i %>
+							</td>
+							<td>
+								<%= homework_list.class_name %>
+							</td>
+							<td>
+								<%= homework_list.section_name %>
+							</td>
+							
+							<td>
+								<%= homework_list.name %>
+							</td>
+							<th>
+								<%= homework_list.task %>
+							</th>
+							<td>
+							<!--  <a href="#">
+								<button type="button" class="btn btn-dark btn-fw">
+                         	 	<i class="mdi mdi-cloud-download"></i>Edit
+                         	 	</button>
+                         	 </a> -->
+                         	 <a href="../../homework_image/<%= homework_list.file_name %>"download="">
+                              <button type="button" class="btn btn-success"> Download File </button>  
+                          </a>
+                         	 <a href="#">
+
+                         	 <button type="button" onclick="delete_hospital('1','2')" class="btn btn-danger btn-fw">
+                         		 <i class="mdi mdi-alert-outline"></i>Delete
+                         	 </button>
+                         	 </a>
+							</td>
+						</tr>
+						<% i++; })%>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

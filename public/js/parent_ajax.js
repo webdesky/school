@@ -625,15 +625,14 @@ function PrintTabularSheet()
 
 function get_parent_student_attendance(class_id,section_id,registration_id)
 {
+
     
     var class_id        = class_id;
     var section_id      = section_id;
     var registration_id = registration_id;
     var month           = $('#month_id').val();
-    console.log(class_id)
-    console.log(section_id)
-    console.log(registration_id)
-    console.log(month)
+
+    var year = $("#currentyear").val();
       $.ajax({
             url: "/parent/get_parent_student_attendance",
             method: "GET",
@@ -641,15 +640,92 @@ function get_parent_student_attendance(class_id,section_id,registration_id)
             data: {
                 class_id   : class_id,
                 section_id : section_id,
-             
                 registration_id : registration_id,
                 month        :month
             },
             success: function(response) {
+
+              $('#student_attendance_table tbody').html('');
+              $('#student_attendance_table thead').empty();
+              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
+              var student_attendance  = response.student_attendance;
+              var calendar = '<tr>';
+              var attendance='<tr>'
+              for (var i = 1; i <= days; i++) {
+                 
+                  calendar += '<td>'+i+'</td>';
+                  date = year+'-'+month+'-'+ i;
+                  date =moment(date).format('YYYY-MM-DD');
+                  flag=false;
+                  for (var j= 0; j< student_attendance.length; j++)
+                  {
+
+                    status_date= student_attendance[j].attendence_date;
+                    if(date==status_date)  
+                    {
+                      if(student_attendance[j].status==1)
+                        attendance+= '<td style="background:green">P</td>';
+                      else
+                      if(student_attendance[j].status==2)
+                        attendance+= '<td style="background:red">A</td>';
+
+                      flag=true;
+                    }
+
+                  }
+                  if(flag==false)
+                    attendance+= '<td style="background:White">&nbsp;</td>';
+              }
+              attendance+='</tr>'
+              calendar+='</tr>';
+
+              $('#student_attendance_table thead').append(calendar);
+              $('#student_attendance_table tbody').append(attendance);
+              $('#attendance').show();
 
             },
             error: function() {
                 alert("error");
             }
       });
+}
+
+// View Attendance Report 
+
+function get_attendace_report(class_id,section_id){
+  var class_id     = class_id;
+  var section_id   = section_id;
+
+
+    $.ajax({
+        url: "/parent/get_question_paper",
+            method: "GET",
+            dataType: "json",
+            data: {
+                class_id   : class_id,
+                section_id : section_id
+                
+            },
+          success: function(response) {
+           
+            $('#question_paper tbody').html('');
+            var question_paper  = response.question_paper;
+             console.log(response.question_paper);
+            for (var i = 0; i <= question_paper.length-1; i++) {
+                var count  = i +1;
+                var href = '<a href=../../images/'+question_paper[i].file_name+' download>Download</a>'
+                $('#question_paper tbody').append('<tr><td style=" border: 1px solid #cacaca;  padding:15px;" class="bolds">'+count+'</td><td style=" border: 1px solid #cacaca;  padding:15px;" class="bolds">'+question_paper[i].class_name+'</td><td style=" border: 1px solid #cacaca;  padding:15px;" class="bolds">'+question_paper[i].section_name+'</td><td style=" border: 1px solid #cacaca;  padding:15px;" class="bolds">'+question_paper[i].subject_name+'</td><td style=" border: 1px solid #cacaca;  padding:15px;" >'+href+'</td></tr>');
+                                
+            }
+            $('#question').show();
+       
+
+          },
+          error: function() {
+              alert("error");
+          }
+
+  });
+
+
 }

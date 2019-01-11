@@ -46,7 +46,7 @@
                 <label for="exampleInputEmail2" class="col-sm-2 col-form-label">New Class</label>
                 <div class="col-sm-2">
                  <select class="form-control" id="teacher_class_id" name="teacher_class_id">
-                 <select class="form-control" id="teacher_class_id" name="new_class_id">
+                 
                   <option value="">Select Class</option>
                   <%  class_list.forEach(function(class_list){ %>
                   <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
@@ -58,7 +58,7 @@
                 <label for="exampleInputPassword2" class="col-sm-2 col-form-label">New Section</label>
                 <div class="col-sm-2">
 
-                 <select class="form-control" name="new_section_id" id="teacher_section_id" onchange="getStudentforpromotion()" >
+                 <select class="form-control" name="teacher_section_id" id="teacher_section_id" onchange="getStudentforpromotion()" >
                    <option>Select Section</option>
                  </select>
                  <span for="teacher_section_id" class="error below" style="display: none"></span>

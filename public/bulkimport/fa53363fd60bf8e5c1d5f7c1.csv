@@ -1,0 +1,5 @@
+student_name,student_gender,caste,sub_caste,class_name,section_name,aadhar_number,student_dob,transport_id,dormitory_id,student_phone,student_phone,student_email,student_password,blood_group,admission_number,parent_name,mother_name,parent_address,parent_phone,parent_email,parent_password,profession
+Rajendra,Male,kulmi,Patidar,First,A,aaa444,23/03/1984,1,1,Tillore,9826856911,patidarrajendra@gmail.com,,B+ve,5465465,Vasudevji Patidar,Parwati,,9009831818,vasu@gmail.com,,Farmer
+Jitendra,Male,kulmi,Patidar,First,A,aaa444,23/03/1984,1,1,Tillore,9926011733,jitendra@gmail.com,,O+ve,5465465,Vasudevji Patidar,Parwati,,9009831818,vasu@gmail.com,,Farmer
+Bhavana,Female,Brahman,Dixit,First,A,bff454,12/06/92,1,1,Indore,7845123690,bhavana@gmail.com,,B+ve,478596,xyz dixit,abc,Gadrwara,7891234567,xyz@gmail.com,,Teacher
+Avdesh,Male,Yadav,Yadav,First,B,dds25545,23/04/85,1,1,Bihar,7778889990,avdesh@gmail.com,,,748596,x1y1z1@gmail.com,x1y1z1,Bihar,8888888888,x1y1z1@gmail.com,,shopkeeper

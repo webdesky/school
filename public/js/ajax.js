@@ -874,9 +874,12 @@ function getsubteacher(day){
 }
 
 function getStudentAttendence(attendence_date){
-    var attendence_date         = attendence_date;
+    var attendence_date         = moment(attendence_date).format('YYYY-DD-MM'); 
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id').val();
+
+    // console.log(attendence_date);
+    // return
 
     $.ajax({
         url: "/getStudentAttendence",
@@ -3269,6 +3272,264 @@ function changespecial_char(item)
 }
 
 
+/* Get list of all student on specific class & section on attendance Section */
+function get_studentlist_attendance()
+{
+     var classid = $('#class_id').find(":selected").val();
+     var sectionid = $('#section_id_stop').find(":selected").val();
+     var classname = $('#class_id').find(":selected").text();
+     var sectionname = $('#section_id_stop').find(":selected").text();
+     var month = $('#month_id').find(":selected").val();
+     var year = $('#currentyear').find(":selected").val();
+     if(classid=="")
+     {
+        alert("Please select Class");
+        return false;
+     }
+     if(sectionid=="")
+     {
+        alert("Please select section");
+        return false;
+     }
+     $.ajax({
+        url: "/getAdminStudentAttendanceReport",
+        method: "GET",
+        dataType: "json",
+        data: {
+            class_id: classid,
+            section_id: sectionid,
+            month_id : month,
+            year : year
+        },
+        success: function(response) {
+            // students= response.student_attendance;
+            $('#student_attendance_table tbody').html('');
+              $('#student_attendance_table thead').empty();
+              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
+              var student_attendance  = response.student_attendance;
+             if(student_attendance.length>0){ 
+              var calendar = '<tr><td>Name  Day-></td>';
+              var attendance='<tr>'
+              for (var j= 0; j< student_attendance.length; j++)
+              {
+                 attendance += '<td>'+student_attendance[j].name+'</td>';
+                for (var i = 1; i <= days; i++) 
+                { 
+                     if(j==0)
+                       calendar += '<td>'+i+'</td>';
+                     flag=false;
+                     if(student_attendance[j].attendence!=undefined)
+                     {
+                       
+                       date = year+'-'+month+'-'+ i;
+                       date =moment(date).format('YYYY-MM-DD');
+                       stu_attendance= student_attendance[j].attendence;
+                       if(stu_attendance!=undefined)
+                       for(var k= 0; k<stu_attendance.length; k++)   
+                        { 
+                          status_date= stu_attendance[k].attendence_date;
+                            if(date==status_date)  
+                            {
+                              if(stu_attendance[k].status==1)
+                                attendance+= '<td style="background:green">P</td>';
+                              else
+                              if(stu_attendance[k].status==2)
+                                attendance+= '<td style="background:red">A</td>';
 
+                              flag=true;
+                            }
+                        }
+                        if(flag==false)
+                         attendance+= '<td style="background:White">&nbsp;</td>';
+                     }
+                }
+                attendance+='</tr>'
+
+              }
+  
+              calendar+='</tr>';
+
+              $('#student_attendance_table thead').append(calendar);
+              $('#student_attendance_table tbody').append(attendance);
+              $('#attendance').show();
+            }
+            else{
+                $('.studentlistTable tbody').html('');
+               $('.studentlistTable tbody').append('<tr ><td colspan="8">NO DATA FOUND<td></tr>');  
+            }
+        },
+        error: function() {
+            alert("error");
+        }
+    });
+      
+}
+
+/* 
+** Get attendance view of student from list 
+*/
+ 
+function get_admin_student_attendance(class_id,section_id,registration_id)
+{
+
+    
+    var class_id        = class_id;
+    var section_id      = section_id;
+    var registration_id = registration_id;
+    var month           = $('#month_id').val();
+    var year = $("#currentyear").val();
+      $.ajax({
+            url: "/get_admin_student_attendance",
+            method: "GET",
+            dataType: "json",
+            data: {
+                class_id   : class_id,
+                section_id : section_id,
+               // exam_id    : exam_id,
+               // exam_code  : exam_code,
+                registration_id : registration_id,
+                month        :month
+            },
+            success: function(response) {
+
+              $('#student_attendance_table tbody').html('');
+              $('#student_attendance_table thead').empty();
+              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
+              var student_attendance  = response.student_attendance;
+              var calendar = '<tr>';
+              var attendance='<tr>'
+              for (var i = 1; i <= days; i++) {
+                 
+                  calendar += '<td>'+i+'</td>';
+                  date = year+'-'+month+'-'+ i;
+                  date =moment(date).format('YYYY-MM-DD');
+                  flag=false;
+                  for (var j= 0; j< student_attendance.length; j++)
+                  {
+
+                    status_date= student_attendance[j].attendence_date;
+                    if(date==status_date)  
+                    {
+                      if(student_attendance[j].status==1)
+                        attendance+= '<td style="background:green">P</td>';
+                      else
+                      if(student_attendance[j].status==2)
+                        attendance+= '<td style="background:red">A</td>';
+
+                      flag=true;
+                    }
+
+                  }
+                  if(flag==false)
+                    attendance+= '<td style="background:White">&nbsp;</td>';
+              }
+              attendance+='</tr>'
+              calendar+='</tr>';
+
+              $('#student_attendance_table thead').append(calendar);
+              $('#student_attendance_table tbody').append(attendance);
+              $('#attendance').show();
+
+            },
+            error: function() {
+                alert("error");
+            }
+      });
+} 
+
+
+/* Get list of all teacher attendence of Month with year */
+
+function get_teacherlist_attendance()
+{
+     var classid = $('#class_id').find(":selected").val();
+     var sectionid = $('#section_id_stop').find(":selected").val();
+     var classname = $('#class_id').find(":selected").text();
+     var sectionname = $('#section_id_stop').find(":selected").text();
+     var month = $('#month_id').find(":selected").val();
+     var year = $('#currentyear').find(":selected").val();
+     if(classid=="")
+     {
+        alert("Please select Class");
+        return false;
+     }
+     if(sectionid=="")
+     {
+        alert("Please select section");
+        return false;
+     }
+     $.ajax({
+        url: "/getAdminStudentAttendanceReport",
+        method: "GET",
+        dataType: "json",
+        data: {
+            class_id: classid,
+            section_id: sectionid,
+            month_id : month,
+            year : year
+        },
+        success: function(response) {
+            // students= response.student_attendance;
+            $('#student_attendance_table tbody').html('');
+              $('#student_attendance_table thead').empty();
+              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
+              var student_attendance  = response.student_attendance;
+             if(student_attendance.length>0){ 
+              var calendar = '<tr><td>Name  Day-></td>';
+              var attendance='<tr>'
+              for (var j= 0; j< student_attendance.length; j++)
+              {
+                 attendance += '<td>'+student_attendance[j].name+'</td>';
+                for (var i = 1; i <= days; i++) 
+                { 
+                     if(j==0)
+                       calendar += '<td>'+i+'</td>';
+                     flag=false;
+                     if(student_attendance[j].attendence!=undefined)
+                     {
+                       
+                       date = year+'-'+month+'-'+ i;
+                       date =moment(date).format('YYYY-MM-DD');
+                       stu_attendance= student_attendance[j].attendence;
+                       if(stu_attendance!=undefined)
+                       for(var k= 0; k<stu_attendance.length; k++)   
+                        { 
+                          status_date= stu_attendance[k].attendence_date;
+                            if(date==status_date)  
+                            {
+                              if(stu_attendance[k].status==1)
+                                attendance+= '<td style="background:green">P</td>';
+                              else
+                              if(stu_attendance[k].status==2)
+                                attendance+= '<td style="background:red">A</td>';
+
+                              flag=true;
+                            }
+                        }
+                        if(flag==false)
+                         attendance+= '<td style="background:White">&nbsp;</td>';
+                     }
+                }
+                attendance+='</tr>'
+
+              }
+  
+              calendar+='</tr>';
+
+              $('#student_attendance_table thead').append(calendar);
+              $('#student_attendance_table tbody').append(attendance);
+              $('#attendance').show();
+            }
+            else{
+                $('.studentlistTable tbody').html('');
+               $('.studentlistTable tbody').append('<tr ><td colspan="8">NO DATA FOUND<td></tr>');  
+            }
+        },
+        error: function() {
+            alert("error");
+        }
+    });
+      
+}
 
 

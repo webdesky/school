@@ -131,7 +131,7 @@ module.exports.FindTeacherClass= function(table, groupby, orderby, cb)
     con.connect(function(err){
 		var que = "SELECT *   FROM "+table.tbl_class_routine+" LEFT JOIN  "+table.tbl_class+" ON  "+table.tbl_class+".class_id= "+table.tbl_class_routine+".class_id   LEFT JOIN "+table.tbl_section+" ON "+table.tbl_class+".class_id= "+table.tbl_section+".class_id GROUP BY "+groupby.class_id + " ORDER BY "+orderby.class_name+" "+orderby.order ;
 
-		 console.log(que);
+		 //console.log(que);
 
 		con.query(que, cb);
 	});
@@ -198,7 +198,7 @@ module.exports.findStudyMaterial=function(table,obj, cb){
 	
 	con.connect(function(err){
 		var que = "SELECT *  FROM "+table.tablename+" LEFT JOIN tbl_class ON "+table.tablename+".class_id=tbl_class.class_id LEFT JOIN tbl_subject ON "+table.tablename+".subject_id=tbl_subject.subject_id WHERE "+table.tablename+".registration_id="+obj.registration_id+" AND "+table.tablename+".session_year='"+obj.session_year+"'";
-	 //console.log(que);
+	 console.log(que);
 		 con.query(que, cb);
 	});
 }
@@ -265,6 +265,31 @@ module.exports.Teachermarkssubject=function(table,obj, cb){
 	   con.query(que, cb);
 	});
 }
+
+module.exports.getteachersubjectlist=function(obj,where, cb){
+	//console.log(obj);
+	//console.log("SELECT * FROM "+obj.table+"  LEFT JOIN tbl_class ON tbl_class.class_id="+obj.table+".class_id");
+	con.connect(function(err){
+		 
+	   var que="SELECT tbl_subject.* FROM "+obj.table+" LEFT JOIN tbl_class_routine ON tbl_class_routine.subject_id=tbl_subject.subject_id WHERE tbl_class_routine.registration_id="+where.registration_id+" AND tbl_class_routine.class_id=1 AND tbl_class_routine.section_id=1 AND tbl_class_routine.session_year='"+where.session_year+"'";
+	   console.log(que);
+		con.query(que, cb);
+	});
+}
+
+
+module.exports.Teacherfindhomework=function(obj, where, cb){
+	con.connect(function(err){
+		//var que= "SELECT tbl_class.class_name,tbl_section.section_name,tbl_subject.name,tbl_subject.name, tbl_homework.task,tbl_homework.description,tbl_homework.homework_date ,tbl_homework.file_name  FROM "+obj.table+" LEFT join tbl_subject ON tbl_homework.subject_id=tbl_subject.subject_id LEFT JOIN tbl_class ON tbl_class.class_id=tbl_homework.class_id LEFT JOIN tbl_section ON tbl_section.section_id=tbl_homework.section_id WHERE tbl_homework.class_id="+where.class_id+" AND tbl_homework.section_id="+where.section_id+" AND tbl_homework.teacher_id="+where.teacher_id+" AND tbl_homework.session_year='"+where.session_year+"'"
+		var que= "SELECT tbl_homework.homework_id ,tbl_class.class_name,tbl_section.section_name,tbl_subject.name,tbl_subject.name, tbl_homework.task,tbl_homework.description, DATE_FORMAT(tbl_homework.homework_date,'%d/%m/%Y') AS date ,tbl_homework.file_name  FROM "+obj.table+" LEFT join tbl_subject ON tbl_homework.subject_id=tbl_subject.subject_id LEFT JOIN tbl_class ON tbl_class.class_id=tbl_homework.class_id LEFT JOIN tbl_section ON tbl_section.section_id=tbl_homework.section_id WHERE  tbl_homework.teacher_id="+where.teacher_id+" AND tbl_homework.session_year='"+where.session_year+"'"
+		 console.log(que);
+		con.query(que, cb);
+
+	});
+}
+
+
+
 
 
 
@@ -503,16 +528,16 @@ module.exports.findPayment=function(table,obj, cb){
 }
 
 
-module.exports.findStudyMaterial=function(table, cb){
+// module.exports.findStudyMaterial=function(table, cb){
 	
-	con.connect(function(err){
+// 	con.connect(function(err){
 		
-		var que = "SELECT *  FROM "+table.tablename+" LEFT JOIN tbl_class ON "+table.tablename+".class_id=tbl_class.class_id LEFT JOIN tbl_subject ON "+table.tablename+".subject_id=tbl_subject.subject_id";
+// 		var que = "SELECT *  FROM "+table.tablename+" LEFT JOIN tbl_class ON "+table.tablename+".class_id=tbl_class.class_id LEFT JOIN tbl_subject ON "+table.tablename+".subject_id=tbl_subject.subject_id";
 
-	 //console.log(que);
-		 con.query(que, cb);
-	});
-}
+// 	 //console.log(que);
+// 		 con.query(que, cb);
+// 	});
+// }
 
 module.exports.findAcadmicSyllabus=function(table, cb){
 	
@@ -1290,5 +1315,10 @@ module.exports.findmarksheetstudent=function(tableobj, obj, cb){
 
 	
 }
+
+
+ 
+
+ 
 
 
