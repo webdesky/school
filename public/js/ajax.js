@@ -257,11 +257,11 @@ $(document).ready( function () {
 
 
 });
-$("#add").click(function() {
+$("#addslider").click(function() {
    $("#app").append('<div class="clearfix"></div><div><div class="form-group row"><label for="exampleInputEmail2" class="col-sm-2 col-form-label" >Title</label><div class="col-sm-4"><input type="text" name="slider_title" class="form-control" placeholder="Enter Title"> </div><label for="exampleInputPassword2" class="col-sm-2 col-form-label">Slider Image</label> <div class="col-sm-4"> <input type="file" name="slider_image" class="form-control"></div></div><div class="clearfix"></div><div class="form-group row"><label for="exampleInputPassword2" class="col-sm-2 col-form-label">Description</label><div class="col-sm-10"><textarea class="form-control" name="slider_description" placeholder="Enter Slider Description" rows="8"></textarea></div></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div>');
 });
 
-$("#links").click(function() {
+$("#add_links").click(function() {
    $("#youtube_link").append('<div><div class="form-group row"><label for="exampleInputEmail2" class="col-sm-2 col-form-label">Youtube Link</label><div class="col-sm-4"><input type="text" name="youtube_link" class="form-control" placeholder="Enter Youtube Link"></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div></div>');
 });
 $("#columnlinks").click(function() {
