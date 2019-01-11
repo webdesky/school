@@ -853,6 +853,8 @@ router.get("/get_parent_student_attendance",function(req,res){
 		var month             =  req.query.month
 		var session_year      =  req.session.session_year; 
 		var registration_id   =  req.query.registration_id;
+		var month		      =  req.query.month;
+		
 		var student_id        =  {};
 		var table             =  { tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance' };
 					

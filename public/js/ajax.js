@@ -197,12 +197,14 @@ $(document).ready( function () {
     });
 
 
+    
      $('.datatable').DataTable({
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
+           
         ]
-    } );
+    });
     $('#fees_report_table').DataTable();
      $( ".attendence_date" ).datepicker({
           dateFormat: 'dd-mm-yy'
