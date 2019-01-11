@@ -191,13 +191,6 @@ $(document).ready( function () {
         ]
     });
 
-
-     $('.datatable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-    } );
     $('#fees_report_table').DataTable();
      $( ".attendence_date" ).datepicker({
           dateFormat: 'dd-mm-yy'
@@ -514,7 +507,6 @@ function get_all_exam_data(id){
  }
 
 
-
  /* Get Scheduled exam list on click on subject in manage Marks  */
 
  function get_scheduled_exam()
@@ -612,11 +604,7 @@ function get_tabulate_exam_marks()
      var exam_id     = $('#exam_id').val();
      //console.log($('#exam_code').val())
      var exam_code     = $("#exam_id option:selected" ).attr('data-value');
-     var class_name = $('#class_id').find(":selected").text();
-     var section_name = $('#section_id_stop').find(":selected").text();
-     
-     $('#tabulation_thead tbody').html('');
-     $('#tabulation_table thead').html('');
+
    
         $.ajax({
             url: "/getTabulateMarksList",
@@ -637,25 +625,20 @@ function get_tabulate_exam_marks()
                // $('#subjectTable tbody').html('');
                 
                // $('#tabulation_table tbody').html('');
-                $('.tabulation_table tbody').html('');
-                $('.tabulation_table thead').html('');
+                $('#tabulation_thead tbody').html('');
+                 $('#tabulation_table thead').html('');
                 dynamicheader='';
                 dynamictbody='';
-
-                studentinfo=''
-             
                 if(tabulationlist.length>0)
                 {
-                     dynamicheader='<tr><th>Admission Number</th><th>Student NAME</th>';
+                     dynamicheader='<tr><th>Student NAME</th>';
 
                    
                     for (var i = 0; i < tabulationlist.length; i++) 
                     {
                        total = 0.0;
                        count= i+1; 
-                       dynamictbody+='<tr><td>'+tabulationlist[i].admission_number+'</td><td>'+tabulationlist[i].student_name+'</td>' 
-
-                      // dynamictbody+='<tr><td>'+tabulationlist[i].student_name+'</td>' 
+                       dynamictbody+='<tr><td>'+tabulationlist[i].student_name+'</td>' 
 
                         marksheetstr = tabulationlist[i].marksheet;
                         singlesubject =marksheetstr.split('^')
@@ -675,7 +658,9 @@ function get_tabulate_exam_marks()
                            subjecttotal=0.0;
                            for(k=0;k<keys.length;k++)
                            {
-
+                                //heading = 
+                                //dynamicheader+='<th>'+keys[k].replace(/_/g," ")+'</th>'; // get key  of json
+                               // dynamictbody+='<td>'+json[keys[k]]+'</td>'   // value of key 
                                subjecttotal+=json[keys[k]];
                                total+= json[keys[k]];
                            }
@@ -698,17 +683,13 @@ function get_tabulate_exam_marks()
                           dynamictbody+='<td>'+total+'</td>'    
                           dynamictbody+='<td>'+grade+'</td>'
                           code = "'"+tabulationlist[i].exam_code+"'"; 
-                          classname= "'"+class_name+"'";
-                          sectionname = "'"+section_name+"'" ;
-                          student_name = "'"+tabulationlist[i].student_name+"'";
                           if(tabulationlist[i].exam_code=='SM1'||tabulationlist[i].exam_code=='SM2')
-                            dynamictbody+='<td><a href="#"  onclick="Summative('+tabulationlist[i].student_id+','+class_id+','+section_id+','+exam_id+','+code+','+student_name+','+classname+','+sectionname+')">view</a></td></tr>'
+                            dynamictbody+='<td><a href="#"  onclick="Summative('+tabulationlist[i].student_id+','+class_id+','+section_id+','+exam_id+','+code+')">view</a></td></tr>'
                           else
-                            dynamictbody+='<td><a href="#"  onclick="Formative('+tabulationlist[i].student_id+','+class_id+','+section_id+','+exam_id+','+code+','+student_name+','+classname+','+sectionname+')">view</a></td></tr>'
-
+                            dynamictbody+='<td><a href="#"  onclick="Formative('+tabulationlist[i].student_id+','+class_id+','+section_id+','+exam_id+','+code+')">view</a></td></tr>'
 
                      }
-                    dynamicheader+='<th>Total</th><th>Grade</th><th>Action</th></tr>'; 
+                    dynamicheader+='<th>Total</th><th>Grade</th><th>Marks Card</th></tr>'; 
                       /* Grade System */
                }
                 $("#tabulationsheet").show();
@@ -740,7 +721,6 @@ function getSubject(id){
            
         },
         success: function(response) {
-
            // console.log(response)
             //var section  = response.section_list;
             var subject  = response.subject_list;
@@ -766,7 +746,7 @@ function getSubject(id){
  }
 
 
-function getsubteacher(day){
+function getsubteach(day){
     var section_id  = $('#section_id').val();
     var class_id    = $('#class_id').val();
     var day = day;
@@ -874,12 +854,9 @@ function getsubteacher(day){
 }
 
 function getStudentAttendence(attendence_date){
-    var attendence_date         = moment(attendence_date).format('YYYY-DD-MM'); 
+    var attendence_date         = attendence_date;
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id').val();
-
-    // console.log(attendence_date);
-    // return
 
     $.ajax({
         url: "/getStudentAttendence",
@@ -898,11 +875,11 @@ function getStudentAttendence(attendence_date){
                  var count = i+1;
                  console.log(response.attendence)
                 if(response[i].attendence==undefined || response[i].attendence==0){
-                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1">Present</option><option value="2">Absent</option></select></td></tr>');
+                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"  id="student_id" value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1">Present</option><option value="2">Absent</option></select></td></tr>');
                 }else if(response[i].attendence==1){
-                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" selected>Present</option><option value="2">Absent</option></select></td></tr>');
+                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"  id="student_id" value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" selected>Present</option><option value="2">Absent</option></select></td></tr>');
                 }else if(response[i].attendence==2){
-                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" >Present</option><option value="2" selected>Absent</option></select></td></tr>');
+                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"  id="student_id" value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" >Present</option><option value="2" selected>Absent</option></select></td></tr>');
                 }
                 
             }
@@ -1025,7 +1002,6 @@ function get_student_detail()
                     dynamicheader='<tr><th>#</th><th>Name</th>';
                     
                     var marks_get = 0.0;
-                    var marks_obtained= 0.00;
                     mydata='';
                     for(k=0;k<keys.length;k++)
                     {
@@ -1046,7 +1022,7 @@ function get_student_detail()
 
                            
                              var marks_get = Number(json[keys[k]]); 
-                              marks_obtained += marks_get;
+
                              
                              var name =keys[k].toString();
                              var name = name.replace(/ /g,"_");
@@ -1055,10 +1031,10 @@ function get_student_detail()
                              var student_id   = "'"+student_detail[i].registration_id+"'";
                              var mystring     = "'"+mydata+"'";
                              dynamicdata+='<td><input type="hidden" class="subjectname_'+k+'" name="subjectname" value="'+name+'"><input type="text" class="form-control" name="marks" id="'+name+'_'+student_detail[i].registration_id+'" onblur="check_manage_marks1('+student_id+','+mystring+' )" value="'+json[keys[k]]+'"><span id="children_error_'+student_detail[i].registration_id+'" class="error"></span></td>'
-                    }   
+                    }  
 
-                    dynamicdata+='<td> <input type="hidden"   name="marks_obtained" id="hidden_marks_obtained_'+student_detail[i].registration_id+'" value="'+marks_obtained+'"><input type="text" class="form-control" name="marks_obtained" disabled value="'+marks_obtained+'" id="marks_obtained_'+student_detail[i].registration_id+'"><span id="marks_error_'+student_detail[i].registration_id+'"></span></td><span id="marks_error_'+student_detail[i].registration_id+'"></span></td><td><input type="hidden" class="form-control" name="total_marks"  value="'+total_marks+'"><input type="text" class="form-control"  disabled value="'+total_marks+'" name="total_marks" id="total_marks_'+student_detail[i].registration_id+'">'
-                  } 
+                    dynamicdata+='<td><input type="text" class="form-control" name="marks_obtained" disabled value="'+marks_get+'" id="marks_obtained_'+student_detail[i].registration_id+'"><span id="marks_error_'+student_detail[i].registration_id+'"></span></td><span id="marks_error_'+student_detail[i].registration_id+'"></span></td><td><input type="hidden" class="form-control" name="total_marks"  value="'+total_marks+'"><input type="text" class="form-control"  disabled value="'+total_marks+'" name="total_marks" id="total_marks_'+student_detail[i].registration_id+'">'
+                  }
  
                  dynamicheader+='<th>Marks Obtained</th><th>Total Marks</th><th>Comment</th>' 
                  dynamicdata+='<td><input type="text" class="form-control" name="comment" value="'+comment+'"></td></tr>'
@@ -1174,6 +1150,9 @@ function get_student_detail()
         }
     });
     
+
+
+    
 }
 function check_manage_marks1(user_id,keys)
 {
@@ -1206,9 +1185,6 @@ function check_manage_marks1(user_id,keys)
 
            marks_get += Number(value);
            $("#marks_obtained_"+user_id+"").val(marks_get);
-           $("#hidden_marks_obtained_"+user_id+"").val(marks_get);
-
-
             var marks_available = Number(total_marks);
            
            // if(marks_get>marks_available){
@@ -2079,9 +2055,9 @@ function Formative1(student_id,class_id,section_id)
                         var amount_paid       = parseFloat(fees_detail[i]['amount_paid']) + parseFloat(fees_detail[i]['discount']);
                         var remaining_amount  = parseFloat(fees_detail[i]['fees_amount'])  - amount_paid;
                          if(remaining_amount==0){
-                            $('#fees_detail_table tbody').append('<tr><td><input type="checkbox" name="fees_id" value='+fees_detail[i].fees_id+' disabled></td><td>'+count+'</td><td>'+fees_detail[i].fee_type+'</td><td>'+fees_detail[i].term_name+'</td><td>'+fees_detail[i].fees_amount+'</td><td>'+ fees_detail[i].amount_paid +'</td><td>'+fees_detail[i].discount+' </td><td>'+ '0.00'  +'</td><td>Paid</td></tr>');
+                            $('#fees_detail_table tbody').append('<tr><td><input type="checkbox" name="fees_id" value='+fees_detail[i].fees_id+' disabled></td><td>'+count+'</td><td>'+fees_detail[i].fee_type+'</td><td>'+fees_detail[i].term_name+'</td><td>'+fees_detail[i].fees_amount+'</td><td>'+ fees_detail[i]['amount_paid'] +'</td><td>'+fees_detail[i]['discount']+' </td><td>'+ '0.00'  +'</td><td>Paid</td></tr>');
                         }else{
-                            $('#fees_detail_table tbody').append('<tr><td><input type="checkbox" name="fees_id" value='+fees_detail[i].fees_id+'></td><td>'+count+'</td><td>'+fees_detail[i].fee_type+'</td><td>'+fees_detail[i].term_name+'</td><td>'+fees_detail[i].fees_amount+'</td><td>'+ fees_detail[i].amount_paid +'</td><td>'+fees_detail[i].discount+' </td><td>'+ remaining_amount  +'</td><td>UnPaid</td></tr>');
+                            $('#fees_detail_table tbody').append('<tr><td><input type="checkbox" name="fees_id" value='+fees_detail[i].fees_id+'></td><td>'+count+'</td><td>'+fees_detail[i].fee_type+'</td><td>'+fees_detail[i].term_name+'</td><td>'+fees_detail[i].fees_amount+'</td><td>'+ fees_detail[i]['amount_paid'] +'</td><td>'+fees_detail[i]['discount']+' </td><td>'+ remaining_amount  +'</td><td>UnPaid</td></tr>');
                         }
          
                     }
@@ -2596,7 +2572,7 @@ function Formative1(student_id,class_id,section_id)
         console.log(receipt_number);
     }
 
-    function get_transport_receipt_detail(receipt_number){
+     function get_transport_receipt_detail(receipt_number){
         var receipt_number  = receipt_number;
         var student_id      = $('#student_id').val();
         $.ajax({
@@ -2655,17 +2631,14 @@ function Formative1(student_id,class_id,section_id)
         console.log(receipt_number);
     }
 
-    function Formative(student_id,class_id,section_id,exam_id,exam_code,student_name,class_name,section_name)
-
+    function Formative(student_id,class_id,section_id,exam_id,exam_code)
     {
         var student_id   = student_id;
         var class_id     = class_id;
         var section_id   = section_id;
         var exam_id      = exam_id;
         var exam_code    = exam_code;
-        var class_name   = class_name;
-        var section_name = section_name;
-         
+        alert(exam_code);
         //console.log(exam_code);
 
      $.ajax({
@@ -2691,10 +2664,6 @@ function Formative1(student_id,class_id,section_id)
                 dynamictbody='';
             if(tabulation_list.length>0)
             {
-                  $("#studentinfo").empty();
-                  student_info= '<div class="row student-info" style="width:100%"><div class="col-xs-6 col-sm-6"><p>Name: <b>'+student_name+'</b></p></div><div class="col-xs-6 col-sm-2"><p>Class: <b>'+class_name+' </b></p></div><div class="col-xs-6 col-sm-2"><p>Section: <b>'+section_name+'</b></p></div></div>'   
-                  $("#studentinfo").append(student_info);        
-
 
 
                
@@ -2864,15 +2833,14 @@ function Formative1(student_id,class_id,section_id)
 
     }
 
-    function Summative(student_id,class_id,section_id,exam_id,exam_code,student_name,class_name,section_name)
-
+    function Summative(student_id,class_id,section_id,exam_id,exam_code)
     {
         var student_id   = student_id;
         var class_id     = class_id;
         var section_id   = section_id;
         var exam_id      = exam_id;
         var exam_code    = exam_code;
-        
+        alert(exam_code);
         //console.log(exam_code);
 
      $.ajax({
@@ -2899,14 +2867,9 @@ function Formative1(student_id,class_id,section_id)
             if(tabulation_list.length>0)
             {
 
-                   $("#studentinfo1").empty();
-                  student_info= '<div class="row student-info" style="width:100%"><div class="col-xs-6 col-sm-6"><p>Name: <b>'+student_name+'</b></p></div><div class="col-xs-6 col-sm-2"><p>Class: <b>'+class_name+' </b></p></div><div class="col-xs-6 col-sm-2"><p>Section: <b>'+section_name+'</b></p></div></div>'
+
                
                     dynamicheader ='<tr><th>Sr.No</th><th>Subject</th>';
-                    $("#studentinfo1").append(student_info);
-
-
-               
                    
                     var keys = 0;
                     for (var i = 0; i < tabulation_list.length; i++) 
@@ -2997,8 +2960,7 @@ function Formative1(student_id,class_id,section_id)
                       var tr    = $('#Summative_modal tbody tr ').length 
                       var total = $('#Summative_modal tbody tr td').length;
                       var column_count  = total /tr;
-                      $('#Summative_modal tbody tr').each(function(){
-
+                      $('#Formative_modal tbody tr').each(function(){
                         var i = 0;
                         $('td', this).each(function(index, val){
                           
@@ -3061,8 +3023,6 @@ function Formative1(student_id,class_id,section_id)
 
                          /* Co-curriculam Activty */
                          curriculam='';
-                          $("#co-curricular tbody").html('');
-
 
                          for (var i = 0; i < tabulation_list.length; i++) 
                          {
@@ -3245,7 +3205,14 @@ function PrintElem()
 } 
    
 /* Get Exam Code */
+$(document).ready(function(){
 
+    exam_code = $( "#exam_name option:selected" ).attr('data-value'); 
+    console.log(exam_code);
+   //$("#exam_name").atrr('data-value'); 
+   $("#exam_code").val(exam_code);
+
+})
 function getexamcode()
 {
     exam_code = $( "#exam_name option:selected" ).attr('data-value'); 
@@ -3272,264 +3239,6 @@ function changespecial_char(item)
 }
 
 
-/* Get list of all student on specific class & section on attendance Section */
-function get_studentlist_attendance()
-{
-     var classid = $('#class_id').find(":selected").val();
-     var sectionid = $('#section_id_stop').find(":selected").val();
-     var classname = $('#class_id').find(":selected").text();
-     var sectionname = $('#section_id_stop').find(":selected").text();
-     var month = $('#month_id').find(":selected").val();
-     var year = $('#currentyear').find(":selected").val();
-     if(classid=="")
-     {
-        alert("Please select Class");
-        return false;
-     }
-     if(sectionid=="")
-     {
-        alert("Please select section");
-        return false;
-     }
-     $.ajax({
-        url: "/getAdminStudentAttendanceReport",
-        method: "GET",
-        dataType: "json",
-        data: {
-            class_id: classid,
-            section_id: sectionid,
-            month_id : month,
-            year : year
-        },
-        success: function(response) {
-            // students= response.student_attendance;
-            $('#student_attendance_table tbody').html('');
-              $('#student_attendance_table thead').empty();
-              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
-              var student_attendance  = response.student_attendance;
-             if(student_attendance.length>0){ 
-              var calendar = '<tr><td>Name  Day-></td>';
-              var attendance='<tr>'
-              for (var j= 0; j< student_attendance.length; j++)
-              {
-                 attendance += '<td>'+student_attendance[j].name+'</td>';
-                for (var i = 1; i <= days; i++) 
-                { 
-                     if(j==0)
-                       calendar += '<td>'+i+'</td>';
-                     flag=false;
-                     if(student_attendance[j].attendence!=undefined)
-                     {
-                       
-                       date = year+'-'+month+'-'+ i;
-                       date =moment(date).format('YYYY-MM-DD');
-                       stu_attendance= student_attendance[j].attendence;
-                       if(stu_attendance!=undefined)
-                       for(var k= 0; k<stu_attendance.length; k++)   
-                        { 
-                          status_date= stu_attendance[k].attendence_date;
-                            if(date==status_date)  
-                            {
-                              if(stu_attendance[k].status==1)
-                                attendance+= '<td style="background:green">P</td>';
-                              else
-                              if(stu_attendance[k].status==2)
-                                attendance+= '<td style="background:red">A</td>';
 
-                              flag=true;
-                            }
-                        }
-                        if(flag==false)
-                         attendance+= '<td style="background:White">&nbsp;</td>';
-                     }
-                }
-                attendance+='</tr>'
-
-              }
-  
-              calendar+='</tr>';
-
-              $('#student_attendance_table thead').append(calendar);
-              $('#student_attendance_table tbody').append(attendance);
-              $('#attendance').show();
-            }
-            else{
-                $('.studentlistTable tbody').html('');
-               $('.studentlistTable tbody').append('<tr ><td colspan="8">NO DATA FOUND<td></tr>');  
-            }
-        },
-        error: function() {
-            alert("error");
-        }
-    });
-      
-}
-
-/* 
-** Get attendance view of student from list 
-*/
- 
-function get_admin_student_attendance(class_id,section_id,registration_id)
-{
-
-    
-    var class_id        = class_id;
-    var section_id      = section_id;
-    var registration_id = registration_id;
-    var month           = $('#month_id').val();
-    var year = $("#currentyear").val();
-      $.ajax({
-            url: "/get_admin_student_attendance",
-            method: "GET",
-            dataType: "json",
-            data: {
-                class_id   : class_id,
-                section_id : section_id,
-               // exam_id    : exam_id,
-               // exam_code  : exam_code,
-                registration_id : registration_id,
-                month        :month
-            },
-            success: function(response) {
-
-              $('#student_attendance_table tbody').html('');
-              $('#student_attendance_table thead').empty();
-              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
-              var student_attendance  = response.student_attendance;
-              var calendar = '<tr>';
-              var attendance='<tr>'
-              for (var i = 1; i <= days; i++) {
-                 
-                  calendar += '<td>'+i+'</td>';
-                  date = year+'-'+month+'-'+ i;
-                  date =moment(date).format('YYYY-MM-DD');
-                  flag=false;
-                  for (var j= 0; j< student_attendance.length; j++)
-                  {
-
-                    status_date= student_attendance[j].attendence_date;
-                    if(date==status_date)  
-                    {
-                      if(student_attendance[j].status==1)
-                        attendance+= '<td style="background:green">P</td>';
-                      else
-                      if(student_attendance[j].status==2)
-                        attendance+= '<td style="background:red">A</td>';
-
-                      flag=true;
-                    }
-
-                  }
-                  if(flag==false)
-                    attendance+= '<td style="background:White">&nbsp;</td>';
-              }
-              attendance+='</tr>'
-              calendar+='</tr>';
-
-              $('#student_attendance_table thead').append(calendar);
-              $('#student_attendance_table tbody').append(attendance);
-              $('#attendance').show();
-
-            },
-            error: function() {
-                alert("error");
-            }
-      });
-} 
-
-
-/* Get list of all teacher attendence of Month with year */
-
-function get_teacherlist_attendance()
-{
-     var classid = $('#class_id').find(":selected").val();
-     var sectionid = $('#section_id_stop').find(":selected").val();
-     var classname = $('#class_id').find(":selected").text();
-     var sectionname = $('#section_id_stop').find(":selected").text();
-     var month = $('#month_id').find(":selected").val();
-     var year = $('#currentyear').find(":selected").val();
-     if(classid=="")
-     {
-        alert("Please select Class");
-        return false;
-     }
-     if(sectionid=="")
-     {
-        alert("Please select section");
-        return false;
-     }
-     $.ajax({
-        url: "/getAdminStudentAttendanceReport",
-        method: "GET",
-        dataType: "json",
-        data: {
-            class_id: classid,
-            section_id: sectionid,
-            month_id : month,
-            year : year
-        },
-        success: function(response) {
-            // students= response.student_attendance;
-            $('#student_attendance_table tbody').html('');
-              $('#student_attendance_table thead').empty();
-              days= moment(year+"-"+month, "YYYY-MM").daysInMonth() ;
-              var student_attendance  = response.student_attendance;
-             if(student_attendance.length>0){ 
-              var calendar = '<tr><td>Name  Day-></td>';
-              var attendance='<tr>'
-              for (var j= 0; j< student_attendance.length; j++)
-              {
-                 attendance += '<td>'+student_attendance[j].name+'</td>';
-                for (var i = 1; i <= days; i++) 
-                { 
-                     if(j==0)
-                       calendar += '<td>'+i+'</td>';
-                     flag=false;
-                     if(student_attendance[j].attendence!=undefined)
-                     {
-                       
-                       date = year+'-'+month+'-'+ i;
-                       date =moment(date).format('YYYY-MM-DD');
-                       stu_attendance= student_attendance[j].attendence;
-                       if(stu_attendance!=undefined)
-                       for(var k= 0; k<stu_attendance.length; k++)   
-                        { 
-                          status_date= stu_attendance[k].attendence_date;
-                            if(date==status_date)  
-                            {
-                              if(stu_attendance[k].status==1)
-                                attendance+= '<td style="background:green">P</td>';
-                              else
-                              if(stu_attendance[k].status==2)
-                                attendance+= '<td style="background:red">A</td>';
-
-                              flag=true;
-                            }
-                        }
-                        if(flag==false)
-                         attendance+= '<td style="background:White">&nbsp;</td>';
-                     }
-                }
-                attendance+='</tr>'
-
-              }
-  
-              calendar+='</tr>';
-
-              $('#student_attendance_table thead').append(calendar);
-              $('#student_attendance_table tbody').append(attendance);
-              $('#attendance').show();
-            }
-            else{
-                $('.studentlistTable tbody').html('');
-               $('.studentlistTable tbody').append('<tr ><td colspan="8">NO DATA FOUND<td></tr>');  
-            }
-        },
-        error: function() {
-            alert("error");
-        }
-    });
-      
-}
 
 

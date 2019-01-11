@@ -735,12 +735,10 @@ module.exports.findquestionpaper=function(obj, cb){
 	});
 }
 
-
-
 module.exports.insert_class=function(obj, cb){
 	con.connect(function(err){
-		var que = "INSERT INTO  tbl_class(class_name, class_name_numeric,created_at) VALUES ('"+obj.name+"', '"+obj.numeric_value+"','"+obj.created_at+"')";
-		//console.log(que);
+		var que = "INSERT INTO  tbl_class(class_name, class_abbreviations,created_at) VALUES ('"+obj.class_name+"', '"+obj.class_abbreviations+"','"+obj.created_at+"')";
+		 console.log(que);
 		con.query(que, function (err, result) {
 		    if (err) throw err;
 		     cb(undefined, result.insertId);
@@ -987,6 +985,20 @@ module.exports.getstudentlist_by_class=function(obj,where, cb){
 	});
 }
 
+/*
+** Get All teacher list who attend school
+*/
+module.exports.getteacherlist_by_attendence=function(obj,where, cb){
+	  //
+	con.connect(function(err){
+	 	//var que = "SELECT * FROM "+obj.tbl_enroll+"  INNER JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_enroll+".registration_id WHERE "+obj.tbl_enroll+".class_id="+ where.class_id + "  AND "+obj.tbl_enroll+".bonafide_status=0  AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' AND "+obj.tbl_enroll+".section_id='"+where.section_id+"' ORDER BY "+obj.tbl_registration+".name ASC" ;
+	 	var que = "SELECT DISTINCT("+obj.tbl_attendance+".registration_id),"+obj.tbl_registration+".* FROM "+obj.tbl_attendance+"  LEFT JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_attendance+".registration_id  WHERE "+obj.tbl_attendance+".user_role="+where.user_role+" AND tbl_attendance.session_year='2018-2019'";
+	 	console.log('Get student list ',que)
+	 	con.query(que, cb);
+	});
+}
+
+
 
 module.exports.get_fees_term=function(obj,where, cb){
 	  //
@@ -1001,8 +1013,8 @@ module.exports.get_fees_term=function(obj,where, cb){
 module.exports.getclass_id_sectionid=function(obj,cb)
 {
 	con.connect(function(err){
-	 	var que = "SELECT * FROM tbl_class INNER JOIN tbl_section ON tbl_class.class_id = tbl_section.section_id WHERE tbl_class.class_name='"+obj.class_name+"' AND tbl_section.section_name='"+obj.section_name+"'";
-	 	//console.log(que);
+	 	var que = "SELECT * FROM tbl_class INNER JOIN tbl_section ON tbl_class.class_id = tbl_section.class_id WHERE tbl_class.class_name='"+obj.class_name+"' AND tbl_section.section_name='"+obj.section_name+"'";
+	 	  
 	 	con.query(que, cb);
 	}); 
 }

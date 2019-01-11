@@ -3442,10 +3442,10 @@ function get_admin_student_attendance(class_id,section_id,registration_id)
 
 function get_teacherlist_attendance()
 {
-     var classid = $('#class_id').find(":selected").val();
-     var sectionid = $('#section_id_stop').find(":selected").val();
-     var classname = $('#class_id').find(":selected").text();
-     var sectionname = $('#section_id_stop').find(":selected").text();
+     //var classid = $('#class_id').find(":selected").val();
+     //var sectionid = $('#section_id_stop').find(":selected").val();
+     //var classname = $('#class_id').find(":selected").text();
+     //var sectionname = $('#section_id_stop').find(":selected").text();
      var month = $('#month_id').find(":selected").val();
      var year = $('#currentyear').find(":selected").val();
      if(classid=="")
@@ -3459,12 +3459,12 @@ function get_teacherlist_attendance()
         return false;
      }
      $.ajax({
-        url: "/getAdminStudentAttendanceReport",
+        url: "/getAdminTeacherAttendanceReport",
         method: "GET",
         dataType: "json",
         data: {
-            class_id: classid,
-            section_id: sectionid,
+            //class_id: classid,
+            //section_id: sectionid,
             month_id : month,
             year : year
         },

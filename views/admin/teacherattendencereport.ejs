@@ -36,7 +36,7 @@
 
                         <label class="col-sm-1 col-form-label" for="email">Month</label>
                         <div class="col-sm-2">
-						    <select class="form-control" id="month_id" onchange="get_studentlist_attendance()">
+						    <select class="form-control" id="month_id" onchange="get_teacherlist_attendance()">
 						    <%  Object.keys(month).forEach(function (key){ %>
 						    	<option value="<%= key %>"><%= month[key] %></option>
 						    	
@@ -46,7 +46,7 @@
 
 						<label class="col-sm-1 col-form-label" for="pwd">Year</label>
 					    <div class="col-sm-1">
-						    <select class="form-control" id="currentyear" name="year" onchange="get_studentlist_attendance()"> 
+						    <select class="form-control" id="currentyear" name="year" onchange="get_teacherlist_attendance()"> 
 						    	<option value="<%= year %>"><%= year %></option>
 						    	<option value="<%= nextyear %>"><%= nextyear %></option>
 						    	
