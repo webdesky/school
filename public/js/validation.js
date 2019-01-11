@@ -34,7 +34,10 @@ $('form[id="student_register"]').validate({
           
           
           address : 'required',
-          email : 'required',
+          student_email : {
+              required: true,
+              email: true,
+                },
           student_phone :{
                            required: true,
                            digits: true,
@@ -42,7 +45,7 @@ $('form[id="student_register"]').validate({
                          },  
           student_password : 'required',
           admission_number : 'required',
-          
+          parent_password : 'required',
           parent_name : 'required',
           
           parent_address : 'required',
@@ -72,8 +75,8 @@ $('form[id="student_register"]').validate({
           //transport_id :'This field is required',
           //dormitory_id :'This field is required',
           address :'This field is required',
-          email :'This field is required',
-          student_phone :'This field is required',
+          email :'This field is required Or Email is Not Valid',
+          student_phone :'This field is required OR Number is not Valid',
           student_password :'This field is required',
           admission_number :'This field is required',
           blood_group :'This field is required',
