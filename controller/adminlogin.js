@@ -757,7 +757,7 @@ router.get("/get_bonafidestudentDetail", function(req, res)
 		
 		   admin.getbonafieddetail(table,{registration_id:registration_id,class_id:class_id,section_id:section_id,session_year:year},function(err, result){
 			   var student_list = result;
-			  
+			  	
 			    
 			   var table = {tablename:'tbl_registration'};
 			   var n=0;
