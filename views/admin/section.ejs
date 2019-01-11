@@ -7,8 +7,31 @@
           <p class="card-description">
           <a href="/admin/sectionList"><button class="btn btn-inverse-dark btn-fw">Section List</button></a>
           </p>
+
+           <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
           
-          <form class="forms-sample" id="form_section" method="post" action="/addSection">
+          <form class="forms-sample" id="form_section" method="post" action="/section">
             <div class="form-group row">
               <input type="hidden" value="<%= section_data.section_id%>" name="section_id">
               <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>

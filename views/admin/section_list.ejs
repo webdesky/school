@@ -6,6 +6,28 @@
 				<a href="/admin/section"><button class="btn btn-inverse-dark btn-fw">Add Section</button></a>
 				
 			</p>
+			 <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
 			<div class="table-responsive">
 				<table class="table table-bordered datatable">
 					<thead>

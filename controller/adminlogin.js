@@ -1441,7 +1441,7 @@ router.get("/classList", function(req, res){
 	var table = 'tbl_class'
 	admin.findAll({table:table},function(err, result){
 		var class_list = result;
-		var pagedata = {title : "Welcome Admin", pagename : "admin/class_list", message : req.flash('msg'),class_list :class_list};
+		var pagedata = {title : "Welcome Admin", pagename : "admin/class_list", success : req.flash('success'), error : req.flash('error'),class_list :class_list};
 	    res.render("admin_layout", pagedata);
 
 	});
@@ -1476,7 +1476,7 @@ router.get("/section", function(req, res){
                  	data =JSON.parse(JSON.stringify(result1)); 
                     console.log('ddd') ;
                     console.log(data[0]);
-				    var pagedata = {title : "Welcome Admin", pagename : "admin/section", message : req.flash('msg'),class_list:class_list,section_data:data[0],section_list:''};
+				    var pagedata = {title : "Welcome Admin", pagename : "admin/section", success : req.flash('success'), error : req.flash('error'),class_list:class_list,section_data:data[0],section_list:''};
 				    res.render("admin_layout", pagedata);
                  }
 
@@ -1488,7 +1488,7 @@ router.get("/section", function(req, res){
               	var table = 'tbl_section'
 			    admin.findAllSection({table:table},function(err, result){
 					 	var section_list = result;
-					 	var pagedata = {title : "Welcome Admin", pagename : "admin/section", message : req.flash('msg'),section_list :section_list,class_list:class_list,section_data:''};
+					 	var pagedata = {title : "Welcome Admin", pagename : "admin/section",success : req.flash('success'), error : req.flash('error'),section_list :section_list,class_list:class_list,section_data:''};
 			                 res.render("admin_layout", pagedata);
 
 			    });
@@ -1510,7 +1510,7 @@ router.get("/section", function(req, res){
 
 });
 
-router.post("/addSection", function(req, res){
+router.post("/section", function(req, res){
  	if(req.session.user_role==1)
 		{
 		var class_id          = req.body.class_id;
@@ -1524,35 +1524,60 @@ router.post("/addSection", function(req, res){
 	      	
 	      	 if(result)
              {	
-                 res.redirect('/sectionList');
+             	req.flash('error','Section updated successfully')
+                res.redirect('/section');
              }
 	      });
  		}
 		else
 		{
-		  admin.insert_section({ class_id : class_id,section_name:section_name}, function(err, result){
-	     	if(result)
-			{
-				//var data = JSON.parse(JSON.stringify(result[0]));
-				 console.log(result);
-				 var table = 'tbl_section'
-				 admin.findAllSection({table:table},function(err, result){
-				 	var section_list = result;
-				 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list", message : req.flash('msg'),section_list :section_list};
-		                 res.render("admin_layout", pagedata);
+        
+	  	 admin.findWhere({tablename:'tbl_section'},{class_id : class_id,section_name:section_name},function(err, result){
+	  	 if(result.length>0)
+	  	 {
+	  	    req.flash('error','Section already exist')
+            section_data={
+                              class_id:class_id,
+                              section_name:section_name
+                         }
+             var table = 'tbl_section'
+			    admin.findAllSection({table:table},function(err, result){
+					 	var section_list = result;
+					 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list",success : req.flash('success'), error : req.flash('error'),section_list :section_list};
+			                 res.render("admin_layout", pagedata);
 
-				 });
-				
-			}
-			else
-			{
-				console.log('This username is incorrect');
-				req.flash("msg", "This username and password is incorrect");
-				res.redirect("/");
-			}
-		 });
-        }
+			    });
+         }
+         else
+         {
+            
 
+			  admin.insert_section({ class_id : class_id,section_name:section_name}, function(err, result){
+		     	if(result)
+				{
+					//var data = JSON.parse(JSON.stringify(result[0]));
+					 //console.log(result);
+					 var table = 'tbl_section'
+					 admin.findAllSection({table:table},function(err, result){
+					 	var section_list = result;
+					 	req.flash('success','Section added successfully')
+					 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list", success : req.flash('success'), error : req.flash('error'),section_list :section_list};
+			                 res.render("admin_layout", pagedata);
+
+					 });
+					
+				}
+				else
+				{
+					console.log('This username is incorrect');
+					req.flash("msg", "This username and password is incorrect");
+					res.redirect("/");
+				}
+			 });
+		 } 
+         
+         });
+	    }
 	}else{
 	        admin.select(function(err,result){
 	     
@@ -1568,7 +1593,7 @@ router.get("/sectionList", function(req, res){
 	 var table = 'tbl_section'
 	    admin.findAllSection({table:table},function(err, result){
 			 	var section_list = result;
-			 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list", message : req.flash('msg'),section_list :section_list};
+			 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list", success : req.flash('success'), error : req.flash('error'),section_list :section_list};
 	                 res.render("admin_layout", pagedata);
 
 	    });
@@ -1648,29 +1673,55 @@ router.post("/transport", function(req, res){
      }
      else	
      {
-		admin.insert_transport(obj, function(err, result){
-	        if(result)
-			{
-				//var data = JSON.parse(JSON.stringify(result[0]));
-				//console.log(result);
-				var table = 'tbl_transport'
-				admin.findAll({table:table},function(err, result){
-				 	var transport_list = result;
-                    req.flash('success',"Transport route added successfully");  
-				 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport", success: req.flash('success'),error: req.flash('error'),transport_list :transport_list,transportdata:''};
-		                 res.render("admin_layout", pagedata);
 
-				 });
-			}
-			else
-			{
-				console.log('This username is incorrect');
-				req.flash("msg", "This username and password is incorrect");
-				res.redirect("/");
-			}
-		});
+          	admin.findWhere({tablename:'tbl_transport'},{ route_name : route_name,number_of_vehicle:number_of_vehicle},function(err, result){
+		  	 if(result.length>0)
+		  	 {
+		  	   //console.log('already exist')
+		  	
+	           var table = 'tbl_transport'
+	     	   admin.findAll({table:table},function(err, result){
+                     transportdata= {
+                             route_name:route_name,
+                             number_of_vehicle:number_of_vehicle,
+                             description:description,
+                             route_fare:route_fare
+	  	                  }
+	           
+			 	 var transport_list = result;
+			 	 req.flash('error','Transport route already exist');
+	             var pagedata = {title : "Welcome Admin", pagename : "admin/transport",success: req.flash('success'),error: req.flash('error'),transport_list :transport_list,transportdata:transportdata};
+	             res.render("admin_layout", pagedata);
+	             
+	     	    }); 
+
+		  	 }
+	  	 	 else
+	  	 	 {
+	  	 		admin.insert_transport(obj, function(err, result){
+			        if(result)
+					{
+						//var data = JSON.parse(JSON.stringify(result[0]));
+						//console.log(result);
+						var table = 'tbl_transport'
+						admin.findAll({table:table},function(err, result){
+						 	var transport_list = result;
+		                    req.flash('success',"Transport route added successfully");  
+						 	var pagedata = {title : "Welcome Admin", pagename : "admin/transport", success: req.flash('success'),error: req.flash('error'),transport_list :transport_list,transportdata:''};
+				                 res.render("admin_layout", pagedata);
+
+						 });
+					}
+					else
+					{
+						console.log('This username is incorrect');
+						req.flash("msg", "This username and password is incorrect");
+						res.redirect("/");
+					}
+				});
+	  	 	 }
+	  	 });
 	 }
-	 	
 	}else{
 	        admin.select(function(err,result){
 	     
