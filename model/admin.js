@@ -796,11 +796,11 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 		for(var k in obj){
 			if(counter==1)
 			{
-				que += k+"= '"+obj[k]+"'";
+				que += k+'= "'+obj[k]+'"';
 			}
 			else
 			{
-				que += " , "+k+"= '"+obj[k]+"' ";
+				que += " , "+k+'= "'+obj[k]+'"' ;
 
 			}
 			counter++;

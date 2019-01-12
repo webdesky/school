@@ -2088,6 +2088,12 @@ function Formative1(student_id,class_id,section_id)
     function ajax_get_student_fees(){        
         var class_id    = $('#class_id').val();
         var student_id  = $('#student_id').val();
+
+        if(class_id==''){
+            alert('please select Class first');
+            return false;   
+        }
+
         if(student_id==''){
             alert('please select student first');
             return false;   

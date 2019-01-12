@@ -2202,7 +2202,8 @@ router.get("/Subject", function(req, res){
     var table  = 'tbl_class';
 	admin.findAll({table:table},function(err, result){
 	   var class_list 	 = result;
-	   var table_subject = 'tbl_subject';   
+	   var table_subject = 'tbl_subject';
+	   console.log(req.query.subject_id);   
         if(req.query.subject_id)
 	     {
 	         var subject_id=req.query.subject_id;
@@ -3954,12 +3955,17 @@ router.get("/exam", function(req, res){
 		    	 var exam_list    = exam_list
 
 
-		    	if(req.query.exam_id != undefined )
+		    	if(req.query.exam_id != undefined || req.query.exam_id !='')
 		    	{
                     admin.findexamDetail({table:exam_table},{exam_id:req.query.exam_id},function(err, exam_data){
-                        examdata= exam_data[0];
-						var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:examdata};
-						res.render("admin_layout", pagedata);
+                    	if(exam_data!= undefined){
+                       		var examdata 	 = exam_data[0];
+                       	}else{
+                       		var examdata 	 = '';
+                       	}
+							var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:examdata};
+							res.render("admin_layout", pagedata);
+						
                     });
 		    	}
 		    	else
@@ -6246,6 +6252,8 @@ router.post("/add_fee_type", function(req, res){
 			 		session_year     :req.session.session_year
 			 		
 			}	
+
+			
 	        var where       = {fee_type_id:req.body.fee_type_id}
 		    admin.updateWhere(table,where,update_array, function(err, result){  
                  if(result)
