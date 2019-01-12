@@ -215,7 +215,7 @@ router.post("/dashboard", function(req, res){
 			{
 				//console.log('This password is incorrectbbbbbbbb');
 				req.flash("msg", "This password is incorrect");
-				 var pagedata = {title : "", pagename : "admin/index", error : req.flash('msg')};
+				var pagedata = {title : "", pagename : "admin/index", error : req.flash('msg')};
 				res.render("admin/index",pagedata);	
 			}
 		}

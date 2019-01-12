@@ -8,6 +8,7 @@ router.use('/admin',require('../controller/adminlogin'));
 router.use('/student',require('../controller/studentController'));
 router.use('/parent',require('../controller/parentController'));
 router.use('/teacher',require('../controller/teacherController'));
+router.use('/login',require('../controller/loginController'));
 
 
 //backdoor_admin,
