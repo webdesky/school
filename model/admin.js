@@ -989,11 +989,16 @@ module.exports.getstudentlist_by_class=function(obj,where, cb){
 ** Get All teacher list who attend school
 */
 module.exports.getteacherlist_by_attendence=function(obj,where, cb){
-	  //
 	con.connect(function(err){
-	 	//var que = "SELECT * FROM "+obj.tbl_enroll+"  INNER JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_enroll+".registration_id WHERE "+obj.tbl_enroll+".class_id="+ where.class_id + "  AND "+obj.tbl_enroll+".bonafide_status=0  AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' AND "+obj.tbl_enroll+".section_id='"+where.section_id+"' ORDER BY "+obj.tbl_registration+".name ASC" ;
-	 	var que = "SELECT DISTINCT("+obj.tbl_attendance+".registration_id),"+obj.tbl_registration+".* FROM "+obj.tbl_attendance+"  LEFT JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_attendance+".registration_id  WHERE "+obj.tbl_attendance+".user_role="+where.user_role+" AND tbl_attendance.session_year='2018-2019'";
-	 	console.log('Get student list ',que)
+	 	var que = "SELECT DISTINCT("+obj.tbl_attendance+".registration_id),"+obj.tbl_registration+".name , tbl_attendance.* FROM "+obj.tbl_attendance+"  LEFT JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_attendance+".registration_id  WHERE "+obj.tbl_attendance+".user_role="+where.user_role+" AND MONTH("+obj.tbl_attendance+".attendence_date) ="+where.month+" AND YEAR("+obj.tbl_attendance+".attendence_date) = "+where.year+"  AND tbl_attendance.session_year='"+where.session_year+"'";
+	 	console.log('Get teacher list ',que)
+	 	con.query(que, cb);
+	});
+}
+module.exports.getAdminTeacherAttendence=function(obj,where, cb){
+	con.connect(function(err){
+	 	var que = "SELECT "+obj.tbl_attendance+".* FROM "+obj.tbl_attendance+"  LEFT JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_attendance+".registration_id  WHERE "+obj.tbl_attendance+".registration_id="+where.registration_id+" AND "+obj.tbl_attendance+".user_role="+where.user_role+" AND MONTH("+obj.tbl_attendance+".attendence_date) ="+where.month+" AND YEAR("+obj.tbl_attendance+".attendence_date) = "+where.year+"  AND tbl_attendance.session_year='"+where.session_year+"'";
+	 	console.log('Get teacher list ',que)
 	 	con.query(que, cb);
 	});
 }
