@@ -239,7 +239,7 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Phone Number </label>
 										<div class="col-sm-9"> 
-											<input  name="student_phone" id="student_phone" class="form-control" placeholder="Enter Student Phone Number" value="<%= studentdata.phone %>"  >
+											<input  type="text" name="student_phone" id="student_phone" class="form-control" placeholder="Enter Student Phone Number" value="<%= studentdata.phone %>" maxlength="10"  >
 											<span for="student_phone"  class="error below" style="display: none"></span>
 										</div>
 										
@@ -346,8 +346,8 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Phone Number</label>
 										<div class="col-sm-9">
-											<input type="number" class="form-control"  name="parent_number" id="parent_number" placeholder="Enter Parent Phone Number"  value="<%= studentdata.parent_number %>"  />
-										<span for="phone"  class="error below" style="display: none"></span>
+											<input type="text" class="form-control"  name="parent_number" id="parent_number" placeholder="Enter Parent Phone Number"  value="<%= studentdata.parent_number %>" maxlength="10"  />
+										<span for="parent_number"  class="error below" style="display: none"></span>
 										</div>
 									</div>
 								</div>
@@ -501,8 +501,8 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Phone Number </label>
 										<div class="col-sm-9">
-											<input type="number" name="teacher_phone" id="teacher_phone" class="form-control" placeholder="Enter Teacher Phone Number"  >
-										    <span for="phone"  class="error below" style="display: none"></span>
+											<input type="text" name="teacher_phone" id="teacher_phone" class="form-control" placeholder="Enter Teacher Phone Number" maxlength="10"  >
+										    <span for="teacher_phone"  class="error below" style="display: none"></span>
 										</div>
 										
 									</div>
@@ -625,8 +625,8 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Email</label>
 										<div class="col-sm-9">
-											<input type="text" class="form-control" placeholder="Enter Accountant Email" name="accountant_email" id="accountant_email"  />
-											<span for="accountant_email"  class="error below" style="display: none"></span>
+											<input type="email" class="form-control" placeholder="Enter Accountant Email" name="accountant_email" id="accountant_email"  />
+											<span for="email"  class="error below" style="display: none"></span>
 										</div>
 									</div>
 								</div>
@@ -656,7 +656,7 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Phone Number </label>
 										<div class="col-sm-9">
-											<input type="number" name="accountant_phone" id="accountant_phone" class="form-control" placeholder="Enter accountant Phone Number"  >
+											<input type="text" name="accountant_phone" id="accountant_phone" class="form-control" placeholder="Enter accountant Phone Number" maxlength="10"  >
 											<span for="accountant_phone"  class="error below" style="display: none"></span>
 										</div>
 										
@@ -777,7 +777,7 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Phone Number </label>
 										<div class="col-sm-9">
-											<input type="number" name="librarian_phone" id="librarian_phone" class="form-control" placeholder="Enter Librarian Phone Number"  >
+											<input type="text" name="librarian_phone" id="librarian_phone" class="form-control" placeholder="Enter Librarian Phone Number" maxlength="10"   >
 											<span for="librarian_phone"  class="error below" style="display: none"></span>
 										</div>
 										

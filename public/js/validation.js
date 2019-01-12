@@ -43,6 +43,7 @@ $('form[id="student_register"]').validate({
                            required: true,
                            digits: true,
                            minlength: 10,
+                           maxlength:10,
                          },  
           student_password : 'required',
           admission_number : 'required',
@@ -54,6 +55,8 @@ $('form[id="student_register"]').validate({
                            required: true,
                            digits: true,
                            minlength: 10,
+                           maxlength:10
+
                           },
           parent_email : {
                             required: true,
@@ -77,15 +80,26 @@ $('form[id="student_register"]').validate({
           //dormitory_id :'This field is required',
           address :'This field is required',
           email :'This field is required Or Email is Not Valid',
-          student_phone :'This field is required Or Number is not Valid',
+          student_phone :{
+             required :'This field is required',
+             minlength:'Number is not Valid',
+             maxlength:'Number is not Valid',
+           },
           student_password :'This field is required',
           admission_number :'This field is required',
           blood_group :'This field is required',
           parent_name :'This field is required',
           mother_name :'This field is required',
           parent_address :'This field is required',
-          parent_number :'This field is required Or Number is not Valid',
-          parent_email :'This field is required Or Email is Not Valid',
+          parent_number :{
+             required :'This field is required',
+             minlength:'Number is not Valid',
+             maxlength:'Number is not Valid',
+           },
+          parent_email :{
+                         required :'This field is required ',
+                         email :'Email is Not Valid'
+                         },
           parent_password :'This field is required',
           parent_profession :'This field is required',
         },
@@ -128,8 +142,15 @@ $('form[id="teacher_register"]').validate({
           show_website: 'This field is required',
           teacher_designation: 'This field is required',
           teacher_address: 'This field is required',
-          teacher_phone: 'This field is required Or Number is not Valid',
-          teacher_email: 'This field is required Or Email is Not Valid',
+          teacher_phone: {
+                           required :'This field is required',
+                           minlength:'Number is not Valid',
+                           maxlength:'Number is not Valid',
+                         },
+          teacher_email: {
+                         required :'This field is required ',
+                         email :'Email is Not Valid'
+                         },
           teacher_password: 'This field is required',
           academics: 'This field is required',
           teacher_profession: 'This field is required',
@@ -166,7 +187,11 @@ $('form[id="accountant_register"]').validate({
           accountant_email: 'This field is required Or Email is Not Valid',
           accountant_password: 'This field is required',
           accountant_address: 'This field is required',
-          accountant_phone: 'This field is required Or Number is not Valid',
+          accountant_phone: {
+                             required :'This field is required',
+                             minlength:'Number is not Valid',
+                             maxlength:'Number is not Valid',
+                           },
           accountant_academics: 'This field is required',
           accountant_profession: 'This field is required',
         },
@@ -327,7 +352,7 @@ $('form[id="form_academicsyllabus"]').validate({
         }
 });
 
-$('form[id="form_subject"]').validate({
+$('form[id="form_subject1"]').validate({
 
  rules: {
           class_id: 'required',

@@ -7,8 +7,31 @@
           <p class="card-description">
           <a href="/admin/subjectList"><button class="btn btn-inverse-dark btn-fw">Subject List</button></a>
           </p>
-          <%= message %>
-          <form class="forms-sample" id="form_subject" method="post" action="/admin/addSubject">
+          
+          <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
+          
+          <form class="forms-sample" id="form_subject" method="post" action="/admin/Subject">
             <input type="hidden" value="<%=subject_list.subject_id%>" name="subject_id">
             <div class="form-group row">
               <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Class Name</label>

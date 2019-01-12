@@ -793,8 +793,6 @@ function Teacher_get_tabulate_exam_marks()
 
 }
 
-  
-
 
 function Teacher_getSubject(id){
     var class_id = id;
@@ -813,13 +811,6 @@ function Teacher_getSubject(id){
            // console.log(response)
             //var section  = response.section_list;
             var subject  = response.subject_list;
-            // var option = '<option value="">-- Select Section --</option>';
-            // for (var i = 0; i < section.length; i++) {
-            //     option += '<option value="' + section[i].section_id + '">' + section[i].section_name + '</option>';
-            // }
-            // $('#section_id').html('');
-            // $("#section_id").html(option);
-
             var option = '<option value="">-- Select subject --</option>';
             for (var i = 0; i < subject.length; i++) {
                 option += '<option value="' + subject[i].subject_id + '">' + subject[i].name + '</option>';

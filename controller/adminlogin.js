@@ -96,14 +96,14 @@ router.post("/", function(req, res){
 			}
 			else
 			{
-				console.log('This password is incorrect aaaaaa');
-				req.flash("msg", "This password is incorrect");
+				//console.log('This password is incorrect aaaaaa');
+				req.flash("msg", "This Password is incorrect");
 				res.redirect("admin/index");	
 			}
 		}
 		else
 		{
-			console.log('This username is incorrect');
+			//console.log('This username is incorrect');
 			req.flash("msg", "This username and password is incorrect");
 			res.redirect("admin/index");
 		}
@@ -224,7 +224,7 @@ router.post("/dashboard", function(req, res){
 			else
 			{
 				//console.log('This password is incorrectbbbbbbbb');
-				req.flash("error", "password is incorrect");
+				req.flash("error", "Password is incorrect");
 				 var pagedata = {title : "", pagename : "admin/index", success: req.flash('success'),error : req.flash('error')};
  
 				res.render("admin/index",pagedata);	
@@ -2271,17 +2271,17 @@ router.get("/Subject", function(req, res){
 		      var tableobj = {tablename:table_subject};
 		      admin.findWhere(tableobj,{'subject_id': subject_id },function(err, result){
 			 	  var subject_list 	 = JSON.parse(JSON.stringify(result[0]));
-				  var pagedata 	 	 = {Title : "", pagename : "admin/subject", message : req.flash('msg'),subject_list:subject_list,class_list:class_list};
+				  var pagedata 	 	 = {Title : "", pagename : "admin/subject", success: req.flash('success'),error: req.flash('error'),subject_list:subject_list,class_list:class_list};
                   res.render("admin_layout", pagedata);
-			    });	
+			  });	
 	     }
      	 else 
      	 {
-				 admin.findAllsubject({table:table_subject},function(err, result){
-				    var subject_list 	 = result;
-					var pagedata 	 	 = {Title : "", pagename : "admin/subject", message : req.flash('msg'),subject_list:subject_list,class_list:class_list};
-					res.render("admin_layout", pagedata);
-				});
+			 admin.findAllsubject({table:table_subject},function(err, result){
+			    var subject_list 	 = result;
+				var pagedata 	 	 = {Title : "", pagename : "admin/subject", success: req.flash('success'),error: req.flash('error'),subject_list:subject_list,class_list:class_list};
+				res.render("admin_layout", pagedata);
+			});
      	 }  
 	  });
     }else{
@@ -2294,9 +2294,12 @@ router.get("/Subject", function(req, res){
 });
 
 
-router.post("/addSubject", function(req, res){
+router.post("/Subject", function(req, res){
 	if(req.session.user_role==1)
 	{
+
+
+
 		var table   = {tablename:'tbl_subject'};
 	 	var data = {
 			 		name         :req.body.subject_name,
@@ -2308,28 +2311,54 @@ router.post("/addSubject", function(req, res){
 	     {
 	          var where= {subject_id:req.body.subject_id}
 		      admin.updateWhere(table,where,data, function(err, result){  
-                 if(result)
+	             if(result)
 		      	 {
-		      		res.redirect("/subjectList");
+		      	 	req.flash('success',"Subject updated successfully");
+		      		res.redirect("/subject");
 		      	 }
 		      });
 	     }
      	else 
      	{
-     	  admin.insert_all(table,data,function(err, result){
-			var class_table  = 'tbl_class';
-			var table_subject = 'tbl_subject';
-	  		var table  = 'tbl_class';
-	
-			admin.findAll({table:table},function(err, result){
-		    	var class_list 	 = result;
-				 admin.findAllsubject({table:table_subject},function(err, result){
-				    var subject_list 	 = result;
-					var pagedata 	 	 = {Title : "", pagename : "admin/subject", message : req.flash('msg'),subject_list:subject_list,class_list:class_list};
-					res.render("admin_layout", pagedata);
-				});
-			});
-		  });	
+              
+          if(req.body.subject_name==''|| req.body.class_id==''||req.body.subject_type=='')
+          {
+          	 req.flash('success',"All field required");
+		     res.redirect("/subject");
+          }   
+          else
+          {
+              admin.findWhere(table,{name : req.body.subject_name,class_id : req.body.class_id, subject_type:req.body.subject_type },function(err, result){
+		  	   if(result.length>0)
+		  	   {
+		  	   
+	               req.flash('error','Subject already exist')	
+	               res.redirect("/subject");   
+	           }
+	            else
+	            {
+
+	            	admin.insert_all(table,data,function(err, result){
+					var class_table  = 'tbl_class';
+					var table_subject = 'tbl_subject';
+			  		var table  = 'tbl_class';
+			  		req.flash('success',"Subject inserted successfully");
+			
+					admin.findAll({table:table},function(err, result){
+				    	var class_list 	 = result;
+						 admin.findAllsubject({table:table_subject},function(err, result){
+						    var subject_list 	 = result;
+							var pagedata 	 	 = {Title : "", pagename : "admin/subject",success: req.flash('success'),error: req.flash('error'),subject_list:subject_list,class_list:class_list};
+							res.render("admin_layout", pagedata);
+						});
+					});
+
+				  });
+	            }
+
+	     	 });
+          } 
+     	 	
      	}           
 	}else{
 	        admin.select(function(err,result){
