@@ -2,8 +2,6 @@ $(document).ready(function(){
 
 /* Get value of specific user on register page */
 
-
-    
     user =$("input[type=radio][name='register']:checked").val()
 
     $(".userregister").val(user);
@@ -16,6 +14,9 @@ $(document).ready(function(){
     });
 
 /**********/
+
+
+
      
      
 });
@@ -108,6 +109,7 @@ $('form[id="teacher_register"]').validate({
                            required: true,
                            digits: true,
                            minlength: 10,
+                           maxlength: 10
                          }, 
           teacher_email: {
                             required: true,
@@ -126,8 +128,8 @@ $('form[id="teacher_register"]').validate({
           show_website: 'This field is required',
           teacher_designation: 'This field is required',
           teacher_address: 'This field is required',
-          teacher_phone: 'This field is required',
-          teacher_email: 'This field is required',
+          teacher_phone: 'This field is required Or Number is not Valid',
+          teacher_email: 'This field is required Or Email is Not Valid',
           teacher_password: 'This field is required',
           academics: 'This field is required',
           teacher_profession: 'This field is required',
@@ -153,6 +155,7 @@ $('form[id="accountant_register"]').validate({
                               required: true,
                               digits: true,
                               minlength: 10,
+                              maxlength: 10
                            }, 
           accountant_academics: 'required',
           accountant_profession : 'required',
@@ -160,10 +163,10 @@ $('form[id="accountant_register"]').validate({
         messages: {
           accountant_name: 'This field is required',
           accountant_gender: 'This field is required',
-          accountant_email: 'This field is required',
+          accountant_email: 'This field is required Or Email is Not Valid',
           accountant_password: 'This field is required',
           accountant_address: 'This field is required',
-          accountant_phone: 'This field is required',
+          accountant_phone: 'This field is required Or Number is not Valid',
           accountant_academics: 'This field is required',
           accountant_profession: 'This field is required',
         },
@@ -187,6 +190,7 @@ $('form[id="librarian_register"]').validate({
                               required: true,
                               digits: true,
                               minlength: 10,
+                              maxlength: 10
                           }, 
           librarian_academics: 'required',
           librarian_profession : 'required',
@@ -195,10 +199,10 @@ $('form[id="librarian_register"]').validate({
 
           librarian_name: 'This field is required',
           librarian_gender: 'This field is required',
-          librarian_email: 'This field is required',
+          librarian_email: 'This field is required Or Email is Not Valid',
           librarian_password: 'This field is required',
           librarian_address: 'This field is required',
-          librarian_phone: 'This field is required',
+          librarian_phone: 'This field is required Or Number is not Valid',
           librarian_academics: 'This field is required',
           librarian_profession: 'This field is required',
         },

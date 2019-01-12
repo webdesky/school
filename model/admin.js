@@ -308,7 +308,7 @@ module.exports.findsubjectTeacher=function(table,obj, cb){
 	con.connect(function(err){
 		
 		var que = "SELECT *  FROM "+table.tablename+" LEFT JOIN tbl_registration On tbl_registration.registration_id="+table.tablename+".teacher_id WHERE "+table.tablename+".class_id="+obj.class_id+" AND "+table.tablename+".section_id="+obj.section_id+" AND "+table.tablename+".subject_id="+obj.subject_id+"";
-
+    console.log('#### findsubjectTeacher ####',que);
 		 con.query(que, cb);
 	});
 }
@@ -392,9 +392,9 @@ module.exports.findClassRoutineAllday=function(table,obj ,cb){
 	
 	con.connect(function(err){
 		
-		var que = "SELECT tbl_subject.name as subject_name, tbl_registration.name as teacher_name, tbl_registration.registration_id as teacher_id, tbl_class_routine.*  FROM "+table.tablename+"  LEFT JOIN tbl_subject ON "+table.tablename+".subject_id=tbl_subject.subject_id LEFT JOIN tbl_registration ON "+table.tablename+".registration_id=tbl_registration.registration_id  WHERE  "+table.tablename+".day='"+obj.day+"' AND "+table.tablename+".class_id="+obj.class_id+" AND "+table.tablename+".section_id="+obj.section_id+" AND "+table.tablename+".registration_id="+obj.registration_id;
+		var que = "SELECT tbl_subject.name as subject_name, tbl_registration.name as teacher_name, tbl_registration.registration_id as teacher_id, tbl_class_routine.*  FROM "+table.tablename+"  LEFT JOIN tbl_subject ON "+table.tablename+".subject_id=tbl_subject.subject_id LEFT JOIN tbl_registration ON "+table.tablename+".registration_id=tbl_registration.registration_id  WHERE  "+table.tablename+".day='"+obj.day+"' AND "+table.tablename+".class_id="+obj.class_id+" AND "+table.tablename+".section_id="+obj.section_id+" AND "+table.tablename+".registration_id="+obj.registration_id+" AND "+table.tablename+".subject_id="+obj.subject_id+" AND "+table.tablename+".session_year='"+obj.session_year+"'";
 
-	  //console.log(que);
+	  console.log('---findClassRoutineAllday----',que);
 		 con.query(que, cb);
 	});
 }
@@ -811,7 +811,7 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 	   if(key.length>0)
 	     que += " WHERE "+key[0]+" = '"+where[key[0]]+"'";	
 
-	 console.log('#####################',que);
+	 ///console.log('#####################',que);
        con.query(que, cb);
 	});
  

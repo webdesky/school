@@ -207,8 +207,11 @@ $(document).ready( function () {
     });
   //  $('#fees_report_table').DataTable();
      $( ".attendence_date" ).datepicker({
-          dateFormat: 'dd-mm-yy'
+          dateFormat: 'dd-mm-yy',
+          maxDate: new Date()  
      });
+      
+
 
  
      //CKEDITOR.replace('descriptionstudent');
@@ -804,7 +807,7 @@ function getsubteacher(day){
                     if(teacher_list.length==0){
                         $('.routineTable tbody').append('<tr id="tr_'+i+'"><td>'+count+'</td><td>'+subject[i].name+'</td><td><input type="hidden" Class="form_control" name="subject_id"  id="subject_id" value="'+subject[i].subject_id+'" disabled="disabled"><select  class="form-control" id="teacher_id_'+i+'" name="teacher_id"  disabled="disabled"><option value="">Select Teacher</option></select></td><td><select id="starting_hour'+i+'" name="time_start" class="form-control time"   disabled="disabled"><option value="" >Hour</option></select><select id="starting_minute'+i+'" name="time_start_min" class="form-control time"  disabled="disabled"><option value=""  >Minute</option></select><select name="starting_ampm" id="starting_ampm" class="form-control time"  disabled="disabled"><option value="1">am</option><option value="2">pm</option></select></td><td><select id="end_hour'+i+'" name="time_end" class="form-control time"  disabled="disabled"><option value="" >Hour</option></select><select id="end_minute'+i+'" name="time_end_min" class="form-control time"  disabled="disabled"><option value="" >Minute</option></select><select name="end_ampm" id="end_ampm" class="form-control time"  disabled="disabled"><option value="1">am</option><option value="2">pm</option></select></td><td><a class="btn btn-success mr-2" href="/classRoutineClone/?class_routine_id='+ subject[i].class_routine_id +'" > Copy</a></a><a href="#" onclick="delete_record('+ subject[i].class_routine_id +','+i+','+mytable+','+field+')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>');
                     }else{
-                         $('.routineTable tbody').append('<tr id="tr_'+i+'"><td>'+count+'</td><td>'+subject[i].name+'</td><td><input type="hidden" Class="form_control" name="subject_id"  id="subject_id" value="'+subject[i].subject_id+'"><select class="form-control" id="teacher_id_'+i+'" name="teacher_id" ><option value="">Select Teacher</option></select></td><td><select id="starting_hour'+i+'" name="time_start" class="form-control time"><option value="">Hour</option></select><select id="starting_minute'+i+'" name="time_start_min" class="form-control time"><option value="">Minute</option></select><select name="starting_ampm" id="starting_ampm'+i+'" class="form-control time"></select></td><td><select id="end_hour'+i+'" name="time_end" class="form-control time"><option value="">Hour</option></select><select id="end_minute'+i+'" name="time_end_min" class="form-control time"><option value="">Minute</option></select><select id="end_ampm'+i+'"name="end_ampm" id="end_ampm" class="form-control time" ></select></td><td><a class="btn btn-success mr-2" href="/classRoutineClone/?class_routine_id='+ subject[i].class_routine_id +'" > Copy</a><a href="#" onclick="delete_record('+ subject[i].class_routine_id +','+i+','+ mytable +','+field+')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>');
+                         $('.routineTable tbody').append('<tr id="tr_'+i+'"><td>'+count+'</td><td>'+subject[i].name+'</td><td><input type="hidden" Class="form_control" name="subject_id"  id="subject_id" value="'+subject[i].subject_id+'"><select class="form-control" id="teacher_id_'+i+'" name="teacher_id" onchange="onteacherselect(this.value,'+i+')" ><option value="">Select Teacher</option></select><input type="hidden" value="" id="teacherid_'+i+'"> </td><td><select id="starting_hour'+i+'" name="time_start" class="form-control time" onchange="checkteacherselect('+i+')"><option value="">Hour</option></select><select id="starting_minute'+i+'" name="time_start_min" class="form-control time" onchange="checkteacherselect('+i+')"><option value="">Minute</option></select><select name="starting_ampm" id="starting_ampm'+i+'" class="form-control time" onchange="checkteacherselect('+i+')"></select></td><td><select id="end_hour'+i+'" name="time_end" class="form-control time" onchange="checkteacherselect('+i+')"><option value="">Hour</option></select><select id="end_minute'+i+'" name="time_end_min" class="form-control time" onchange="checkteacherselect('+i+')"><option value="">Minute</option></select><select id="end_ampm'+i+'"name="end_ampm" id="end_ampm" class="form-control time"onchange="checkteacherselect('+i+')"></select></td><td><a class="btn btn-success mr-2" href="/classRoutineClone/?class_routine_id='+ subject[i].class_routine_id +'" > Copy</a><a href="#" onclick="delete_record('+ subject[i].class_routine_id +','+i+','+ mytable +','+field+')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>');
                     }
 
                     //console.log("#teacher_id_"+i)
@@ -3589,6 +3592,23 @@ function get_teacherlist_attendance()
         }
     });
       
+}
+
+
+/* selected drop down */
+
+function onteacherselect(value,id)
+{
+   $("#teacherid_"+id).val(value)
+}
+function checkteacherselect(id)
+{
+   value= $('#teacherid_'+id).val();
+   if(value==""||value==undefined)
+   {
+     alert('Please select teacher')
+     return false;
+   }
 }
 
 

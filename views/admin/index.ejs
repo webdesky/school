@@ -14,6 +14,7 @@
   <!-- inject:css -->
    
   <!-- endinject -->
+ 
   <style>
 
 body {
@@ -180,6 +181,23 @@ label {
         <div class="row w-100">
           <div class="col-lg-4 mx-auto">
             <div class="auto-form-wrapper">
+
+
+            <div class="container">
+            
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+               <!--  <button type="button" class="close" data-dismiss="alert">x</button> -->
+                <strong><%= error %> </strong>
+                
+              </div>
+            <% }  %>
+           </div>
+              
+
             <form action="/dashboard" method="post" enctype="multipart/form-data">
             
                 <div class="form-group">
