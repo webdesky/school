@@ -265,7 +265,9 @@ router.get("/dashboard", function(req, res){
 	    }else{
 	        admin.select(function(err,result){
 	     
-		    res.render('admin/index',{error : req.flash('msg')});
+		   req.flash("error", "Username is incorrect");
+			var pagedata = {title : "", pagename : "admin/index", success: req.flash('success'),error : req.flash('error')};
+ 			res.render("admin/index",pagedata);	
 			  
 		 	});
 	 	}
