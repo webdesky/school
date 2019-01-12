@@ -109,6 +109,7 @@ $('form[id="teacher_register"]').validate({
                            required: true,
                            digits: true,
                            minlength: 10,
+                           maxlength: 10
                          }, 
           teacher_email: {
                             required: true,
@@ -154,6 +155,7 @@ $('form[id="accountant_register"]').validate({
                               required: true,
                               digits: true,
                               minlength: 10,
+                              maxlength: 10
                            }, 
           accountant_academics: 'required',
           accountant_profession : 'required',
@@ -188,6 +190,7 @@ $('form[id="librarian_register"]').validate({
                               required: true,
                               digits: true,
                               minlength: 10,
+                              maxlength: 10
                           }, 
           librarian_academics: 'required',
           librarian_profession : 'required',

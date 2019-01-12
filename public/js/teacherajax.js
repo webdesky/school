@@ -471,7 +471,7 @@ function delete_slider_record(id, tr_id,tablename,columname) {
  function Teacher_get_all_data(id){
     var class_id = id;
     $.ajax({
-        url: "/getAllData",
+        url: "/teacher/getAllData",
         method: "GET",
         dataType: "json",
         data: {
@@ -796,7 +796,7 @@ function Teacher_get_tabulate_exam_marks()
   
 
 
-function getSubject(id){
+function Teacher_getSubject(id){
     var class_id = id;
     
 

@@ -207,11 +207,10 @@ $(document).ready( function () {
     });
   //  $('#fees_report_table').DataTable();
      $( ".attendence_date" ).datepicker({
-          dateFormat: 'dd-mm-yy'
+          dateFormat: 'dd-mm-yy',
+          maxDate: new Date()  
      });
-     $( "#teacher_dob" ).datepicker({
-          dateFormat: 'dd-mm-yy'
-     });
+      
 
 
  

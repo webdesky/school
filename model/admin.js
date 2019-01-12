@@ -811,7 +811,7 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 	   if(key.length>0)
 	     que += " WHERE "+key[0]+" = '"+where[key[0]]+"'";	
 
-	 console.log('#####################',que);
+	 ///console.log('#####################',que);
        con.query(que, cb);
 	});
  
