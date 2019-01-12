@@ -51,7 +51,7 @@
       
                     <div class="col-sm-2">
                     	<label class="col-form-label">Select Class</label>
-                      <select class="form-control" name="class_id" id="class_id" onchange="get_fees_tt(this.value)">
+                      <select class="form-control" name="class_id" id="class_id" onchange="get_fees_tt(this.value)" required="required">
                         <option value="">Select Class</option>
                         <%  class_list.forEach(function(class_list){ %>
                         <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
@@ -96,7 +96,7 @@
           
 
         <div id="fees_report" style="display: none;" class="table-responsive">
-            <table id="fees_report_table" class="table table-bordered datatable" >
+            <table id="fees_report_table" class="table table-bordered " >
               <h2>Payment Report</h2>
               <thead>
                 <tr>

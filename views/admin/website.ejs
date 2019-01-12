@@ -64,11 +64,11 @@
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
                         <div class="col-sm-4">
                         <input type="hidden" name="type" value="notice_board">
-                         <input type="text" name="title" class="form-control" placeholder="Enter Title">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title" required="required">
                         </div>
                          <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
                         <div class="col-sm-4">
-                           <input type="text" name="date" id="datepicker" class="form-control attendence_date" placeholder="notice date"  >
+                           <input type="text" name="date" id="datepicker" class="form-control attendence_date" placeholder="notice date"  required="required">
                         </div>
                       </div>  
                       <div class="clearfix"></div>
@@ -165,11 +165,11 @@
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Title</label>
                         <div class="col-sm-4">
                         <input type="hidden" name="type" value="events">
-                         <input type="text" name="title" class="form-control" placeholder="Enter Title">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title" required="required">
                         </div>
                          <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
                         <div class="col-sm-4">
-                           <input type="text" name="event_date" id="datepickers" class="form-control attendence_date" placeholder="Event date">
+                           <input type="text" name="event_date" id="datepickers" class="form-control attendence_date" placeholder="Event date" required="required">
                         </div>
                       </div>  
                       <div class="clearfix"></div>
@@ -242,7 +242,7 @@
                   <h3>About Us</h3>
                  <form action="/frontend_setting" method="post">  
                    <input type="hidden" name="type" value="about_us">
-                   <textarea class="form-control" id="about_description" name="about_description"><%= current_setting[0].about_us %></textarea>
+                   <textarea class="form-control" id="about_description" name="about_description" required="required"><%= current_setting[0].about_us %></textarea>
                    <script type="text/javascript">
                      CKEDITOR.replace('about_description');
                    </script>
@@ -257,7 +257,7 @@
                  <form action="/frontend_setting" method="post">
                      <input type="hidden" name="type" value="terms_conditions">
 
-                     <textarea class="form-control" id="terms_description" name="terms_description"><%= current_setting[0].terms_conditions %></textarea>
+                     <textarea class="form-control" id="terms_description" name="terms_description" required="required"><%= current_setting[0].terms_conditions %></textarea>
                      <script type="text/javascript">
                        CKEDITOR.replace('terms_description');
                      </script>
@@ -274,7 +274,7 @@
                   <h3>Privacy Policy</h3>
                   <form action="/frontend_setting" method="post">
                    <input type="hidden" name="type" value="privacy_policy">
-                   <textarea class="form-control" id="privacy_description" name="privacy_description"><%= current_setting[0].privacy_policy %></textarea>
+                   <textarea class="form-control" id="privacy_description" name="privacy_description" required="required"><%= current_setting[0].privacy_policy %></textarea>
                    <script type="text/javascript">
                      CKEDITOR.replace('privacy_description');
                    </script>
@@ -292,18 +292,18 @@
                           <label for="exampleInputEmail2" class="col-sm-2 col-form-label" >Title</label>
                           <div class="col-sm-4">
                           <input type="hidden" name="type" value="slider">
-                           <input type="text" name="slider_title" class="form-control" placeholder="Enter Title" required="required">
+                           <input type="text" name="slider_title" class="form-control" placeholder="Enter Title" required="required" required="required">
                           </div>
                           <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Slider Image</label>
                           <div class="col-sm-4">
-                             <input type="file" name="slider_image" class="form-control" required="required" multiple="multiple">
+                             <input type="file" name="slider_image" class="form-control" required="required" multiple="multiple" required="required">
                           </div>
                         </div>  
                         <div class="clearfix"></div>
                         <div class="form-group row">
                         <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Description</label>
                           <div class="col-sm-10">
-                             <textarea class="form-control" name="slider_description" placeholder="Enter Slider Description" rows="8"></textarea>
+                             <textarea class="form-control" name="slider_description" placeholder="Enter Slider Description" rows="8" required="required"></textarea>
                           </div>
 
                           
@@ -388,30 +388,30 @@
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label" >School Title</label>
                         <div class="col-sm-4">
                         <input type="hidden" name="type" value="settings">
-                         <input type="text" name="school_title" class="form-control" placeholder="Enter Title" value="<%= settings[0].school_title %>">
+                         <input type="text" name="school_title" class="form-control" placeholder="Enter Title" value="<%= settings[0].school_title %>" required="required">
                         </div>
                          <label for="exampleInputPassword2" class="col-sm-2 col-form-label">School Email</label>
                         <div class="col-sm-4">
-                           <input type="text" name="school_email"  class="form-control" placeholder="Enter School Email" value="<%= settings[0].school_email %>">
+                           <input type="text" name="school_email"  class="form-control" placeholder="Enter School Email" value="<%= settings[0].school_email %>" required="required">
                         </div>
                       </div>  
                       <div class="clearfix"></div>
                       <div class="form-group row">
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Phone</label>
                         <div class="col-sm-4">
-                          <input type="text" name="phone" class="form-control" placeholder="Enter Phone" value="<%= settings[0].phone %>">
+                          <input type="text" name="phone" class="form-control" placeholder="Enter Phone" value="<%= settings[0].phone %>" required="required">
                         </div>
                         
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Fax</label>
                         <div class="col-sm-4">
-                          <input type="text" name="fax" class="form-control" placeholder="Enter Fax" value="<%= settings[0].fax %>">
+                          <input type="text" name="fax" class="form-control" placeholder="Enter Fax" value="<%= settings[0].fax %>" required="required">
                         </div> 
                       </div> 
                       <div class="clearfix"></div>
                       <div class="form-group row">
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">CopyRight Text</label>
                         <div class="col-sm-4">
-                          <input type="text" name="copyright_text" class="form-control" placeholder="Enter CopyRight Text" value="<%= settings[0].copyright_text %>">
+                          <input type="text" name="copyright_text" class="form-control" placeholder="Enter CopyRight Text" value="<%= settings[0].copyright_text %>" required="required">
                         </div>
                         
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Address</label>
@@ -428,7 +428,7 @@
                         
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Recaptcha Site Key</label>
                         <div class="col-sm-4">
-                          <input type="text" name="recaptcha_site_key" class="form-control" placeholder="Enter Recaptcha Site Key" value="<%= settings[0].recaptcha_site_key %>">
+                          <input type="text" name="recaptcha_site_key" class="form-control" placeholder="Enter Recaptcha Site Key" value="<%= settings[0].recaptcha_site_key %>" >
                         </div> 
                       </div>
 
@@ -488,11 +488,11 @@
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label" >Title</label>
                         <div class="col-sm-4">
                         <input type="hidden" name="type" value="gallery">
-                         <input type="text" name="title" class="form-control" placeholder="Enter Title" value="">
+                         <input type="text" name="title" class="form-control" placeholder="Enter Title" value="" required="required">
                         </div>
                          <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Date</label>
                         <div class="col-sm-4">
-                           <input type="text" name="date"  class="form-control attendence_date" placeholder="Select Date" value="">
+                           <input type="text" name="date"  class="form-control attendence_date" placeholder="Select Date" value="" required="required">
                         </div>
                       </div>  
                       <div class="clearfix"></div>
@@ -511,7 +511,7 @@
                       <div class="form-group row">
                         <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
                         <div class="col-sm-10">
-                        <textarea class="form-control" name="gallery_description" rows="10" placeholder="Enter Gallery Description"></textarea>
+                        <textarea class="form-control" name="gallery_description" rows="10" placeholder="Enter Gallery Description" required="required"></textarea>
                           
                         </div>
                         

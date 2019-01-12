@@ -205,7 +205,7 @@ $(document).ready( function () {
            
         ]
     });
-    $('#fees_report_table').DataTable();
+  //  $('#fees_report_table').DataTable();
      $( ".attendence_date" ).datepicker({
           dateFormat: 'dd-mm-yy'
      });
@@ -870,6 +870,7 @@ function getsubteacher(day){
                         $("#end_ampm"+i).append('<option value="'+2+'">pm</option>'); 
 
                }
+                $('.routineTable').DataTable();
                 }else{
                     $('.routineTable tbody').append('<tr><td>NO DATA FOUND<td></tr>');   
                 }
@@ -917,6 +918,8 @@ function getStudentAttendence(attendence_date){
                 }
                 
             }
+            $('.table1').DataTable();
+           // $('#attendence').DataTable();
             $('#attendenceTable').show();
             
             
@@ -1426,46 +1429,49 @@ function get_studentlist()
      var sectionid = $('#section_id_stop').find(":selected").val();
      var classname = $('#class_id').find(":selected").text();
      var sectionname = $('#section_id_stop').find(":selected").text();
-     $.ajax({
-        url: "/classsection_studentList",
-        method: "GET",
-        dataType: "json",
-        data: {
-            class_id: classid,
-            section_id: sectionid
-        },
-        success: function(response) {
-           
-           $(".studenttable").show();
 
-          $('.studentlistTable tbody').html('');
-             students= response.student_list;
-             tablerow='';
-            if(students.length>0){ 
-                mytable= "'tbl_registration'";
-                field= "'registration_id'";
-              for (var i = 0; i < students.length; i++) {
+     
+        $.ajax({
+            url: "/classsection_studentList",
+            method: "GET",
+            dataType: "json",
+            data: {
+                class_id: classid,
+                section_id: sectionid
+            },
+            success: function(response) {
                
+               $(".studenttable").show();
 
-                   tablerow+='<tr id=tr_'+i+' ><td>'+ i +'</td><td>'+students[i].admission_number+'</td><td>'+students[i].name+'</td><td>'+classname+'</td>';
-                   tablerow+='<td>'+sectionname+'</td><td>'+students[i].parentname+'</td><td>'+students[i].parentphone+'</td>';
-                   tablerow+='<td><a href="/Registration?registration_id='+students[i].registration_id+'"><button type="button" class="btn btn-dark btn-fw"><i class="mdi mdi-cloud-download"></i>Edit</button>';
-                   //tablerow+='</a><a href="#"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>';
-                   tablerow+='</a><a href="#" onclick="delete_record('+students[i].registration_id+','+i+','+mytable+','+field+')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>';
+              $('.studentlistTable tbody').html('');
+                 students= response.student_list;
+                 tablerow='';
+                if(students.length>0){ 
+                    mytable= "'tbl_registration'";
+                    field= "'registration_id'";
+                  for (var i = 0; i < students.length; i++) {
                    
-                   //delete_record('+students[i].registration_id+','+i+','+tbl_registration+','+registration_id+') 
-             }
-             $('.studentlistTable tbody').append(tablerow);
+
+                       tablerow+='<tr id=tr_'+i+' ><td>'+ i +'</td><td>'+students[i].admission_number+'</td><td>'+students[i].name+'</td><td>'+classname+'</td>';
+                       tablerow+='<td>'+sectionname+'</td><td>'+students[i].parentname+'</td><td>'+students[i].parentphone+'</td>';
+                       tablerow+='<td><a href="/Registration?registration_id='+students[i].registration_id+'"><button type="button" class="btn btn-dark btn-fw"><i class="mdi mdi-cloud-download"></i>Edit</button>';
+                       //tablerow+='</a><a href="#"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>';
+                       tablerow+='</a><a href="#" onclick="delete_record('+students[i].registration_id+','+i+','+mytable+','+field+')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button></a></td></tr>';
+                       
+                       //delete_record('+students[i].registration_id+','+i+','+tbl_registration+','+registration_id+') 
+                 }
+                 $('.studentlistTable tbody').append(tablerow);
+                 $(".studentlistTable").DataTable();
+                }
+                else{
+                    $('.studentlistTable tbody').html('');
+                    $('.studentlistTable tbody').append('<tr ><td colspan="8">NO DATA FOUND<td></tr>');  
+                }
+            },
+            error: function() {
+                alert("error");
             }
-            else{
-                $('.studentlistTable tbody').html('');
-               $('.studentlistTable tbody').append('<tr ><td colspan="8">NO DATA FOUND<td></tr>');  
-            }
-        },
-        error: function() {
-            alert("error");
-        }
-    });
+        });
       
 }
 /* registration form */ 
@@ -1505,6 +1511,7 @@ function get_subjectlist()
              }
 
              $('.subjectlistTable tbody').append(tablerow);
+             $('.subjectlistTable').DataTable();
             }
             else{
                 console.log('NotFound');
@@ -1576,42 +1583,46 @@ function getStudentToshift(attendence_date){
     //var attendence_date         = attendence_date;
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id_stop').val();
+   
+            
+            $.ajax({
+                url: "/classsection_studentList",
+                method: "GET",
+                dataType: "json",
+                data: {
+                    class_id        : class_id,
+                    section_id      : section_id,
+                    //attendence_date : attendence_date
+                   
+                },
+                success: function(response) {
+                    
+                    var student_list =response.student_list;
+                    $('.tableshift tbody').html('');
+                     $('#shiftTable').show();
+                    console.log(student_list.length);
+                    if(student_list.length>0)
+                    {
+                      for (var i = 0; i < student_list.length; i++) {
+                         var count = i+1;
+                         $('.tableshift tbody').append('<tr><td>'+count+'&nbsp;<input type="checkbox" value="'+student_list[i].enroll_id+'" name="enroll_id"></td><td> '+student_list[i].name+'</td></tr>');
+                       }
 
-    $.ajax({
-        url: "/classsection_studentList",
-        method: "GET",
-        dataType: "json",
-        data: {
-            class_id        : class_id,
-            section_id      : section_id,
-            //attendence_date : attendence_date
-           
-        },
-        success: function(response) {
-            
-            var student_list =response.student_list;
-            $('.tableshift tbody').html('');
-             $('#shiftTable').show();
-            console.log(student_list.length);
-            if(student_list.length>0)
-            {
-              for (var i = 0; i < student_list.length; i++) {
-                 var count = i+1;
-                 $('.tableshift tbody').append('<tr><td>'+count+'&nbsp;<input type="checkbox" value="'+student_list[i].enroll_id+'" name="enroll_id"></td><td> '+student_list[i].name+'</td></tr>');
-               }
-             
-            }
-            else
-            {
-               $('.tableshift tbody').append('<tr ><td colspan="2">NO DATA FOUND<td></tr>');  
-            }
-            
-            
-        },
-        error: function() {
-            alert("error");
-        }
-    });
+                       $('.tableshift').DataTable();
+                     
+                    }
+                    else
+                    {
+                       $('.tableshift tbody').append('<tr ><td colspan="2">NO DATA FOUND<td></tr>');  
+                    }
+                    
+                    
+                },
+                error: function() {
+                    alert("error");
+                }
+            });
+    
 }
 /* ************* */
 
@@ -1664,6 +1675,8 @@ function getStudentTobonafide(attendence_date){
 
 
                }
+
+               $('.tableshift').DataTable();
              
             }
             else
@@ -1719,6 +1732,7 @@ function getStudentforpromotion(){
                 $('.attendence tbody').append('<tr><td> <input type="checkbox" value="'+student_list[i].enroll_id+'"  name="chk_enroll_id"></td><td > '+ student_list[i].admission_number+' </td> <td>'+student_list[i].name+'</td><td> <select class="form-control select" id="session_year" name="session_year"><option value="'+student_list[i].session_year+'">'+student_list[i].session_year+'</option> <option value="'+student_list[i].nextyear+'">'+student_list[i].nextyear+'</option> </select></td></tr>');
                 
             }
+            $('.attendence').DataTable();
             $('#attendenceTable').show();
         },
         error: function() {
@@ -2519,7 +2533,10 @@ function Formative1(student_id,class_id,section_id)
         var fees_term_id  = $('#fees_term_id').val();
         var fee_type_id   = $('#fee_type_id').val();
         var section_id    = $('#section_id').val();
-
+        if(class_id==''){
+            alert('please select class first');
+            return false;
+        }
         $.ajax({
                  url: '/ajax_get_payment_receipt_data',
                  type: 'GET',
@@ -2561,7 +2578,7 @@ function Formative1(student_id,class_id,section_id)
                     
 
                       $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td style="color:blue;">'+ fees_report[i]['route_fare']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['transport_fees'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
-             
+                      $('#fees_report_table').DataTable();
                         }
                         $('#fees_report').show();
                     }else{
