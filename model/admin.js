@@ -800,7 +800,7 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 			}
 			else
 			{
-				que += " , "+k+'= "'+obj[k]+'"' ;
+				que += " AND "+k+'= "'+obj[k]+'"' ;
 
 			}
 			counter++;
@@ -811,7 +811,7 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 	   if(key.length>0)
 	     que += " WHERE "+key[0]+" = '"+where[key[0]]+"'";	
 
-	 ///console.log('#####################',que);
+	  console.log('#####################',que);
        con.query(que, cb);
 	});
  
@@ -889,8 +889,8 @@ module.exports.getenrollstudentlist=function(obj,where, cb){
 module.exports.getenrollstudentdetail=function(obj,where, cb){
 	  
 	   con.connect(function(err){
-	 	var que = "SELECT * FROM "+obj.tbl_enroll+"  INNER JOIN "+obj.tbl_class +" ON "+obj.tbl_enroll+".class_id="+obj.tbl_class+".class_id INNER JOIN "+obj.tbl_section+" ON "+obj.tbl_section+".section_id="+obj.tbl_class+".class_id    WHERE "+obj.tbl_enroll+".registration_id="+ where.registration_id; // + " AND "+obj.tbl_enroll+".section_id="+ where.section_id+ " AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' ORDER BY "+obj.tbl_registration+".name ASC" ;
-	 	//console.log(que);
+	 	var que = "SELECT "+obj.tbl_enroll+" .*,tbl_section.section_name,tbl_class.class_name FROM "+obj.tbl_enroll+"  INNER JOIN "+obj.tbl_class +" ON "+obj.tbl_enroll+".class_id="+obj.tbl_class+".class_id INNER JOIN "+obj.tbl_section+" ON "+obj.tbl_section+".section_id="+obj.tbl_class+".class_id    WHERE "+obj.tbl_enroll+".registration_id="+ where.registration_id; // + " AND "+obj.tbl_enroll+".section_id="+ where.section_id+ " AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' ORDER BY "+obj.tbl_registration+".name ASC" ;
+	 	 //console.log('##############',que);
 	 	con.query(que, cb);
 	});
 }

@@ -137,6 +137,7 @@
 											<select class="form-control" name="class_id" id="class_id"  >
 												
 												<option value="">Select Class</option>
+												
 												<%  class_list.forEach(function(class_list){ %>
 												<option <% if(studentdata.class_id== class_list.class_id){ %> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
 												<%   }) %>

@@ -137,8 +137,7 @@ router.post("/dashboard", function(req, res){
 				req.session.uid               = data.registration_id;
 				req.session.user_role         = data.user_role;
 				req.session.is_user_logged_in = true;
-				//console.log('dashboard');
-				//console.log(data.user_role);
+				 
 				if(data.user_role==1){
 					 findObj  = {user_role  : 2}
 				  	 tableobj = {tablename  :'tbl_registration'}
@@ -176,7 +175,7 @@ router.post("/dashboard", function(req, res){
 			          		  	req.session.phone = result1[0].phone;
 	            	var pagedata = {title : "Welcome Admin", pagename : "parent/dashboard", success: req.flash('success'),error: req.flash('error')};
 	                res.render("admin_layout", pagedata);
-	            });
+	                });
 	            }else if(data.user_role==3){
 	            	admin.findAll({table:'tbl_setting'},function(err, result1){
 			          		  	req.session.school_id = result1[0].school_id;
@@ -186,9 +185,9 @@ router.post("/dashboard", function(req, res){
 			          		  	req.session.school_address = result1[0].school_address;
 
 			          		  	req.session.phone = result1[0].phone;
-	            	var pagedata = {title : "Welcome Admin", pagename : "student/dashboard", success: req.flash('success'),error: req.flash('error')};
-	                res.render("admin_layout", pagedata);
-	            });
+	            	   var pagedata = {title : "Welcome Admin", pagename : "student/dashboard", success: req.flash('success'),error: req.flash('error')};
+	                   res.render("admin_layout", pagedata);
+	                });
 	            }else if(data.user_role==4){
                      
                     findObj  = {user_role  : 2}
@@ -275,58 +274,50 @@ router.get("/dashboard", function(req, res){
 
 
 router.post("/registration", function(req, res){
-
- 
  	if(req.session.user_role==1){
-
  		studentdata='';
-
 	 	var register   = req.body.userregister;
 	 	var table      = {tablename:'tbl_registration'};
-        
-        if(req.body.registration_id)
-	     {
-
-	          var where= {registration_id:req.body.registration_id}
-		      var tableobj = {tablename:'tbl_registration'};
-		      var obj= { admission_number : req.body.admission_number,
-		      	          aadhar_number:req.body.adhar_number,
-		      	          name :req.body.student_name,
-		      	          dob:req.body.student_dob ,
-		      	          sex:req.body.student_gender ,
-		      	          //religion:req.body. ,
-		      	          blood_group:req.body.blood_group ,
-		      	          address:req.body.address ,
-		      	          phone:req.body.student_phone ,
-		      	          email:req.body.student_email ,
-		      	          mother_name:req.body.mother_name ,
-		      	          caste:req.body.caste ,
-		      	          subcaste:req.body.sub_caste ,
-		      	          transport_id:req.body.transport_id ,
-		      	          dormitory_id:req.body.dormitory_id ,
-		      	        }
-
-		      admin.updateWhere(tableobj,where,obj, function(err, result){  
-                 var whereparent= {registration_id:req.body.parent_id}
-                 objparent={
-                             name :req.body.parent_name,
-                             address :req.body.parent_address,
-                             phone :req.body.parent_number,
-                             email :req.body.parent_email,
-                             profession:req.body.parent_profession
-                           };  
-                  admin.updateWhere(tableobj,whereparent,objparent, function(err, result){     
-			      		res.redirect("/studentList");
+     	if(register=='student'){
+	         if(req.body.registration_id)
+		     {
+		          var where= {registration_id:req.body.registration_id}
+			      var tableobj = {tablename:'tbl_registration'};
+			      var obj= { admission_number : req.body.admission_number,
+			      	          aadhar_number:req.body.adhar_number,
+			      	          name :req.body.student_name,
+			      	          dob:req.body.student_dob ,
+			      	          sex:req.body.student_gender ,
+			      	          //religion:req.body. ,
+			      	          blood_group:req.body.blood_group ,
+			      	          address:req.body.address ,
+			      	          phone:req.body.student_phone ,
+			      	          email:req.body.student_email ,
+			      	          mother_name:req.body.mother_name ,
+			      	          caste:req.body.caste ,
+			      	          subcaste:req.body.sub_caste ,
+			      	          transport_id:req.body.transport_id ,
+			      	          dormitory_id:req.body.dormitory_id ,
+			      	        }
+			      admin.updateWhere(tableobj,where,obj, function(err, result){  
+	                 var whereparent= { registration_id:req.body.parent_id }
+	                 objparent={
+	                             name :req.body.parent_name,
+	                             address :req.body.parent_address,
+	                             phone :req.body.parent_number,
+	                             email :req.body.parent_email,
+	                             profession:req.body.parent_profession
+	                           };  
+	                  admin.updateWhere(tableobj,whereparent,objparent, function(err, result){   
+	                        if(result)
+					      	{
+					      		req.flash('success',"Student record updated successfully");
+					      	} 
+				      });
 			      });
-			      if(result)
-			      	{
-			      		res.redirect("/studentList");
-			      	}
-
-		      });
-	     }
-     	else if(register=='student'){
-	 			var data = {
+		     } 
+		     else{
+		     	   	var data = {
 			 		name 		 :req.body.parent_name,	 		
 			 		address		 :req.body.parent_address,
 			 		phone		 :req.body.parent_number,
@@ -469,7 +460,13 @@ router.post("/registration", function(req, res){
 
 			  	});
             
-            }     
+               }
+
+
+		     } 
+
+
+	 		     
             
 
 	 		
@@ -1143,7 +1140,7 @@ router.get("/Registration", function(req, res){
                                           studentdata[0].class_name= result2[0].class_name;
                                           studentdata[0].class_id= result2[0].class_id;
                                           studentdata[0].section_id= result2[0].section_id;
-                                          //console.log(studentdata[0]);
+                                           console.log('dfsfdsfsdfsdfsdfsdfsfsdfsd',studentdata[0]);
 								 	    var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:JSON.parse(JSON.stringify(studentdata[0]))};
                                         res.render("admin_layout", pagedata);
 				                       });
@@ -5650,19 +5647,18 @@ router.post("/bulkimport",function(req,res){
 		 	 	  // csvData[index].existing_student_parent="";
 		 	 	  // csvData[index].existing_admission_number="";
 		 	   });
+
+
                async.eachSeries(csvData, function (item, done) 
 			   {
                   var existparentid=0;existstudentid=0;
 
                   record={parent_email:item.parent_email,parent_phone:item.parent_phone,admission_number:item.admission_number,student_email:item.student_email,student_phone:item.student_phone}  
                   //record={parent_email:item.parent_email,parent_phone:item.parent_phone}  
-                  console.log(record);
+                 
 			 	  admin.checkrecordexist(table,record,function(err , resultexist){
-			 	   
-
-                      //console.log('check parent register ',resultexist.parent_id);  
-
-                     if(resultexist.parent_id==0)
+			 	      //console.log('check parent register ',resultexist.parent_id);  
+					 if(resultexist.parent_id==0)
                      {
                      	 var data = {
 						 		name 		 :item.parent_name,	 		
