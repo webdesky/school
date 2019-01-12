@@ -1582,7 +1582,7 @@ router.post("/section", function(req, res){
 	      	
 	      	 if(result)
              {	
-             	req.flash('error','Section updated successfully')
+             	req.flash('success','Section updated successfully')
                 res.redirect('/section');
              }
 	      });
@@ -2434,9 +2434,14 @@ router.get("/AssignTeacher", function(req, res){
 		          //var where= {id:req.query.id}
 			      var tableobj = {table:table};
 			      admin.assignedtaeacherdetail(tableobj,{'id': id },function(err, result){
+				 	  if(result.length>0)
+				      var assign_list 	 = result[0];
+				  			      	 if(result.length>0)
 				 	  var assign_list 	 = JSON.parse(JSON.stringify(result));
-
-              		  assign_list= {}
+                     else
+                     {
+                       var assign_list= ""//{class_id:"",section_id:"",teacher_id:""}	
+                     }  
 				 	  assigned_id=req.query.id;
 					  var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher", message : req.flash('msg'),assign_list:assign_list,class_list:class_list,teacher:teacher,assigned_id:assigned_id};
 

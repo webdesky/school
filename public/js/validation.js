@@ -330,6 +330,26 @@ $('form[id="form_section"]').validate({
           form.submit();
         }
 });
+$('form[id="form_fees_structure"]').validate({
+
+ rules: {
+          class_id: 'required',
+          section_name: 'required',
+          fees_type_id :'required',
+          fees_term_id : 'required',
+          //descriptions : 'required',
+        },
+        messages: {
+          class_id: 'This field is required',
+          section_name: 'This field is required',
+          fees_type_id: 'This field is required',
+          fees_term_id: 'This field is required',
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+});
+
 $('form[id="form_academicsyllabus"]').validate({
 
  rules: {

@@ -16441,6 +16441,105 @@ u {
 /*11 Jan end code css*/
 
 
+<<<<<<< HEAD
 /* 12 Jan start code css */
 .navbar.default-layout .navbar-brand-wrapper .navbar-brand img {    width: 50px !important;    height: 50px !important;    border-radius: 50%;}table#subjectTable {    border: solid 1px #999;                }table#subjectTable tbody > tr td .form_control {     width: 85%;    border: solid 1px #ccc;    height: 38px;     box-shadow: inset 0px 0px 4px #ccc;}table#subjectTable tbody > tr td textarea.form_control {     height: auto;    box-shadow: inset 0px 0px 4px #ccc;}table#subjectTable tbody > tr td input[type=file] {    border: solid 1px #ccc;    padding: 10px 8px;    text-align: center !important;    display: -webkit-inline-box;}#tableId > h2 {    margin-bottom: 32px;    font-size: 30px;    font-weight: 500;}table#subjectTable thead > tr > th {         border: solid 1px #ccc;    text-align: center;    padding: 10px 0;}table#subjectTable tbody > tr > td {                                                           border: solid 1px #ccc;    text-align: center;    padding: 10px 0;    font-size: 15px;}#student_register input {    border: solid 1px #ccc;}#student_register select {  border: solid 1px #ccc;} /* table#tableId {    border: solid 1px #ccc;} */@media (max-width: 767px) {} @media (min-width: 1100px) and (max-width: 1249px) {    .abc::before {    width: 100%;    left: -11px;}.form-group label, .form-control, .sidebar .nav.sub-menu .nav-item .nav-link {  font-size: 13px;}  } @media (min-width: 1250px) and (max-width: 1500px) {    .abc::before {    width: 100%;}    } 
 /* 12 Jan end code css */
+=======
+
+/ 12 Jan start code css /
+
+.navbar.default-layout .navbar-brand-wrapper .navbar-brand img {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+}
+
+table#subjectTable {
+    border: solid 1px #999;                
+}
+
+table#subjectTable tbody > tr td .form_control { 
+    width: 85%;
+    border: solid 1px #ccc;
+    height: 38px; 
+    box-shadow: inset 0px 0px 4px #ccc;
+}
+
+table#subjectTable tbody > tr td textarea.form_control { 
+    height: auto;
+    box-shadow: inset 0px 0px 4px #ccc;
+}
+
+table#subjectTable tbody > tr td input[type=file] {
+    border: solid 1px #ccc;
+    padding: 10px 8px;
+    text-align: center !important;
+    display: -webkit-inline-box;
+}
+
+#tableId > h2 {
+    margin-bottom: 32px;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+table#subjectTable thead > tr > th {     
+    border: solid 1px #ccc;
+    text-align: center;
+    padding: 10px 0;
+}
+
+table#subjectTable tbody > tr > td {                                                       
+    border: solid 1px #ccc;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 15px;
+}
+
+#student_register input {
+    border: solid 1px #ccc;
+}
+
+#student_register select {
+  border: solid 1px #ccc;
+} 
+
+/* table#tableId {
+    border: solid 1px #ccc;
+} */
+
+
+
+@media (max-width: 767px) {
+
+
+
+} 
+
+@media (min-width: 1100px) and (max-width: 1249px) {
+  
+  .abc::before {
+    width: 100%;
+    left: -11px;
+}
+
+.form-group label, .form-control, .sidebar .nav.sub-menu .nav-item .nav-link {
+  font-size: 13px;
+}
+  
+} 
+
+
+@media (min-width: 1250px) and (max-width: 1500px) {
+  
+  .abc::before {
+    width: 100%;
+}  
+  
+} 
+
+
+
+/ 12 Jan end code css /
+>>>>>>> e76227f1cc3dd2e9d1c10346ae99af71ab48c561

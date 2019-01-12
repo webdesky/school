@@ -3612,3 +3612,15 @@ function checkteacherselect(id)
 }
 
 
+function subject_check(type){
+    if(type=='stud'){
+        $('#stud').addClass('abc');
+        $('#teach').removeClass('abc');
+    }
+
+    else if(type=='teach'){
+        $('#teach').addClass('abc');
+        $('#stud').removeClass('abc');
+    }
+}
+

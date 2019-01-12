@@ -59,7 +59,7 @@
               <div class="col-sm-2">
                 <div class="form-radio abc" id="stud">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input abc" name="subject_type" id="subject_type" value="1" <% if(subject_list.subject_type==1){%>checked <% }%> > Main Subject
+                    <input type="radio" class="form-check-input abc" checked="checked" onchange="subject_check('stud')" name="subject_type" id="subject_type" value="1" <% if(subject_list.subject_type==1){%>checked <% }%>  > Main Subject
 
                   </label>
                   <span for="subject_type"  class="error below" style="display: none"></span>
@@ -68,7 +68,7 @@
               <div class="col-sm-2">
                 <div class="form-radio" id="teach">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input " name="subject_type" <% if(subject_list.subject_type==0){%>checked <% }%> value="0"> Other Subject
+                    <input type="radio" class="form-check-input" onchange="subject_check('teach')" name="subject_type" <% if(subject_list.subject_type==0){%>checked <% }%> value="0"> Other Subject
                   </label>
                 </div>
               </div>
