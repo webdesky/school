@@ -281,6 +281,7 @@ router.post("/registration", function(req, res){
      	if(register=='student'){
 	         if(req.body.registration_id)
 		     {
+
 		          var where= {registration_id:req.body.registration_id}
 			      var tableobj = {tablename:'tbl_registration'};
 			      var obj= { admission_number : req.body.admission_number,
@@ -292,29 +293,38 @@ router.post("/registration", function(req, res){
 			      	          blood_group:req.body.blood_group ,
 			      	          address:req.body.address ,
 			      	          phone:req.body.student_phone ,
-			      	          email:req.body.student_email ,
+			      	          //email:req.body.student_email ,
 			      	          mother_name:req.body.mother_name ,
 			      	          caste:req.body.caste ,
 			      	          subcaste:req.body.sub_caste ,
 			      	          transport_id:req.body.transport_id ,
 			      	          dormitory_id:req.body.dormitory_id ,
+
 			      	        }
+
+
 			      admin.updateWhere(tableobj,where,obj, function(err, result){  
-	                 var whereparent= { registration_id:req.body.parent_id }
-	                 objparent={
+			      	var tableobj = {tablename:'tbl_enroll'};
+                    var whereenroll= { registration_id:req.body.registration_id }
+			      	enrollobj=  {class_id:req.body.class_id,section_id:req.body.section_id}
+			      	admin.updateWhere(tableobj,whereenroll,enrollobj, function(err, result){   
+			       
+	                   var whereparent= { registration_id:req.body.parent_id }
+	                   objparent={
 	                             name :req.body.parent_name,
 	                             address :req.body.parent_address,
 	                             phone :req.body.parent_number,
-	                             email :req.body.parent_email,
+	                             //email :req.body.parent_email,
 	                             profession:req.body.parent_profession
 	                           };  
-	                  admin.updateWhere(tableobj,whereparent,objparent, function(err, result){   
-	                        if(result)
-					      	{
+	                   admin.updateWhere(tableobj,whereparent,objparent, function(err, result){   
+	                        //if(result)
+					      	//{
 					      		req.flash('success',"Student record updated successfully");
-					      	} 
-				      });
-			      });
+					      	//} 
+				       });
+			         });
+			     }); 	
 		     } 
 		     else{
 		     	   	var data = {
@@ -632,7 +642,7 @@ router.post("/registration", function(req, res){
 		 //    student_code += possible.charAt(Math.floor(Math.random() * possible.length));
             admission_number=req.body.admission_number
 
-			var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:studentdata};
+			var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,section_list:"",transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:studentdata};
 
 			res.render("admin_layout", pagedata);
 			 
@@ -1089,8 +1099,6 @@ router.get("/Registration", function(req, res){
 
          if(req.query.registration_id)
 	     {
-	     	
-          
            admission_number = req.body.admission_number 
 		
 				var table  = 'tbl_class';
@@ -1119,6 +1127,7 @@ router.get("/Registration", function(req, res){
 								 		studentdata[index].parent_address="";
 								 		studentdata[index].parent_number="";
 								 		studentdata[index].parent_email="";
+								 		studentdata[index].parent_password="";
 								 		studentdata[index].parent_profession=""
 								 		studentdata[index].section_name=""
 								 		studentdata[index].class_name=""
@@ -1126,13 +1135,15 @@ router.get("/Registration", function(req, res){
 								 		studentdata[index].section_id=""
 
 								 	});
-
+ 
 					              var findObj = {registration_id:result[0].parent_id}
 								  admin.findWhere(table,findObj,function(err,result1){
+								  	
 				                        studentdata[0].parent_name= result1[0].name
 								 		studentdata[0].parent_address= result1[0].address
 								 		studentdata[0].parent_number=result1[0].phone;
 								 		studentdata[0].parent_email=result1[0].email;
+								 		studentdata[0].parent_password=result1[0].password;
 								 	    studentdata[0].parent_profession=result1[0].profession;
 								 	    //admin.findWhere({tablename:'tbl_section'},{section_id:studentdata[0].section_id},function(err,result2){  
 								 	    admin.getenrollstudentdetail({tbl_enroll:'tbl_enroll',tbl_class:'tbl_class',tbl_section:'tbl_section'},{registration_id:studentdata[0].registration_id},function(err,result2){
@@ -1140,10 +1151,15 @@ router.get("/Registration", function(req, res){
                                           studentdata[0].class_name= result2[0].class_name;
                                           studentdata[0].class_id= result2[0].class_id;
                                           studentdata[0].section_id= result2[0].section_id;
+
+                                           admin.findWhere({tablename:'tbl_section'},{class_id:result2[0].class_id},function(err,sectionlits){
+                                             section_list= sectionlits;
                                            console.log('dfsfdsfsdfsdfsdfsdfsfsdfsd',studentdata[0]);
-								 	    var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:JSON.parse(JSON.stringify(studentdata[0]))};
+								 	    var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,section_list:section_list,transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:JSON.parse(JSON.stringify(studentdata[0]))};
                                         res.render("admin_layout", pagedata);
-				                       });
+				                        
+				                            });
+                                        });
 				                  });
 					            }
 					           });
@@ -1167,7 +1183,7 @@ router.get("/Registration", function(req, res){
 							admin.findAll({table:'tbl_dormitory'},function(err,result){
 								 dormitory_list  = result;
 
-								 var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:""};
+								 var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,section_list:"",transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:""};
 
 								 res.render("admin_layout", pagedata);
 								 
@@ -2012,7 +2028,8 @@ router.get("/teacherDetail", function(req, res){
 	if(req.session.user_role==1){
          
 		var registration_id =req.query.registration_id
-		console.log(registration_id);
+
+
 	    var table = {tablename:'tbl_registration'};
 	    //console.log(table);
 			 admin.findWhere(table,{user_role:'4',registration_id:registration_id},function(err, result){
@@ -2043,7 +2060,7 @@ router.post("/teacherDetail", function(req, res){
     if(req.body.registration_id)
 	     {
 	         var obj= {   
-	      	          aadhar_number:req.body.aadhar_number,
+	      	          aadhar_number:req.body.teacher_adhar_no,
 	      	          name :req.body.teacher_name,
 	      	          dob:req.body.teacher_dob ,
 	      	          sex:req.body.teacher_gender ,
@@ -2052,27 +2069,17 @@ router.post("/teacherDetail", function(req, res){
 	      	          profession: req.body.teacher_profession,
 	      	          academics: req.body.academics,
 	      	          show_website: req.body.show_website,
-	      	          email: req.body.teacher_email
+	      	          staff_category:req.body.staff_category,
+	      	          //email: req.body.teacher_email
 
 	      	        }
-	      	    //console.log(obj); 
+
               var where= {registration_id:req.body.registration_id}
 		      var tableobj = {tablename:'tbl_registration'};
 		      admin.updateWhere(tableobj,where,obj, function(err, result){ 
-                  /*		      	
-		          var table = { tablename:'tbl_userlogin' }; 
-                  var whereteacher= { registration_id:req.body.registration_id }
-                  var objuser= {
 
-		              email: req.body.teacher_email,
-		      	      password: sha1(req.body.teacher_password)
-		          }	  
-                  admin.updateWhere(table,whereteacher,objuser, function(err, result){
-                    console.log('teacher login Updated');     
-			      		res.redirect("/TeacherList");
-			      });
-			      */
 			      res.redirect("/TeacherList");
+
 		      });
 	     }
 
@@ -2103,21 +2110,8 @@ router.get("/accountantDetail", function(req, res){
 		var registration_id =req.query.registration_id
 		console.log(registration_id);
 	    var table = {tablename:'tbl_registration'};
-	    //console.log(table);
 			 admin.findWhere(table,{user_role:'5',registration_id:registration_id},function(err, result){
 			 	var accountantdata = result;
-			 	/*
-			 	 accountantdata.forEach(function(item, index){
-			 		accountantdata[index].email="";
-			 	});
-
-			   admin.findWhere({tablename:'tbl_userlogin'},{user_role:'5',registration_id:registration_id},function(err, result1){	 
-				    accountantdata[0].email= result1[0].email;    
-				   console.log(accountantdata[0]);               
- 			 	var pagedata 	 = {title : "Welcome Admin", pagename : "admin/accountantedit", message : req.flash('msg'),accountantdata :JSON.parse(JSON.stringify(accountantdata[0]))};
-	            res.render("admin_layout", pagedata);
-			  });
-             */
 			   var pagedata 	 = {title : "Welcome Admin", pagename : "admin/accountantedit", message : req.flash('msg'),accountantdata :JSON.parse(JSON.stringify(accountantdata[0]))};
 	            res.render("admin_layout", pagedata);
 		  });	   
@@ -5602,7 +5596,7 @@ router.get("/bulkimport",function(req,res){
     //stringify(posts, { header: true }).pipe(res);
     
 
-       var pagedata 	 	 = {Title : "", pagename : "admin/bulkimport", message : req.flash('msg'),rejected_list:''};
+       var pagedata 	 	 = {Title : "", pagename : "admin/bulkimport", success: req.flash('success'),error: req.flash('error'),rejected_list:''};
 	   res.render("admin_layout", pagedata);
 
 	}
@@ -5653,9 +5647,10 @@ router.post("/bulkimport",function(req,res){
 		 	 	  // csvData[index].existing_admission_number="";
 		 	   });
 
-
+ 
                async.eachSeries(csvData, function (item, done) 
 			   {
+			   	///console.log(item);
                   var existparentid=0;existstudentid=0;
 
                   record={parent_email:item.parent_email,parent_phone:item.parent_phone,admission_number:item.admission_number,student_email:item.student_email,student_phone:item.student_phone}  
@@ -5670,6 +5665,7 @@ router.post("/bulkimport",function(req,res){
 						 		address		 :item.parent_address,
 						 		phone		 :item.parent_phone,
 						 		email		 :item.parent_email,
+						 		profession   :item.profession,
 						 		user_role    :2,
 						 		created_date :moment().format('YYYY-MM-DD:hh:mm:ss')
 					 		}
@@ -5680,6 +5676,7 @@ router.post("/bulkimport",function(req,res){
 	                  	  existparentid=resultexist.parent_id
 	                   } 
                       //console.log('----parent register-----', data); 
+                      // return false;
 				 	 admin.insert_all(table,data,function(err, result){
                         
                          if(resultexist.parent_id==0)  
@@ -5760,6 +5757,7 @@ router.post("/bulkimport",function(req,res){
 
 							 		}
 							 		
+
                                  }
                                  else
                                  {
@@ -5792,8 +5790,6 @@ router.post("/bulkimport",function(req,res){
 						 					//console.log('rejected',rejected);
 	 										//var pagedata = {Title : "", pagename : "admin/bulkimport", message : req.flash('msg'),rejected:rejected[0]};
 		   									//res.render("admin_layout", pagedata);
-		   								  
-					                          
 								 	});
 					 			   
 				 			    })
@@ -5807,16 +5803,24 @@ router.post("/bulkimport",function(req,res){
 			 	
 			    },function(){
 			    	 console.log(rejected);
-                      var fields= ['student_name','student_gender','caste','sub_caste','class_name','section_name','aadhar_number','student_dob','transport_id','dormitory_id','student_phone','student_email','student_password','blood_group','admission_number','parent_name','mother_name','parent_address','parent_phone','parent_email','parent_password']
+                      var fields= ['student_name','student_gender','caste','sub_caste','class_name','section_name','aadhar_number','student_dob','transport_id','dormitory_id','student_phone','student_email','student_password','blood_group','admission_number','parent_name','mother_name','parent_address','parent_phone','parent_email','parent_password','profession'];
+                          
+                          if(rejected.length>0)
+                          {
+                              const json2csvParser = new Json2csvParser({ fields });
+	                          const csv = json2csvParser.parse(rejected);
+	 
+							  res.setHeader('Content-disposition', 'attachment; filename=rejected.csv');
+							  res.set('Content-Type', 'text/csv');
+							  res.status(200).send(csv);	
+                          }
+                          else{
 
-                          const json2csvParser = new Json2csvParser({ fields });
-                          const csv = json2csvParser.parse(rejected);
- 
-						  res.setHeader('Content-disposition', 'attachment; filename=rejected.csv');
-						  res.set('Content-Type', 'text/csv');
-						  res.status(200).send(csv);
+                                 req.flash('success',"All records imported successfully");
+                          }   
+                          
 
-			    	  var pagedata 	 	 = {Title : "", pagename : "admin/bulkimport", message : req.flash('msg'),rejected_list:rejected};
+			    	  var pagedata 	 	 = {Title : "", pagename : "admin/bulkimport",  success: req.flash('success'),error: req.flash('error'),rejected_list:rejected};
 	                  res.render("admin_layout", pagedata);	
                       //res.send({rejected:rejected});
 			  }); // asyn close 

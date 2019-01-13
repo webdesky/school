@@ -151,11 +151,18 @@
 										<label class="col-sm-3 col-form-label">Select Section</label>
 										<div class="col-sm-9">
 											<select class="form-control" name="section_id" id="section_id"  >
-                                               <% if(studentdata.section_name){ %>
-                                                <option value="<%= studentdata.section_id %>"><%= studentdata.section_name %></option> 
-                                               <% }else{ %>
-												<option value="">Select Section</option>
-											   <% }%>	
+                                              
+                                                
+                                               <% if(section_list){ %>
+                                                 <% section_list.forEach(function(section_list){ %>
+												   <option <% if(studentdata.section_id== section_list.section_id){ %> selected <% } %> value="<%= section_list.section_id  %>"><%= section_list.section_name; %></option>
+
+                                                 <%   }) %>
+                                               <%   }else{ %>
+                                                 <option value="">Select Section</option>
+                                               <% } %>
+
+                                               
 												
 												
 											</select>
@@ -252,7 +259,7 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Email</label>
 										<div class="col-sm-9">
-											<input type="email" name="student_email" id="student_email" class="form-control" placeholder="Enter Student Email" value="<%= studentdata.email %>"   > 
+											<input type="email" name="student_email" id="student_email" class="form-control" placeholder="Enter Student Email" value="<%= studentdata.email %>" <% if(studentdata.email){ %> disabled <%} %>  > 
 											<span for="email"  class="error below" style="display: none"></span>
 										</div>
 									</div>
@@ -261,7 +268,7 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Password </label>
 										<div class="col-sm-9">
-											<input type="password" name="student_password" id="student_password" class="form-control" placeholder="Enter Student Passoword"  >
+											<input type="password" name="student_password" id="student_password" class="form-control" placeholder="Enter Student Passoword"  <% if(studentdata.email){ %> disabled <%} %>  >
 											<span for="student_password"  class="error below" style="display: none"></span>
 										</div>
 										
@@ -359,7 +366,7 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Email</label>
 										<div class="col-sm-9">
-											<input type="email" class="form-control"  name="parent_email" id="parent_email" placeholder="Enter Parent Email" value="<%= studentdata.parent_email %>" />
+											<input type="email" class="form-control"  name="parent_email" id="parent_email" placeholder="Enter Parent Email" value="<%= studentdata.parent_email %>" <% if(studentdata.parent_email){ %> disabled <%} %> />
 											<span for="email"  class="error below" style="display: none"></span>
 										</div>
 									</div>
@@ -368,7 +375,7 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Password</label>
 										<div class="col-sm-9">
-											<input type="password" name="parent_password" id="parent_password" class="form-control" placeholder="Enter Parent Password" >
+											<input type="password" name="parent_password" id="parent_password" class="form-control" placeholder="Enter Parent Password" <% if(studentdata.parent_email){ %> disabled <%} %> >
 											<span for="parent_password"  class="error below" style="display: none"></span>
 										</div>
 									</div>

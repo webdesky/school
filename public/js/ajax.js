@@ -1766,18 +1766,23 @@ function bonafidemodal(registration_id,class_id,section_id)
               for (var i = 0; i < student_list.length; i++) {
                  var count = i+1;
                  var checked='';
-                   parts = student_list[i].bonafide_date.split('T');
-                   Bpartdate = parts[0].split('-')
-                   bonafidedate = Bpartdate[2] + '-' + Bpartdate[1] + '-' + Bpartdate[0];
+                 bonafidedate='';
+                   if(student_list[i].bonafide_date)
+                   {
+                       parts = student_list[i].bonafide_date.split('T');
+                       Bpartdate = parts[0].split('-')
+                       bonafidedate = Bpartdate[2] + '-' + Bpartdate[1] + '-' + Bpartdate[0];
 
-                   parts = student_list[i].created_date.split('T');
-                   Apartdate = parts[0].split('-')
-                   admissiondate = Apartdate[2] + '-' + Apartdate[1] + '-' + Apartdate[0];
+                       parts = student_list[i].created_date.split('T');
+                       Apartdate = parts[0].split('-')
+                       admissiondate = Apartdate[2] + '-' + Apartdate[1] + '-' + Apartdate[0];
 
-                   var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+                       var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
-                   if(student_list[i].bonafide_date== '0000-00-00 00:00:00')
-                       bonafidedate= moment().format('D MMM, YYYY');
+                       if(student_list[i].bonafide_date== '0000-00-00 00:00:00')
+                           bonafidedate= moment().format('D MMM, YYYY'); 
+                   }
+                   
                    
                      //bonafidedate= moment().format('D MMM, YYYY');
 

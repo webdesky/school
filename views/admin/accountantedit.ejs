@@ -51,26 +51,17 @@
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Email</label>
 										<div class="col-sm-9">
-											<input type="text" class="form-control" placeholder="Enter Accountant Email" name="accountant_email" id="accountant_email" value="<%= accountantdata.email  %>"      />
+											<input type="text" class="form-control" placeholder="Enter Accountant Email" name="accountant_email" id="accountant_email" value="<%= accountantdata.email  %>" disabled />
 											<span for="accountant_email"  class="error below" style="display: none"></span>
 										</div>
 									</div>
 								</div>
-								<!-- <div class="col-md-6">
-									<div class="form-group row">
-										<label class="col-sm-3 col-form-label">Password</label>
-										<div class="col-sm-9">
-										 <input type="password" name="accountant_password" id="accountant_password" class="form-control"   >
-										 <span for="accountant_password"  class="error below" style="display: none"></span>
-										</div>
-										
-									</div>
-								</div>     --> 
+								 
 								<div class="col-md-6">
 									<div class="form-group row">
 										<label class="col-sm-3 col-form-label">Phone Number </label>
 										<div class="col-sm-9">
-											<input type="number" name="accountant_phone" id="accountant_phone" class="form-control" placeholder="Enter accountant Phone Number" value="<%= accountantdata.phone  %>"  >
+											<input type="text" name="accountant_phone" id="accountant_phone" class="form-control" placeholder="Enter accountant Phone Number" value="<%= accountantdata.phone  %>"  >
 											<span for="accountant_phone"  class="error below" style="display: none"></span>
 										</div>
 										
