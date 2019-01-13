@@ -128,7 +128,7 @@ router.post("/dashboard", function(req, res){
     {
     	admin.findWhere(tableobj,{ email : u}, function(err, result){
     	//console.log(result);
-		if(result.length==1)
+		if(result.length>1)
 		{
 			var data = JSON.parse(JSON.stringify(result[0]));
 			if(data.password == p)
