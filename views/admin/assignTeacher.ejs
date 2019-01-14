@@ -7,9 +7,29 @@
             <p class="card-description">
             <a href="/admin/assignteacher_list"><button class="btn btn-inverse-dark btn-fw">Assign Teacher List</button></a>
            </p>
-          
+       
 
-       <form class="form-sample" id="form_assignteacher" method="Post" action="/admin/add_assignTeacher">  
+       <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+                <div class="alert alert-danger" id="danger-alert">
+                  <button type="button" class="close" data-dismiss="alert">x</button>
+                  <strong><%= error %> </strong>
+                </div>
+           <% }  %>
+       </div>   
+
+       <form class="form-sample" id="form_assignteacher" method="Post" action="/admin/AssignTeacher">  
             <input type="hidden" value="<%= assigned_id %>" name="assigned_id">
               <p class="card-description">
                 <h3><b><u>Assign Teacher</u></b></h3>
@@ -23,7 +43,7 @@
                         
                         <%  class_list.forEach(function(class_list){ %>
                         
-                        <option <% if(assign_list.class_id==class_list.class_id) { %> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+                        <option <% if(assign_data.class_id==class_list.class_id) { %> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
                         
                         <%   }) %>
                          
@@ -33,10 +53,14 @@
                     <label class="col-sm-2 col-form-label">Select Section</label>
                     <div class="col-sm-4">
                       <select class="form-control" name="section_id" id="section_id">
-                         <option value="">Select Section</option> 
-                        <% if(assign_list) { %>
-                          <option selected value="<%= assign_list.section_id  %>"><%= assign_list.section_name  %> </option>
-                         <% } %> 
+                       
+                          <% if(assign_data.section_id){  %>
+                          <%  section_list.forEach(function(section_list){ %>
+                               <option <% if(section_list.section_id==assign_data.section_id){ %> selected <% }%>  value="<%= section_list.section_id  %>"><%= section_list.section_name; %></option>
+                          <% })%>
+                         <% }else{ %>
+                           <option value="">Select Section</option> 
+                         <% } %>
                       
                       </select>
                          <span for="section_id"  class="error below" style="display: none"></span>
@@ -47,10 +71,16 @@
                     <label class="col-sm-2 col-form-label">Select Subject</label>
                     <div class="col-sm-4">
                       <select class="form-control" name="subject_id" id="subject_id">
-                        <option value="">Select Subject</option> 
-                         <% if(assign_list) { %>
-                          <option selected value="<%= assign_list.subject_id  %>"><%= assign_list.subject_name  %> </option>
-                         <% }%> 
+                        
+
+                          <% if(assign_data.subject_id){  %>
+                            <%  subject_list.forEach(function(subject_list){ %>
+                                 <option <% if(subject_list.subject_id == assign_data.subject_id){ %> selected <% }%>  value="<%= subject_list.subject_id  %>"><%= subject_list.name; %></option>
+                            <% })%>
+                           <% }else{ %>
+                             <option>Select Subject</option>
+                           <% } %>
+
                         </select>
                       <span for="subject_id"  class="error below" style="display: none"></span>
                     </div>
@@ -61,7 +91,7 @@
                         <option value="">Select Teacher</option> 
                         <% if(teacher) { %>
                         <%  teacher.forEach(function(teacher){ %>
-                        <option <% if(assign_list.teacher_id==teacher.registration_id){%> selected <% } %> value="<%= teacher.registration_id  %>"><%= teacher.name; %></option>
+                        <option <% if(assign_data.teacher_id==teacher.registration_id){%> selected <% } %> value="<%= teacher.registration_id  %>"><%= teacher.name; %></option>
                         <%   }) %>
                         <% } %>
                         </select>

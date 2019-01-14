@@ -205,11 +205,20 @@ $(document).ready( function () {
            
         ]
     });
-  //  $('#fees_report_table').DataTable();
+  var todayDate = new Date().getDate()
      $( ".attendence_date" ).datepicker({
           dateFormat: 'dd-mm-yy',
-          maxDate: new Date()  
+          //maxDate: new Date()  
+           // minDate: new Date(),
+          maxDate: new Date(new Date().setDate(todayDate - 730))
      });
+
+    var todayDate = new Date().getDate()
+     $( ".calendar_date" ).datepicker({
+          dateFormat: 'dd-mm-yy',
+          maxDate: new Date()  
+     }); 
+     
       
 
 
@@ -1582,7 +1591,16 @@ function getStudentToshift(attendence_date){
     //var attendence_date         = attendence_date;
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id_stop').val();
-   
+    if(class_id=="")
+    {
+        alert("Please select class")
+        return false;
+    }
+    if(section_id=="")
+    {
+        alert("Please select section")
+        return false;
+    }
             
             $.ajax({
                 url: "/classsection_studentList",
@@ -1767,14 +1785,18 @@ function bonafidemodal(registration_id,class_id,section_id)
                  var count = i+1;
                  var checked='';
                  bonafidedate='';
+                 Adate='';Bdate='';
                    if(student_list[i].bonafide_date)
                    {
                        parts = student_list[i].bonafide_date.split('T');
                        Bpartdate = parts[0].split('-')
+                       Bdate = Bpartdate[0]
                        bonafidedate = Bpartdate[2] + '-' + Bpartdate[1] + '-' + Bpartdate[0];
 
                        parts = student_list[i].created_date.split('T');
                        Apartdate = parts[0].split('-')
+                       Adate = Apartdate[0];
+
                        admissiondate = Apartdate[2] + '-' + Apartdate[1] + '-' + Apartdate[0];
 
                        var months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
@@ -1803,7 +1825,7 @@ function bonafidemodal(registration_id,class_id,section_id)
 
                    modalval +='<div style="clear: both;"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> S/o. D/o. </span><span style="border-bottom: solid 1px #333; width: 645px; display: -webkit-inline-box;"> '+student_list[i].parentname +' </span><span style="font-size: 20px; font-weight: 500;"> Is was a Bonafide </span></div>';
 
-                   modalval += '<div style="clear: both;"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> Student of this Institute for the period from </span><span style="border-bottom: solid 1px #333; width: 220px; display: -webkit-inline-box;">'+Apartdate[0]+'</span><span style="font-size: 20px; font-weight: 500;"> to </span><span style="border-bottom: solid 1px #333; width: 77px; display: -webkit-inline-box;">'+Bpartdate[0]+'</span><span style="font-size: 20px; font-weight: 500;"> Studying/ </span></div>';
+                   modalval += '<div style="clear: both;"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> Student of this Institute for the period from </span><span style="border-bottom: solid 1px #333; width: 220px; display: -webkit-inline-box;">'+Adate+'</span><span style="font-size: 20px; font-weight: 500;"> to </span><span style="border-bottom: solid 1px #333; width: 77px; display: -webkit-inline-box;">'+Bdate+'</span><span style="font-size: 20px; font-weight: 500;"> Studying/ </span></div>';
 
                    modalval +='<div style="clear:both;"></div><br><div style="width: 100%;"><span style="font-size: 20px; font-weight: 500;"> Studied in Class </span><span style="border-bottom: solid 1px #333; width: 150px; display: -webkit-inline-box;">'+student_list[i].class_name +'</span><span style="font-size: 20px; font-weight: 500;"> During the academic year </span><span style="border-bottom: solid 1px #333; width: 305px; display: -webkit-inline-box;">'+student_list[i].session_year+'</span></div>';
 

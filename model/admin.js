@@ -364,6 +364,13 @@ module.exports.findStudyMaterial=function(table, cb){
 		 con.query(que, cb);
 	});
 }
+module.exports.getstudymaterialDetail=function(obj,where, cb){
+	con.connect(function(err){
+	 	var que = "SELECT *  FROM "+obj.tbl_document+" LEFT JOIN "+obj.tbl_subject+" ON "+obj.tbl_subject+".subject_id="+obj.tbl_document+".subject_id WHERE "+obj.tbl_document+".document_id="+where.document_id;
+        console.log('Get cosuembt list ',que)
+	 	con.query(que, cb);
+	});
+}
 
 module.exports.findAcadmicSyllabus=function(table, cb){
 	

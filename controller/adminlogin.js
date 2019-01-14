@@ -128,7 +128,7 @@ router.post("/dashboard", function(req, res){
     {
     	admin.findWhere(tableobj,{ email : u}, function(err, result){
     	//console.log(result);
-		if(result.length>1)
+		if(result.length>0) 
 		{
 			var data = JSON.parse(JSON.stringify(result[0]));
 			if(data.password == p)
@@ -444,6 +444,7 @@ router.post("/registration", function(req, res){
 						 		}
 					 		
 						 		admin.insert_all(login_table,login_data,function(err, result){
+						 			studentdata = "";
 						 			req.flash('success','Student registered successfully')
 
 						 		});
@@ -457,8 +458,10 @@ router.post("/registration", function(req, res){
 				 					created_date      :moment().format('YYYY-MM-DD:hh:mm:ss')
 				 				}
 				 				admin.insert_all(enroll_table,enroll_data,function(err, result){
+				 					studentdata = "";
                                    req.flash('success','Student registered successfully')
 						 		});
+						 		studentdata = "";
 						 		req.flash('success','Student registered successfully')
 				 		});
 
@@ -474,15 +477,6 @@ router.post("/registration", function(req, res){
 
 
 		     } 
-
-
-	 		     
-            
-
-	 		
-
-		 	
-
 	 	}else if(register=='teacher'){
 	 		 console.log(req.body);
 	 		var teacher_data = {
@@ -577,11 +571,8 @@ router.post("/registration", function(req, res){
 					 			user_role       : 5
 
 					 	}
-
 					 	admin.insert_all(login_table,login_data,function(err, result){
-
 						});
-
                       req.flash('success','accountant registered successfully')
 					});
 				 }	
@@ -633,15 +624,7 @@ router.post("/registration", function(req, res){
 
 		admin.findAll({table:'tbl_dormitory'},function(err,result){
 			 dormitory_list  = result;
-
-
-			// var student_code = "";
-		 //  	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-		 //  	for (var i = 0; i < 5; i++)
-		 //    student_code += possible.charAt(Math.floor(Math.random() * possible.length));
-            admission_number=req.body.admission_number
-
+        admission_number=req.body.admission_number
 			var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,section_list:"",transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:studentdata};
 
 			res.render("admin_layout", pagedata);
@@ -649,9 +632,7 @@ router.post("/registration", function(req, res){
 	    });	 
 	  });
 	});
-	   // return res.redirect('/Registration');
-
-	}else{
+    }else{
 	        admin.select(function(err,result){
 	     
 		    res.render('admin/index',{error : req.flash('msg')});
@@ -1154,7 +1135,7 @@ router.get("/Registration", function(req, res){
 
                                            admin.findWhere({tablename:'tbl_section'},{class_id:result2[0].class_id},function(err,sectionlits){
                                              section_list= sectionlits;
-                                           console.log('dfsfdsfsdfsdfsdfsdfsfsdfsd',studentdata[0]);
+                                           //console.log('dfsfdsfsdfsdfsdfsdfsfsdfsd',studentdata[0]);
 								 	    var pagedata = {title : "Welcome Admin", pagename : "admin/Registration", success: req.flash('success'),error: req.flash('error'),class_list:class_list,section_list:section_list,transport_list :transport_list,dormitory_list:dormitory_list,admission_number:admission_number,studentdata:JSON.parse(JSON.stringify(studentdata[0]))};
                                         res.render("admin_layout", pagedata);
 				                        
@@ -1548,8 +1529,8 @@ router.get("/section", function(req, res){
                 if(result1)
                  {
                  	data =JSON.parse(JSON.stringify(result1)); 
-                    console.log('ddd') ;
-                    console.log(data[0]);
+                    //console.log('ddd') ;
+                    //console.log(data[0]);
 				    var pagedata = {title : "Welcome Admin", pagename : "admin/section", success : req.flash('success'), error : req.flash('error'),class_list:class_list,section_data:data[0],section_list:''};
 				    res.render("admin_layout", pagedata);
                  }
@@ -1558,7 +1539,6 @@ router.get("/section", function(req, res){
               }
               else
               {
-
               	var table = 'tbl_section'
 			    admin.findAllSection({table:table},function(err, result){
 					 	var section_list = result;
@@ -1566,8 +1546,6 @@ router.get("/section", function(req, res){
 			                 res.render("admin_layout", pagedata);
 
 			    });
-          //       var pagedata = {title : "Welcome Admin", pagename : "admin/section", message : req.flash('msg'),class_list:class_list,section_data:''};
-		        // res.render("admin_layout", pagedata);	
               }
               
 		
@@ -1595,7 +1573,8 @@ router.post("/section", function(req, res){
 	      var where= {section_id:req.body.section_id}
 	      var tableobj = {tablename:'tbl_section'};
 	      admin.updateWhere(tableobj,where,obj, function(err, result){  
-	      	
+	      	console.log(result);
+	      	return false;
 	      	 if(result)
              {	
              	req.flash('success','Section updated successfully')
@@ -2417,7 +2396,6 @@ router.get("/AssignTeacher", function(req, res){
 		admin.findAll({table:table},function(err, result){
 		    var class_list 	 = result;
 		    var table_teacher = {tablename:'tbl_registration'};
-			
 			admin.findWhere(table_teacher,{user_role:4},function(err, result){
 				var teacher  = result;
 				var table = 'tbl_teacherassignment';
@@ -2425,22 +2403,27 @@ router.get("/AssignTeacher", function(req, res){
 			 if(req.query.id)
 		     {
 		          var id=req.query.id;
-		          //var where= {id:req.query.id}
-			      var tableobj = {table:table};
-			      admin.assignedtaeacherdetail(tableobj,{'id': id },function(err, result){
-				 	  if(result.length>0)
-				      var assign_list 	 = result[0];
-				  			      	 if(result.length>0)
-				 	  var assign_list 	 = JSON.parse(JSON.stringify(result));
-                     else
-                     {
-                       var assign_list= ""//{class_id:"",section_id:"",teacher_id:""}	
-                     }  
-				 	  assigned_id=req.query.id;
-					  var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher", message : req.flash('msg'),assign_list:assign_list,class_list:class_list,teacher:teacher,assigned_id:assigned_id};
+		          var tableobj = {table:table};
+			      var assign_list= ""
 
-					  res.render("admin_layout", pagedata);
+			      admin.assignedtaeacherdetail(tableobj,{'id': id },function(err, result){
+			      	    console.log('$$$$$$$$$$$$$',result);
+			        where1 ={class_id:result[0].class_id}
+				    admin.findWhere({tablename:'tbl_section'},where1,function(err, result1){
+                          section_list =result1;	  
+			      	  
+				      admin.findWhere({tablename:'tbl_subject'},where1,function(err, result2){
+                            subject_list=  result2;
+				      	 if(result.length>0)
+					 	    var assign_data 	 = result[0];//JSON.parse(JSON.stringify(result));
+	                      assigned_id=req.query.id;
+						  var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher", success: req.flash('success'),error: req.flash('error'),assign_data:assign_data,assign_list:"",section_list:section_list,class_list:class_list,subject_list:subject_list,teacher:teacher,assigned_id:assigned_id};
+						  res.render("admin_layout", pagedata);
+
+                      });						  
+
 				    });	
+				 });	
 		     }
 	     	 else 
 	     	 {
@@ -2449,7 +2432,7 @@ router.get("/AssignTeacher", function(req, res){
 		       var table_teacher = {tablename:'tbl_registration'};
 			   admin.findWhere(table_teacher,{user_role:4},function(err, result){
 			   	teacher=result;
-			   	console.log(teacher);
+			   	//console.log(teacher);
 	     	  	admin.findallteacherassignment({table:table},function(err, result){
 				 	//console.log(result);
 				 	//return false; 
@@ -2463,7 +2446,7 @@ router.get("/AssignTeacher", function(req, res){
                      }  
               		  
 
-					var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher", message : req.flash('msg'),assign_list:assign_list,class_list:class_list,teacher:teacher,assigned_id:''};
+					var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher",success: req.flash('success'),error: req.flash('error'),assign_data:"",assign_list:assign_list,class_list:class_list,subject_list:"",section_list:"",teacher:teacher,assigned_id:''};
 					res.render("admin_layout", pagedata);
 				});
 
@@ -2550,7 +2533,7 @@ router.get("/getAllData", function(req, res){
 	}
 });
 
-router.post("/add_assignTeacher", function(req, res){
+router.post("/AssignTeacher", function(req, res){
 	if(req.session.user_role==1){
 
 
@@ -2570,37 +2553,87 @@ router.post("/add_assignTeacher", function(req, res){
 		      admin.updateWhere(table,where,data, function(err, result){  
                  if(result)
 		      	 {
-		      		res.redirect("/assignteacher_list");
+		      	 	req.flash('success',"Record updated successfully");
+		      		res.redirect("/AssignTeacher");
 		      	 }
 		      });
 	     }
      	else 
      	{
-	     	admin.insert_all(table,data,function(err, result){
-				var table  = 'tbl_class';
-		
-				admin.findAll({table:table},function(err, result){
-				    var class_list 	 = result;
 
-				    var table_teacher = {tablename:'tbl_registration'};
-					
-					admin.findWhere(table_teacher,{user_role:4},function(err, result){
-						var teacher  = result;
+            where1 ={class_id :req.body.class,section_id :req.body.section_id,subject_id :req.body.subject_id,}
+			admin.findWhere(table,where1,function(err, result){
 
-						 var table = 'tbl_teacherassignment';
-			 
-						 admin.findallteacherassignment({table:table},function(err, result){
+				if(result.length>0)
+				{
+                   req.flash('error',"Other teacher Assigned Already");
+                    
+                  var table  = 'tbl_class';
+	              admin.findAll({table:table},function(err, result){
+	              	var class_list 	 = result;
+                 	var table_teacher = {tablename:'tbl_registration'};
+			        admin.findWhere(table_teacher,{user_role:4},function(err, result){
+				     var teacher  = result;
+			
+			            
+	                    where1 ={class_id:req.body.class}
+					    admin.findWhere({tablename:'tbl_section'},where1,function(err, result1){
+	                          section_list =result1;	  
+				      	  
+					      admin.findWhere({tablename:'tbl_subject'},where1,function(err, result2){
+ 							subject_list=  result2;
+                               
+	                           
+					      	 if(result.length>0)
+						 	    var assign_data 	 = result[0];//JSON.parse(JSON.stringify(result));
+		                      assigned_id='';
+							  var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher", success: req.flash('success'),error: req.flash('error'),assign_data:data,assign_list:"",section_list:section_list,class_list:class_list,subject_list:subject_list,teacher:teacher,assigned_id:assigned_id};
+							  res.render("admin_layout", pagedata);
 
-						    var assign_list 	 = result;
-							var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher", message : req.flash('msg'),assign_list:assign_list,class_list:class_list,teacher:teacher,assigned_id:""};
+	                      });						  
 
-							res.render("admin_layout", pagedata);
+					    });	
+					});	  
+                  });	
+				}
+				else
+				{
+
+
+		            admin.insert_all({tablename:'tbl_teacherassignment'},data,function(err, result){
+						 
+						var table  = 'tbl_class';
+				        admin.findAll({table:table},function(err, result){
+						    var class_list 	 = result;
+
+						    var table_teacher = {tablename:'tbl_registration'};
+							
+							admin.findWhere(table_teacher,{user_role:4},function(err, result){
+								var teacher  = result;
+
+								 var table = 'tbl_teacherassignment';
+					 
+								 admin.findallteacherassignment({table:table},function(err, result){
+		                             
+		                            
+
+								 	req.flash('success',"Teacher assigned successfully");
+
+								    var assign_list 	 = result;
+									var pagedata 	 	 = {Title : "", pagename : "admin/assignTeacher", success: req.flash('success'),error: req.flash('error'),assign_data:"",assign_list:assign_list,class_list:class_list,subject_list:'',teacher:teacher,assigned_id:""};
+
+									res.render("admin_layout", pagedata);
+								});
+								// var pagedata = {title : "Welcome Admin", pagename : "admin/assignTeacher", message : req.flash('msg'),class_list:class_list,teacher:teacher};
+								// res.render("admin_layout", pagedata);
+							});
 						});
-						// var pagedata = {title : "Welcome Admin", pagename : "admin/assignTeacher", message : req.flash('msg'),class_list:class_list,teacher:teacher};
-						// res.render("admin_layout", pagedata);
-					});
-				});
-			});	
+					});	
+
+				}
+ 
+
+		  });		
      	}
 
 
@@ -2626,7 +2659,7 @@ router.get("/assignteacher_list", function(req, res){
 			 admin.findallteacherassignment({table:table},function(err, result){
 			 	console.log(result);
 			    var assign_list 	 = result;
-				var pagedata 	 	 = {Title : "", pagename : "admin/assignteacher_list", message : req.flash('msg'),assign_list:assign_list,assigned_id:""};
+				var pagedata 	 	 = {Title : "", pagename : "admin/assignteacher_list", message : req.flash('msg'),assign_data:"",assign_list:assign_list,assigned_id:""};
 
 				res.render("admin_layout", pagedata);
 			});
@@ -3439,8 +3472,6 @@ router.get("/getTeacherAttendence", function(req, res){
 });
 
 router.post("/addAttendence", function(req, res){
-
-//console.log('bodyyyyyyyyyyyyyyyyyy',req.body);
 	if(req.session.user_role==1){
 		var type 				= req.body.attendence;
 		if(type=='student'){
@@ -3493,8 +3524,6 @@ router.post("/addAttendence", function(req, res){
 						session_year	: req.session.session_year,
 						user_role		: 3
 					}
-
-					 
 
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id[k]},function(err, result1){
@@ -3610,22 +3639,50 @@ router.post("/addAttendence", function(req, res){
 
 router.get("/study_material", function(req, res){
 	if(req.session.user_role==1){
-		var table  = 'tbl_class';
-	
-		admin.findAll({table:table},function(err, result){
-		    var class_list 	 = result;
-		   //   	var pagedata 	 	 = {Title : "", pagename : "admin/study_material", message : req.flash('msg'),class_list:class_list};
-			 	// res.render("admin_layout", pagedata);
-		    var tbl_document = {tablename :'tbl_document'}
-	 
-			 admin.findStudyMaterial(tbl_document,function(err, result){
-			 
-			    var document_list 	 = result;
-				var pagedata 	 	 = {Title : "", pagename : "admin/study_material", message : req.flash('msg'),document_list:document_list,class_list:class_list};
-				res.render("admin_layout", pagedata);
+
+         if(req.query.id)
+         {
+    		var table = {tbl_document : 'tbl_document',tbl_subject:'tbl_subject'}
+ 			admin.getstudymaterialDetail(table,{document_id: req.query.id},function(err, result){
+                 documentdata     = result[0];
+                var table  = 'tbl_class';
+				admin.findAll({table:table},function(err, result){
+				    var class_list 	 = result;
+				   
+                     var table = {tablename :'tbl_subject'}
+                     where1 ={class_id:result[0].class_id}
+				     admin.findWhere(table,where1,function(err, result1){
+                          subject_list =result1;
+                        var tbl_document = {tablename :'tbl_document'}
+						 admin.findStudyMaterial(tbl_document,function(err, result){
+						 
+
+						    var document_list 	 = result;
+							var pagedata 	 	 = {Title : "", pagename : "admin/study_material", success: req.flash('success'),error: req.flash('error'),document_list:document_list,class_list:class_list,subject_list:subject_list,documentdata:documentdata};
+							res.render("admin_layout", pagedata);
+						});
+				   });	
+				});
+         
 			});
-			
-		});
+         }
+         else
+         {
+         	    var table  = 'tbl_class';
+				admin.findAll({table:table},function(err, result){
+				    var class_list 	 = result;
+				    var tbl_document = {tablename :'tbl_document'}
+					 admin.findStudyMaterial(tbl_document,function(err, result){
+					 
+					    var document_list 	 = result;
+						var pagedata 	 	 = {Title : "", pagename : "admin/study_material", success: req.flash('success'),error: req.flash('error'),document_list:document_list,class_list:class_list,subject_list:'',documentdata:''};
+						res.render("admin_layout", pagedata);
+					});
+					
+				});
+         }
+
+
     }else{
 	        admin.select(function(err,result){
 	     
@@ -3637,12 +3694,8 @@ router.get("/study_material", function(req, res){
 
 
 
-router.post("/addStudyMaterial", function(req, res){
+router.post("/study_material", function(req, res){
   if(req.session.user_role==1){
- 	
-
- 	console.log(req.body);
- 	
   	var class_id            = req.body.class_id;
   	var subject_id  		= req.body.subject_id;
   	var title        		= req.body.title;
@@ -3670,28 +3723,48 @@ router.post("/addStudyMaterial", function(req, res){
 
 	    var image = newname
 	}
-		
-		data = {
+		if(file)
+		{
+		  data = {
   		 	class_id 			: class_id,
   		 	subject_id 			: subject_id,
   			title       		: title,
   			description    		: description,
   			file_name     	    : image,
   			created_date	    : created_date
-  		}
+  		   }	
+		}else{
+			data = {
+	  		 	class_id 			: class_id,
+	  		 	subject_id 			: subject_id,
+	  			title       		: title,
+	  			description    		: description,
+	  			created_date	    : created_date
+    		   }
+		}
 
   		var table   = {tablename:'tbl_document'};
-  	
-  		admin.insert_all(table,data,function(err, result){
-  			res.redirect('/study_material')
-  		});
+  		if(req.body.document_id)
+  		{
+          var where= { document_id:req.body.document_id }
+          admin.updateWhere(table,where,data, function(err, result){
+            req.flash('success',"Record updated successfully");
+          	res.redirect('/study_material')
 
- 
+          });
+  		}
+  		else
+  		{
+      		admin.insert_all(table,data,function(err, result){
+      		  req.flash('success',"Study material assigned successfully");
+  	   	   	  res.redirect('/study_material')
+      		});
+
+  		}
     }else{
 	        admin.select(function(err,result){
-	     
-		    res.render('admin/index',{error : req.flash('msg')});
-			  
+		      res.render('admin/index',{error : req.flash('msg')});
+
 		 	});
 	}
 });
@@ -3699,16 +3772,39 @@ router.post("/addStudyMaterial", function(req, res){
 
 router.get("/Studymaterial_list", function(req, res){
 	if(req.session.user_role==1){
-		
-		
-	    	var tbl_document = {tablename :'tbl_document'}
+		 if(req.query.id)
+         {
+    		var table = {tbl_document : 'tbl_document',tbl_subject:'tbl_subject'}
+ 			admin.getstudymaterialDetail(table,{document_id: req.query.id},function(err, result){
+                 documentdata     = result[0];
+                var table  = 'tbl_class';
+				admin.findAll({table:table},function(err, result){
+				    var class_list 	 = result;
+				    var tbl_document = {tablename :'tbl_document'}
+					 admin.findStudyMaterial(tbl_document,function(err, result){
+					 //console.log('ssssssssssssss',documentdata)
+					    var document_list 	 = result;
+						var pagedata 	 	 = {Title : "", pagename : "admin/study_material", success: req.flash('success'),error: req.flash('error'),document_list:document_list,class_list:class_list,documentdata:documentdata};
+						res.render("admin_layout", pagedata);
+					});
+					
+				});
+         
+			});
+         }
+         else
+         {
+         	var tbl_document = {tablename :'tbl_document'}
 	 
 			 admin.findStudyMaterial(tbl_document,function(err, result){
 			 
 			    var document_list 	 = result;
-				var pagedata 	 	 = {Title : "", pagename : "admin/study_material_list", message : req.flash('msg'),document_list:document_list};
+				var pagedata 	 	 = {Title : "", pagename : "admin/study_material_list", success: req.flash('success'),error: req.flash('error'),document_list:document_list};
 				res.render("admin_layout", pagedata);
 			});
+         }
+		
+	    	
 	}else{
 	      
 		    res.render('admin/index',{error : req.flash('msg')});

@@ -50,17 +50,14 @@
                     <%= document_list.description %>
                   </td>
                   <td>
-                   <a href="#">
-                    <button type="button" class="btn btn-dark btn-fw">
-                                <i class="mdi mdi-cloud-download"></i>Edit
-                                </button>
-                               </a>
-                               <a href="#">
+                      <a href="/admin/study_material/?id=<%= document_list.document_id %>">
 
-                               <button type="button" onclick="delete_hospital('1','2')" class="btn btn-danger btn-fw">
-                                 <i class="mdi mdi-alert-outline"></i>Delete
-                               </button>
-                               </a>
+                        <button type="button" class="btn btn-dark btn-fw">
+                            <i class="mdi mdi-cloud-download"></i>Edit
+                        </button>
+                       </a>
+                       <a href="#"  onclick="delete_record('<%= document_list.document_id %>','<%= i %>','tbl_document','document_id')" class="btn btn-sm btn-danger">Delete
+                       </a>
                   </td>
                 </tr>
                 <% i++; })%>

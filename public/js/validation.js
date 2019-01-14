@@ -260,7 +260,8 @@ $('form[id="form_transport"]').validate({
           number_of_vehicle: 'required',
           route_fare:{
                         required: true,
-                        digits: true,
+                        number: true
+
                         //minlength: 10,
                       }, 
           //descriptions : 'required',
@@ -414,14 +415,14 @@ $('form[id="form_studymaterial"]').validate({
           class_id: 'required',
           subject_id:'required',
           title: 'required',
-          file: 'required',
+         // file: 'required',
           descriptions : 'required',
         },
         messages: {
           class_id: 'This field is required',
           subject_id: 'This field is required',
           title: 'This field is required',
-          file: 'This field is required',
+          //file: 'This field is required',
           descriptions: 'This field is required',
         },
         submitHandler: function(form) {
