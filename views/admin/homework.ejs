@@ -7,8 +7,31 @@
           <p class="card-description">
           <a href="/admin/homeworkList"><button class="btn btn-inverse-dark btn-fw">HomeWork List</button></a>
           </p>
+
+           <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
           
-          <form class="forms-sample" method="post" action="/addHomeWork" enctype="multipart/form-data">
+          <form class="forms-sample" id="form_homework" method="post" action="/HomeWork" enctype="multipart/form-data">
             <div class="form-group row">
               <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
               <div class="col-sm-2">
@@ -22,13 +45,20 @@
               </div>
                <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
               <div class="col-sm-2">
-               <select class="form-control" name="section_id" id="section_id">
+               <select class="form-control" name="section_id" id="homework_section_id">
                  <option>Select Section</option>
                </select>
               </div>
             </div>
             <br><br><br>
             <div  style="display: none;" id="tableId">
+             <!--  <div class="form-group row">
+               <label for="exampleInputEmail2" class="col-sm-1 col-form-label">Send SMS</label>
+                <div class="col-sm-3">
+                 <input type="checkbox" value="1" name="checktosend" id="checktosend">
+                 <span for="checktosend"  class="error below" style="display: none"></span>
+                </div>
+              </div>   --> 
               <h2>Enter Home Work</h2>
               <table class="display responsive nowrap" id="subjectTable" style="width: 100%" >
                 <thead>
@@ -47,7 +77,6 @@
                     </th>
                     <th>File</th>
                     
-                    
                   </tr>
                 </thead>
                 <tbody>
@@ -55,18 +84,18 @@
                 </tbody>
               </table>
            
-           <!--  <div class="form-group row">
-              <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Section Name</label>
-              <div class="col-sm-9">
-               <select class="form-control" name="section_id" id="section_id">
-                 <option>Select Section</option>
-               </select>
-              </div>
-            </div> -->
+
             <br><br><br>
               <div class="col-sm-12" align="center">
-              <button type="submit" class="btn btn-success mr-2">Submit</button>
-              <button class="btn btn-light">Cancel</button>
+                <label for="exampleInputEmail2" class="col-sm-1 col-form-label">Send SMS</label>
+                <div class="col-sm-1">
+                 <input type="checkbox" value="1" name="checktosend" id="checktosend">
+                 <span for="checktosend"  class="error below" style="display: none"></span>
+                </div>
+                <div class="col-sm-3">
+                  <button type="submit" class="btn btn-success mr-2">Submit</button>
+                  <button class="btn btn-light">Cancel</button>
+                </div>  
               </div>
             </div> 
             <br><br>
@@ -93,6 +122,9 @@
                     Task
                   </th>
                   <th>
+                    Description
+                  </th>
+                  <th>
                     Action
                   </th>
                   
@@ -100,7 +132,7 @@
               </thead>
               <tbody>
                 <%  var i=1; homework_list.forEach(function(homework_list){ %>
-                <tr>
+                <tr id="tr_<%= i %>">
                   <td>
                     <%= i %>
                   </td>
@@ -118,17 +150,24 @@
                     <%= homework_list.task %>
                   </th>
                   <td>
-                   <a href="#">
+                    <%= homework_list.description %>
+                  </td>
+                  <td>
+                  <!--  <a href="#">
                     <button type="button" class="btn btn-dark btn-fw">
                                 <i class="mdi mdi-cloud-download"></i>Edit
                                 </button>
-                               </a>
-                               <a href="#">
-
-                               <button type="button" onclick="delete_hospital('1','2')" class="btn btn-danger btn-fw">
+                               </a> -->
+                            <% if(homework_list.file_name){ %>   
+                            <a href="../../homework_image/<%= homework_list.file_name %>"download="">
+                               <button type="button" class="btn btn-success"> Download File </button>  
+                             </a>
+                             <% } %>
+                            <a href="#">
+                               <button type="button" onclick="delete_record('<%= homework_list.homework_id %>','<%= i %>','tbl_homework','homework_id')" class="btn btn-danger btn-fw">
                                  <i class="mdi mdi-alert-outline"></i>Delete
                                </button>
-                               </a>
+                            </a>
                   </td>
                 </tr>
                 <% i++; })%>

@@ -26,6 +26,9 @@
 								Task
 							</th>
 							<th>
+								Description
+							</th>
+							<th>
 								Action
 							</th>
 							
@@ -51,17 +54,19 @@
 								<%= homework_list.task %>
 							</th>
 							<td>
-							 <a href="#">
-								<button type="button" class="btn btn-dark btn-fw">
-                         	 	<i class="mdi mdi-cloud-download"></i>Edit
-                         	 	</button>
-                         	 </a>
-                         	 <a href="#">
-
-                         	 <button type="button" onclick="delete_hospital('1','2')" class="btn btn-danger btn-fw">
-                         		 <i class="mdi mdi-alert-outline"></i>Delete
-                         	 </button>
-                         	 </a>
+								<%= homework_list.description %>
+							</td>
+							<td>
+							   <% if(homework_list.file_name){ %>   
+	                            <a href="../../homework_image/<%= homework_list.file_name %>"download="">
+	                               <button type="button" class="btn btn-success"> Download File </button>  
+	                             </a>
+	                             <% } %>
+	                            <a href="#">
+	                               <button type="button" onclick="delete_record('<%= homework_list.homework_id %>','<%= i %>','tbl_homework','homework_id')" class="btn btn-danger btn-fw">
+	                                 <i class="mdi mdi-alert-outline"></i>Delete
+	                               </button>
+	                            </a>
 							</td>
 						</tr>
 						<% i++; })%>

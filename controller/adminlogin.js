@@ -2701,7 +2701,7 @@ router.get("/HomeWork", function(req, res){
 			 admin.findhomework({table:table},function(err, result){
 			 	console.log(result);
 			    var homework_list 	 = result;
-				var pagedata 	 	 = {Title : "", pagename : "admin/homework", message : req.flash('msg'),homework_list:homework_list,class_list:class_list};
+				var pagedata 	 	 = {Title : "", pagename : "admin/homework", success: req.flash('success'),error: req.flash('error'),homework_list:homework_list,class_list:class_list};
 				res.render("admin_layout", pagedata);
 			});
 			
@@ -2715,60 +2715,163 @@ router.get("/HomeWork", function(req, res){
 	}
 });
 
-router.post("/addHomeWork", function(req, res){
+router.post("/HomeWork", function(req, res){
   if(req.session.user_role==1){
 
   	var class_id            = req.body.class_id;
   	var section_id          = req.body.section_id;
-  	
+  	var subject_name        = req.body.subject_name;
   	var subject_id  		= req.body.subject_id;
-  	var task        		= req.body.task;
-  	var task_description    = req.body.task_description;
+  	// var task        		= req.body.task;
+  	// var task_description    = req.body.task_description;
+  	var session_year        = req.session.session_year;
 
   	var moment 				= require('moment');
 	var dates 				= moment().format('YYYY-MM-DD:hh:mm:ss');
   	
-  	var file = req.files.subject_file;
-  	
+  	var file = req.files;
   	var data = [];
-  	for(var k in subject_id){
-  		 
-  		file1= file[k];
-  		var newname = changename(file[k].name);
-		var filepath = path.resolve("public/homework_image/"+newname);
-		
-		file1.mv(filepath, function(err){
-			if(err){
-				console.log(err);
-				return;
-			}
-		});
-		
-  		 data = {
-  		 	class_id 			: class_id,
-  		 	section_id			: section_id,
-  		 	teacher_id			: 0,
-  			subject_id 			: subject_id[k],
-  			task       			: task[k],
-  			description    		: task_description[k],
-  			file_name     	    : newname,
-  			homework_date	    : dates,
-  			created_date	    : dates
-  		}
-  		var table   = {tablename:'tbl_homework'};
-  	
-  		admin.insert_all(table,data,function(err, result){
-			
-		});	
-	}
+    message='';
 
-  		var table  = 'tbl_class';
-	
-		admin.findAll({table:table},function(err, result){
-		    var class_list 	 = result;
-			var pagedata = {title : "Welcome Admin", pagename : "admin/homework", message : req.flash('msg'),class_list:class_list};
-			res.render("admin_layout", pagedata);
-		});
+
+//     console.log(subject_id);
+// console.log(task);
+ 
+
+   //var check   = Array.isArray(task);
+  //  if(check==false)
+  //  {
+  //    var table  = 'tbl_class';
+  // 		admin.findAll({table:table},function(err, result){
+		//     var class_list 	 = result;
+		//      var table = 'tbl_homework';
+		//    admin.findhomework({table:table},function(err, result){
+
+ 	// 		req.flash('error',"No task assigned");
+			 	 
+		// 	var homework_list 	 = result;
+		// 	var pagedata = {title : "Welcome Admin", pagename : "admin/homework", success: req.flash('success'),error: req.flash('error'),class_list:class_list,homework_list:homework_list};
+		// 	res.render("admin_layout", pagedata);
+		//    });
+		// });
+  
+  //  } 
+  //  else
+   {
+
+ object=req.body;
+  	async.forEachOf(subject_id, function (item,index, done) {
+
+         if(object.hasOwnProperty('task_'+item))
+  		 {
+  		 	 task =object['task_'+item];
+  		 }
+  		 if(object.hasOwnProperty('task_'+item))
+  		 {
+  		 	 task_description =object['task_description_'+item];
+  		 }
+  		 
+  		 
+        if(file['subject_file_'+subject_id[index]])
+        {
+          file1= file['subject_file_'+subject_id[index]];
+	  		var newname = changename(file['subject_file_'+subject_id[index]].name);
+			var filepath = path.resolve("public/homework_image/"+newname);
+			
+			file1.mv(filepath, function(err){
+				if(err){
+					console.log(err);
+					return;
+				}
+			});	
+		 }
+		 else
+		  	newname='';
+
+  			var table   = {tablename:'tbl_homework'};
+  	      if(task!='' )
+  	      {
+  	     	 
+	  	    	message+='Subject-'+subject_name[index]+' ,Task-'+task+' ,Description-'+task_description
+	  	    	data = {
+		  		 	class_id 			: class_id,
+		  		 	section_id			: section_id,
+		  		 	teacher_id			: 0,
+		  			subject_id 			: subject_id[index],
+		  			task       			: task,
+		  			description    		: task_description,
+		  			file_name     	    : newname,
+		  			homework_date	    : dates,
+		  			created_date	    : dates,
+		  			session_year        : session_year
+	  			}
+  			//console.log('Data of Task--->',data)
+	            var table = {tablename:'tbl_homework'};
+	            admin.findWhere(table,{class_id:class_id,section_id:section_id,subject_id:subject_id[index]},function(err, result){
+	            	console.log('checklist-----',result);
+	            	if(result.length>0)
+	            	{
+	                  homework= result[0];
+	                   
+	                  var where={homework_id:homework.homework_id};
+		  	  		  admin.updateWhere({tablename:'tbl_homework'},where,data, function(err, result){
+				            req.flash('success',"Homework updated successfully");
+			      	   });
+	            	}
+	            	else
+	            	{
+
+	            	  admin.insert_all({tablename:'tbl_homework'},data,function(err, result){
+	                       req.flash('success',"Homework updated successfully");
+			          });	  	    		
+	            	}
+			    });	 
+
+	  	  }
+	  	    done(null);
+
+		},function(){
+
+            
+           if(object.hasOwnProperty("checktosend"))
+           {
+		        var table = {tbl_registration:'tbl_registration',tbl_enroll:'tbl_enroll'};
+			    admin.getstudentphone_by_class(table,{class_id:class_id,session_year:session_year,section_id:section_id},function(err, result){
+
+		           	message = message.replace(/<\/?p>/g,'')
+		            mobileNo='';
+			    	senderdata= JSON.parse(JSON.stringify(result[0]));
+		             
+			    	result.forEach(function(item, index){
+			    		if(result[index].phone && result[index].phone!='undefined')
+			    		  mobileNo += result[index].phone+',';
+			    	});
+			    	mobileNo= mobileNo.substring(0, mobileNo.length - 1)
+			    	//var mobileNo = [ "XXXXXXXXXX", "XXXXXXXXXX", "XXXXXXXXXX" ];
+					//var mobileNo =  "XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX";
+		        	msg91.send(mobileNo, message, function(err, response){
+		              req.flash('success',"Homework sent successfully");
+					});
+
+			    });
+		    }
+
+
+	  		var table  = 'tbl_class';
+	  		admin.findAll({table:table},function(err, result){
+			    var class_list 	 = result;
+			     var table = 'tbl_homework';
+			   admin.findhomework({table:table},function(err, result){
+
+	 			
+				 	 
+				var homework_list 	 = result;
+				var pagedata = {title : "Welcome Admin", pagename : "admin/homework", success: req.flash('success'),error: req.flash('error'),class_list:class_list,homework_list:homework_list};
+				res.render("admin_layout", pagedata);
+			   });
+			});
+  	    });
+      }
      }else{
 	        admin.select(function(err,result){
 	     

@@ -25,6 +25,11 @@ $('#class_id').on('change',function(){
             }
             $('#section_id').html('');
             $("#section_id").html(option);
+
+            
+            $('#homework_section_id').html('');
+            $("#homework_section_id").html(option);
+
             $('#exam_section_id').html('');
             $('#exam_section_id').html(option)
 
@@ -75,7 +80,7 @@ $('#teacher_class_id').on('change',function(){
         }
     });
 });
-$('#section_id').on('change',function(){
+$('#homework_section_id').on('change',function(){
     var section_id = $(this).val();
     var class_id   = $('#class_id').val();
 
@@ -105,7 +110,7 @@ $('#section_id').on('change',function(){
             for (var i = 0; i < subject.length; i++) {
                 var count = i+1;
                 
-                   $('#subjectTable tbody').append('<tr><td>'+count+'</td><td>'+subject[i].name+'</td><td><input type="hidden" Class="form_control" name="subject_id"  id="subject_id" value="'+subject[i].subject_id+'"><input type="text" name="task" id="task" class="form_control"></td><td><textarea class="form_control" name="task_description" id="task_description" cols="50" rows="3"></textarea></td><td><input type="file" name="subject_file" id="subject_file"></td></tr>');
+                   $('#subjectTable tbody').append('<tr><td>'+count+'</td><td><input type="hidden" Class="form_control" name="subject_name"  id="subject_name" value="'+subject[i].name+'"> '+subject[i].name+'</td><td><input type="hidden" Class="form_control" name="subject_id"  id="subject_id" value="'+subject[i].subject_id+'"><input type="text" name="task_'+subject[i].subject_id+'" id="task" class="form_control"><span for="task"  class="error below" style="display: none"></span></td><td><textarea class="form_control" name="task_description_'+subject[i].subject_id+'" id="task_description" cols="50" rows="3"></textarea><span for="task_description"  class="error below" style="display: none"></span></td><td><input type="file" name="subject_file_'+subject[i].subject_id+'" id="subject_file"></td></tr>');
  
             }
             $('#tableId').show();

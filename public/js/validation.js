@@ -373,7 +373,7 @@ $('form[id="form_academicsyllabus"]').validate({
         }
 });
 
-$('form[id="form_subject1"]').validate({
+$('form[id="form_subject"]').validate({
 
  rules: {
           class_id: 'required',
@@ -382,7 +382,7 @@ $('form[id="form_subject1"]').validate({
           //descriptions : 'required',
         },
         messages: {
-          class_id: 'This field is required',
+         // class_id: 'This field is required',
           subject_name: 'This field is required',
           subject_type: 'This field is required',
         },
@@ -404,6 +404,24 @@ $('form[id="form_assignteacher"]').validate({
           section_id: 'This field is required',
           subject_id: 'This field is required',
           teacher_id: 'This field is required',
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+});
+
+$('form[id="form_homework"]').validate({
+
+        rules: {
+          //task: 'required',
+          //task_description:'required',
+          //checktosend: 'required',
+           
+        },
+        messages: {
+          //task: 'This field is required',
+          //task_description: 'This field is required',
+          //checktosend: 'Send messages required',
         },
         submitHandler: function(form) {
           form.submit();

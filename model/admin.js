@@ -991,6 +991,15 @@ module.exports.getstudentlist_by_class=function(obj,where, cb){
 	 	con.query(que, cb);
 	});
 }
+module.exports.getstudentphone_by_class=function(obj,where, cb){
+	  //
+	con.connect(function(err){
+	 	var que = "SELECT "+obj.tbl_registration+".phone FROM "+obj.tbl_enroll+"  INNER JOIN "+obj.tbl_registration+" ON "+obj.tbl_registration+".registration_id="+obj.tbl_enroll+".registration_id WHERE "+obj.tbl_enroll+".class_id="+ where.class_id + "  AND "+obj.tbl_enroll+".bonafide_status=0  AND "+obj.tbl_enroll+".session_year='"+where.session_year+"' AND "+obj.tbl_enroll+".section_id='"+where.section_id+"' ORDER BY "+obj.tbl_registration+".name ASC" ;
+	 	console.log('Get student list ',que)
+	 	con.query(que, cb);
+	});
+}
+
 
 /*
 ** Get All teacher list who attend school
