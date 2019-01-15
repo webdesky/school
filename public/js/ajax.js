@@ -26,6 +26,9 @@ $('#class_id').on('change',function(){
             $('#section_id').html('');
             $("#section_id").html(option);
 
+            $('#class_routin_section').html('');
+            $("#class_routin_section").html(option);
+
             
             $('#homework_section_id').html('');
             $("#homework_section_id").html(option);
@@ -81,6 +84,50 @@ $('#teacher_class_id').on('change',function(){
     });
 });
 $('#homework_section_id').on('change',function(){
+    var section_id = $(this).val();
+    var class_id   = $('#class_id').val();
+
+    if(class_id==''){
+        alert('please select Class');
+        return false;
+    }
+    if(section_id==''){
+        alert('please select Section');  
+        return false; 
+    }
+    //alert(class_id);
+
+     $.ajax({
+        url: "/getSubject",
+        method: "GET",
+        dataType: "json",
+        data: {
+            class_id: class_id,
+            section_id :section_id
+           
+        },
+        success: function(response) {
+            var subject  = response.subject_list;
+
+            $('#subjectTable tbody').html('');
+            for (var i = 0; i < subject.length; i++) {
+                var count = i+1;
+                
+                   $('#subjectTable tbody').append('<tr><td>'+count+'</td><td><input type="hidden" Class="form_control" name="subject_name"  id="subject_name" value="'+subject[i].name+'"> '+subject[i].name+'</td><td><input type="hidden" Class="form_control" name="subject_id"  id="subject_id" value="'+subject[i].subject_id+'"><input type="text" name="task_'+subject[i].subject_id+'" id="task" class="form_control"><span for="task"  class="error below" style="display: none"></span></td><td><textarea class="form_control" name="task_description_'+subject[i].subject_id+'" id="task_description" cols="50" rows="3"></textarea><span for="task_description"  class="error below" style="display: none"></span></td><td><input type="file" name="subject_file_'+subject[i].subject_id+'" id="subject_file"></td></tr>');
+ 
+            }
+            $('#tableId').show();
+            /* Enabled days drop down after section select on class routine page */
+            $("#day").prop("disabled",false);
+
+        },
+        error: function() {
+            alert("error");
+        }
+    });
+});
+
+$('#section_id').on('change',function(){
     var section_id = $(this).val();
     var class_id   = $('#class_id').val();
 
@@ -791,9 +838,17 @@ function getSubject(id){
 
 
 function getsubteacher(day){
-    var section_id  = $('#section_id').val();
+    var section_id  = $('#class_routin_section').val();
     var class_id    = $('#class_id').val();
     var day = day;
+    if(class_id==''){
+        alert('please select Class');
+        return false;
+    }
+    if(section_id==''){
+        alert('please select Section');  
+        return false; 
+    }
 
     $.ajax({
         url: "/getsubjTeach",
@@ -899,7 +954,9 @@ function getsubteacher(day){
 }
 
 function getStudentAttendence(attendence_date){
-    var attendence_date         = moment(attendence_date).format('YYYY-DD-MM'); 
+    date= (attendence_date).split('-');
+    var attendence_date= date[2]+'-'+date[1]+'-'+date[0];
+    //var attendence_date         = moment(attendence_date).format('YYYY-DD-MM'); 
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id').val();
 
@@ -1004,6 +1061,27 @@ function get_student_detail()
     var subject_type  =$('#subject_id').find(':selected').attr('data-value') //$('#subject_id').attr('data-value');
     var exam_id     = $('#exam_id').val();
     var exam_code   =$('#exam_id').find(':selected').attr('data-value')
+
+    if(class_id=="")
+    {
+        alert("Please select class")
+        return false;
+    }
+    if(section_id=="")
+    {
+        alert("Please select section")
+        return false;
+    }
+    if(subject_id=="")
+    {
+        alert("Please select subject")
+        return false;
+    }
+    if(exam_id=="")
+    {
+        alert("Please select exam")
+        return false;
+    }
 
      $.ajax({
         url: "/getStudentAllDetail",
@@ -1259,13 +1337,25 @@ function check_manage_marks1(user_id,keys)
            
    }
 
-   if(marks_get>marks_available){
+    var regexp = /^[0-9]+([,.][0-9]+)?$/g;
+    var result = regexp.test(marks_available);
+    // if(result)
+    // { 
+    //    $("#children_error_"+user_id+"").text('Please numric value only');
+    //     $("#children_participation_"+user_id+"").val('0.00');
+    //     $("#children_participation_"+user_id+"").focus();
+    // }
+    // else
+    {
+      if(marks_get>marks_available){
               $("#children_error_"+user_id+"").text('Please Enter Less Then Total Marks');
               $("#"+arr[i]+"_"+user_id+"").val('0.00');
               $("#"+arr[i]+"_"+user_id+"").focus();
             }else{
                     $("#children_error_"+user_id+"").text('');
-            }
+            }    
+    } 
+    
    
     
 
@@ -1303,7 +1393,15 @@ function check_manage_marks(user_id,type,name){
             var marks_available = Number(total_marks);
             //console.log(marks_get)
             //console.log(marks_available)
-            if(marks_get>marks_available){
+            var regexp = /^[0-9]+([,.][0-9]+)?$/g;
+            var result = regexp.test(marks_available);
+            if(result)
+            { 
+               $("#children_error_"+user_id+"").text('Please numric value only');
+                $("#children_participation_"+user_id+"").val('0.00');
+                $("#children_participation_"+user_id+"").focus();
+            }
+            else if(marks_get>marks_available){
                 $("#children_error_"+user_id+"").text('Please Enter Less Then Total Marks');
                 $("#children_participation_"+user_id+"").val('0.00');
                 $("#children_participation_"+user_id+"").focus();

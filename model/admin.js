@@ -1,5 +1,7 @@
 var con = require('../config/connect');
 var empty = require('is-empty');
+var SqlString = require('sqlstring');
+
 
 function isEmptyObject(obj) {	
   for (var key in obj) {
@@ -17,6 +19,7 @@ module.exports.select= function(cb){
 	  });
 } 
 
+ 
 
 module.exports.insert_all=function(tableobj, obj, cb){ 
    
@@ -24,7 +27,7 @@ module.exports.insert_all=function(tableobj, obj, cb){
      if(JSON.stringify(obj) != '{}')
      {
      	con.connect(function(err){
-		var que = "INSERT INTO "+tableobj.tablename+" SET ?";
+		var que =  SqlString.format("INSERT INTO "+tableobj.tablename+" SET ?");
 			  console.log(que) 
 			 con.query(que, obj, function (err, result) {
 			 	//console.log("[mysql error]",err);
@@ -41,17 +44,21 @@ module.exports.insert_all=function(tableobj, obj, cb){
 
 
 module.exports.findWhere=function(tableobj, obj, cb){
+	//console.log('converted---------',SqlString.escape(obj));
 	con.connect(function(err){
 		var que = "SELECT * FROM "+tableobj.tablename+" WHERE ";
 		var counter = 1;
 		for(var k in obj){
+			txt =obj[k].toString();
+				txt =txt.replace(/'/g, "\\'");
 			if(counter==1)
 			{
-				que += k+"= '"+obj[k]+"'";
+
+				que += k+"= '"+txt+"'" ;
 			}
 			else
 			{
-				que += " AND "+k+"= '"+obj[k]+"' ";
+				que += " AND "+k+"= '"+txt+"'" ;
 
 			}
 			counter++;
@@ -69,11 +76,11 @@ module.exports.findWhereorderby=function(tableobj, obj, orerby, cb){
 		for(var k in obj){
 			if(counter==1)
 			{
-				que += k+"= '"+obj[k]+"'";
+				que += k+"= "+SqlString.escape(obj[k])+" ";
 			}
 			else
 			{
-				que += " AND "+k+"= '"+obj[k]+"' ";
+				que += " AND "+k+"= "+SqlString.escape(obj[k])+" ";
 
 			}
 			counter++;
@@ -270,7 +277,7 @@ module.exports.findAllsubject=function(obj, cb){
 	//console.log(obj);
 	con.connect(function(err){
 		var que = "SELECT * FROM "+obj.table+"  LEFT JOIN tbl_class ON tbl_class.class_id="+obj.table+".class_id";
-
+  //console.log('findAllsubject----->',que)
 		con.query(que, cb);
 	});
 }
@@ -478,7 +485,7 @@ module.exports.getStudentAttendence=function(table,obj, cb){
 		console.log('obh',obj)
 		//var que = "SELECT *  FROM "+table.tablename+" WHERE "+table.tablename+".class_id="+obj.class_id+" AND "+table.tablename+".section_id="+obj.section_id+" AND "+table.tablename+".attendence_date='"+obj.attendence_date+"' AND "+table.tablename+".registration_id="+obj.student_id+" ";
         var que = "SELECT *  FROM "+table.tbl_attendance+"   LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id='"+obj.class_id+"' AND "+table.tbl_attendance+".section_id='"+obj.section_id+"' AND "+table.tbl_attendance+".attendence_date='"+obj.attendence_date+"' AND "+table.tbl_attendance+".registration_id='"+obj.student_id+"' AND "+table.tbl_enroll+".bonafide_status='0' AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
-        console.log(que)	
+        //console.log('student---------',que)	
 		con.query(que, cb);
 	});
 }
@@ -501,16 +508,16 @@ module.exports.getAllStudentAttendence=function(table,obj, cb){
 		con.query(que, cb);
 	});
 }
-module.exports.getTeacherAttendence=function(table,obj, cb){
+// module.exports.getTeacherAttendence=function(table,obj, cb){
 
-	con.connect(function(err){
+// 	con.connect(function(err){
 
 		
-        var que = "SELECT *  FROM "+table.tbl_attendance+" INNER JOIN "+table.tbl_enroll+" ON "+obj.tbl_attendance+".registration_id="+obj.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id="+obj.class_id+" AND "+table.tbl_attendance+".section_id="+obj.section_id+" AND "+table.tbl_attendance+".attendence_date='"+obj.attendence_date+"' AND "+table.tbl_attendance+".registration_id="+obj.student_id+" AND "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year="+obj.session_year;		
-		//console.log(que);
-		con.query(que, cb);
-	});
-}
+//         var que = "SELECT *  FROM "+table.tbl_attendance+" INNER JOIN "+table.tbl_enroll+" ON "+obj.tbl_attendance+".registration_id="+obj.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id="+obj.class_id+" AND "+table.tbl_attendance+".section_id="+obj.section_id+" AND "+table.tbl_attendance+".attendence_date='"+obj.attendence_date+"' AND "+table.tbl_attendance+".registration_id="+obj.student_id+" AND "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";		
+// 		 console.log('teacherrrrrrrrrrrrr',que);
+// 		con.query(que, cb);
+// 	});
+// }
 
 module.exports.get_paid_fees=function(table,obj, cb){
 
@@ -658,8 +665,8 @@ module.exports.getexammarks=function(table,obj, cb){
 module.exports.getTeacherAttendence=function(table,obj, cb){
 
 	con.connect(function(err){
-		var que = "SELECT *  FROM "+table.tablename+" WHERE  "+table.tablename+".attendence_date='"+obj.attendence_date+"' AND "+table.tablename+".registration_id="+obj.student_id+" ";
-		//console.log(que);
+		var que = "SELECT *  FROM "+table.tablename+" WHERE  "+table.tablename+".attendence_date='"+obj.attendence_date+"' AND "+table.tablename+".registration_id="+obj.registration_id+" AND "+table.tablename+".session_year='"+obj.session_year+"'";
+		 console.log('Teacherrrrrrrrrrrrrrr',que);
 		con.query(que, cb);
 	});
 }
@@ -726,7 +733,7 @@ module.exports.getexammarks=function(table,obj, cb){
 
 module.exports.insert=function(obj, cb){
 	con.connect(function(err){
-		var que = "INSERT INTO user (full_name, username, password, address, gender, city) VALUES ('"+obj.full_name+"', '"+obj.username+"', '"+sha1(obj.password)+"', '"+obj.address+"', '"+obj.gender+"', '"+obj.city+"')";
+		var que = "INSERT INTO user (full_name, username, password, address, gender, city) VALUES ('"+(obj.full_name).replace(/'/g, "\\'")+"', '"+(obj.username).replace(/'/g, "\\'")+"', '"+sha1(obj.password)+"', '"+(obj.address).replace(/'/g, "\\'")+"', '"+obj.gender+"', '"+(obj.city).replace(/'/g, "\\'")+"')";
 		con.query(que, cb);
 	});
 }
@@ -736,7 +743,7 @@ module.exports.findquestionpaper=function(obj, cb){
 	//console.log(obj);
 	//console.log("SELECT * FROM "+obj.table+"  LEFT JOIN tbl_class ON tbl_class.class_id="+obj.table+".class_id");
 	con.connect(function(err){
-		var que = "SELECT  "+obj.table+".* ,tbl_class.class_name,   tbl_subject.name AS subject_name, tbl_section.section_name  FROM "+obj.table+"  LEFT JOIN tbl_class ON tbl_class.class_id="+obj.table+".class_id LEFT JOIN tbl_subject ON tbl_subject.subject_id="+obj.table+".subject_id LEFT JOIN tbl_section ON tbl_section.section_id="+obj.table+".section_id";
+		var que = "SELECT  "+obj.table+".* ,tbl_class.class_name,   tbl_subject.name AS subject_name, tbl_section.section_name,tbl_exam_master.exam_name   FROM "+obj.table+"  LEFT JOIN tbl_class ON tbl_class.class_id="+obj.table+".class_id LEFT JOIN tbl_subject ON tbl_subject.subject_id="+obj.table+".subject_id LEFT JOIN tbl_section ON tbl_section.section_id="+obj.table+".section_id LEFT JOIN tbl_exam_master ON tbl_exam_master.exam_id="+obj.table+".exam_id";
 		console.log(que);
 		con.query(que, cb);
 	});
@@ -744,7 +751,7 @@ module.exports.findquestionpaper=function(obj, cb){
 
 module.exports.insert_class=function(obj, cb){
 	con.connect(function(err){
-		var que = "INSERT INTO  tbl_class(class_name, class_abbreviations,created_at) VALUES ('"+obj.class_name+"', '"+obj.class_abbreviations+"','"+obj.created_at+"')";
+		var que = "INSERT INTO  tbl_class(class_name, class_abbreviations,created_at) VALUES ('"+(obj.class_name).replace(/'/g, "\\'")+"', '"+(obj.class_abbreviations).replace(/'/g, "\\'")+"','"+obj.created_at+"')";
 		 console.log(que);
 		con.query(que, function (err, result) {
 		    if (err) throw err;
@@ -757,7 +764,7 @@ module.exports.insert_class=function(obj, cb){
 
 module.exports.insert_section=function(obj, cb){
 	con.connect(function(err){
-		var que = "INSERT INTO  tbl_section(class_id, section_name) VALUES ('"+obj.class_id+"', '"+obj.section_name+"')";
+		var que = "INSERT INTO  tbl_section(class_id, section_name) VALUES ('"+obj.class_id+"', '"+(obj.section_name).replace(/'/g, "\\'")+"')";
 		//console.log(que);
 		con.query(que, function (err, result) {
 		    if (err) throw err;
@@ -770,8 +777,7 @@ module.exports.insert_section=function(obj, cb){
 
 module.exports.insert_transport=function(obj, cb){
 	con.connect(function(err){
-		var que = "INSERT INTO  tbl_transport(route_name, number_of_vehicle,description,route_fare) VALUES ('"+obj.route_name+"', '"+obj.number_of_vehicle+"', '"+obj.description+"', '"+obj.route_fare+"')";
-		//console.log(que);
+		var que = "INSERT INTO  tbl_transport(route_name, number_of_vehicle,description,route_fare) VALUES ('"+(obj.route_name).replace(/'/g, "\\'")+"', '"+(obj.number_of_vehicle).replace(/'/g, "\\'")+"', '"+(obj.description).replace(/'/g, "\\'")+"', '"+obj.route_fare+"')";
 		con.query(que, function (err, result) {
 		    if (err) throw err;
 		     cb(undefined, result.insertId);
@@ -783,7 +789,7 @@ module.exports.insert_transport=function(obj, cb){
 
 module.exports.insert_dormitory=function(obj, cb){
 	con.connect(function(err){
-		var que = "INSERT INTO  tbl_dormitory(name, number_of_room,description,created_at) VALUES ('"+obj.name+"', '"+obj.number_of_room+"', '"+obj.description+"', '"+obj.created_at+"')";
+		var que = "INSERT INTO  tbl_dormitory(name, number_of_room,description,created_at) VALUES ('"+(obj.name).replace(/'/g, "\\'")+"', '"+obj.number_of_room+"', '"+(obj.description).replace(/'/g, "\\'")+"', '"+obj.created_at+"')";
 	//	console.log(que);
 		con.query(que, function (err, result) {
 		    if (err) throw err;
@@ -801,13 +807,15 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
       var que= "UPDATE "+tableobj.tablename+" SET ";
       var counter = 1;
 		for(var k in obj){
+			txt =obj[k].toString();
+				txt =txt.replace(/'/g, "\\'");
 			if(counter==1)
 			{
-				que += k+'= "'+obj[k]+'"';
+				que += k+'= "'+txt+'"';
 			}
 			else
 			{
-				que += " , "+k+'= "'+obj[k]+'"' ;
+				que += " , "+k+'= "'+txt+'"' ;
 
 			}
 			counter++;
@@ -816,7 +824,8 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 	   var key = Object.keys(where);
 	   
 	   if(key.length>0)
-	     que += " WHERE "+key[0]+" = '"+where[key[0]]+"'";	
+	     que += " WHERE "+key[0]+" = '"+where[key[0]].replace(/'/g, "\\'")+"'";	
+ 
 
 	  console.log('#####################',que);
        con.query(que, cb);
@@ -840,7 +849,7 @@ module.exports.deletewhere=function(tableobj,obj,cb)
 			}
 			counter++;
 		}
-		 //console.log(que);
+		 console.log('Delete-------',que);
 		con.query(que,cb);
 		//cb(undefined,1);
 }
@@ -855,7 +864,7 @@ UPDATE user SET salary=10000, age=25, name="rohit" WHERE city='ujjain'
 
 module.exports.update=function(where, obj, cb){
 
-	var que = "UPDATE user SET full_name='"+obj.full_name+"', address = '"+obj.address+"', gender = '"+obj.gender+"', city = '"+obj.city+"' WHERE id = "+where.id;
+	var que = "UPDATE user SET full_name='"+(obj.full_name).replace(/'/g, "\\'")+"', address = '"+(obj.address).replace(/'/g, "\\'")+"', gender = '"+obj.gender+"', city = '"+(obj.city).replace(/'/g, "\\'")+"' WHERE id = "+where.id;
 	con.connect(function(err){
 		con.query(que, cb);
 	});
@@ -877,7 +886,7 @@ module.exports.update=function(where, obj, cb){
 	// console.log(que);
 }
 module.exports.updateImg=function(where, obj, cb){
-	var que = "UPDATE user SET image='"+obj.img+"' WHERE id = "+where.id;
+	var que = "UPDATE user SET image='"+(obj.img).replace(/'/g, "\\'")+"' WHERE id = "+where.id;
 	con.connect(function(err){
 		con.query(que, cb);
 	});

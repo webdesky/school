@@ -70,7 +70,7 @@ $('#teacher_section_id1').on('change',function(){
         }
     });
 });
-$('#section_id').on('change',function(){
+$('#section_id1').on('change',function(){
     var section_id = $(this).val();
     var class_id   = $('#class_id').val();
 
@@ -231,13 +231,13 @@ $("#links").click(function() {
    $("#youtube_link").append('<div><div class="form-group row"><label for="exampleInputEmail2" class="col-sm-2 col-form-label">Youtube Link</label><div class="col-sm-4"><input type="text" name="youtube_link" class="form-control" placeholder="Enter Youtube Link"></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div></div>');
 });
 
-$("#columnlinks").click(function() {
-   $("#coulmn_link").append('<div><div class="form-group row"><label for="sheetcolumn" class="col-sm-4 col-form-label">Add Column</label><div class="col-sm-6"><input type="text" name="column" class="form-control" placeholder="Enter Column name"></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div></div>');
-});
+// $("#columnlinks").click(function() {
+//    $("#coulmn_link").append('<div><div class="form-group row"><label for="sheetcolumn" class="col-sm-4 col-form-label">Add Column</label><div class="col-sm-6"><input type="text" name="column" class="form-control" placeholder="Enter Column name"></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div></div>');
+// });
 
-$("#activitylinks").click(function() {
-   $("#activity_link").append('<div><div class="form-group row"><label for="sheetcolumn" class="col-sm-4 col-form-label">Other Activity</label><div class="col-sm-6"><input type="text" name="activity_column" class="form-control" placeholder="Enter Other Acivity column name"></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div></div>');
-});
+// $("#activitylinks").click(function() {
+//    $("#activity_link").append('<div><div class="form-group row"><label for="sheetcolumn" class="col-sm-4 col-form-label">Other Activity</label><div class="col-sm-6"><input type="text" name="activity_column" class="form-control" placeholder="Enter Other Acivity column name"></div><i class="fa fa-minus-circle remove" aria-hidden="true" id="removeButton" style="font-size:25px;margin-left: 15px;"></i></div></div>');
+// });
 
 $("body").on("click", ".remove", function() {
 $(this).closest("div").remove();

@@ -62,7 +62,7 @@
 					<div id="student">
 
 					 <form class="form-sample" id="student_register" method="Post" action="/admin/registration">	
-					 	<input type="hidden" class="form-check-input userregister" name="userregister" value=""> 
+					 	<input type="hidden" class="form-check-input userregister" name="userregister" value="<%= studentdata.registration_id %>"> 
 					 	<input type="hidden" value="<%=studentdata.registration_id%>" name="registration_id">
 					 	<input type="hidden" value="<%= studentdata.parent_id%>" name="parent_id">
 					 	

@@ -14,20 +14,21 @@
 				<div class="card-body">
 					<h2 class="card-title">Message</h2>
 					<!-- <form class="form-sample" id="form_register" method="Post" action="/admin/registration"> -->
+					<br/><br/>	
 					<div class="col-md-12">
 						<div class="form-group row">
 							<label class="col-sm-2 col-form-label">Send TO</label>
 							<div class="col-sm-2">
 								<div class="form-radio abc" id="stud">
 									<label class="form-check-label">
-										<input type="radio" class="form-check-input abc" name="register" id="register" value="student" checked > Student
+										<input type="radio" <%if(page=='studentpage'){ %> checked <% } %>class="form-check-input abc" name="register" id="register" value="student" checked > Student
 									</label>
 								</div>
 							</div>
 							<div class="col-sm-2">
 								<div class="form-radio" id="teach">
 									<label class="form-check-label">
-										<input type="radio" class="form-check-input abc" name="register" value="teacher"> Teacher
+										<input type="radio"   class="form-check-input abc" name="register" value="teacher"> Teacher
 									</label>
 								</div>
 							</div>
@@ -43,13 +44,35 @@
 					</div>
 					<br/><br/>
 					<div id="student">
-					 <form class="form-sample" id="student_register" method="Post" action="/admin/sendmessage">	
+					  <div class="container">
+             
+			              <% if(success!=""){ %>
+			              <div class="alert alert-success" id="success-alert">
+			                <button type="button" class="close" data-dismiss="alert">x</button>
+			                <strong><%= success %> </strong>
+			                
+			              </div>
+			                
+			             <% 
+			            } %>
+			            <% if(error!=""){ %>
+			              
+			               <div class="alert alert-danger" id="danger-alert">
+
+			                
+			                <button type="button" class="close" data-dismiss="alert">x</button>
+			                <strong><%= error %> </strong>
+			                
+			              </div>
+			           <% }  %>
+			          </div>	
+					 <form class="form-sample" id="form_studentmessage" method="Post" action="/admin/sendmessage">	
 					 	 <input type="hidden" name="page" value='studentpage'>
 					 	 <br/><br/>
                           <div class="form-group row">
 				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
 				              <div class="col-sm-2">
-				               <select class="form-control" id="class_id" name="class_id" required="required">
+				               <select style="color:black" class="form-control" id="class_id" name="class_id" required="required">
 				               	<option value="">Select Class</option>
 				                <option value="">-----------</option>
 				                <option value="daysscholler">All days Scholler</option>
@@ -59,6 +82,7 @@
 				                <option value="<%= class_list.class_id  %>"><%=    class_list.class_name; %></option>
 				               	<% }) %>
 				               </select>
+				                <span for="class_id"  class="error below" style="display: none"></span>
 				              </div>
 				          </div>
 
@@ -66,6 +90,7 @@
 				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
 				              <div class="col-sm-4">
 				              <textarea class="form-control" rows="10" id="descriptionstudent" placeholder="Enter Description" name="descriptionstudent" required="required"> </textarea>
+				              <span for="descriptionstudent"  class="error below" style="display: none"></span>
 				              </div>
 				          </div>
 				        
@@ -80,12 +105,12 @@
 					<br/><br/>	
 					<div id="teacher" style="display: none">
 
-						<form class="form-sample" id="teacher_register" method="Post" action="/admin/sendmessage">	
+						<form class="form-sample" id="form_teachermessage" method="Post" action="/admin/sendmessage">	
 							<input type="hidden" name="page" value='teacherpage'>
 						  <div class="form-group row">
 				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Teachers </label>
 				              <div class="col-sm-2">
-				               <select class="form-control" id="class_id" name="class_id" required="required">
+				               <select style="color:black" class="form-control" id="class_id" name="class_id" required="required">
 				               	<option value="">Select Teachers</option>
 				                <option value="">-----------</option>
 				                <option value="ALLT">All Teachers</option>
@@ -103,6 +128,7 @@
 				              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Description</label>
 				              <div class="col-sm-4">
 				              <textarea class="form-control" rows="10" id="descriptionteacher" placeholder="Enter Description" name="descriptionteacher" required="required"> </textarea>
+				               <span for="descriptionteacher"  class="error below" style="display: none"></span>
 				              </div>
 				          </div>
 				        
@@ -117,13 +143,13 @@
                         
                     
 						<div id="accountant" style="display: none">
-				          <form class="form-sample" id="accountant_register" method="Post" action="/admin/sendmessage"> 
+				          <form class="form-sample" id="form_parentmessage" method="Post" action="/admin/sendmessage"> 
 						 	  <input type="hidden" name="page" value='parentpage'>
                            
 	                           <div class="form-group row">
 					              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Parents</label>
 					              <div class="col-sm-2">
-					               <select class="form-control" id="class_id" name="class_id" required="required">
+					               <select style="color:black" class="form-control" id="class_id" name="class_id" required="required">
 					               	<option value="">Select Parents</option>
 					                <option value="">-----------</option>
 					                <option value="ALLP">All parents</option>

@@ -7,8 +7,30 @@
               <p class="card-description">
                 <a href="/admin/exam_schedule_list"><button class="btn btn-inverse-dark btn-fw">Exam Schedule List</button></a>
               </p>
+
+             <div class="container">
              
-             <form class="form-sample" id="form_examschedule" method="Post" action="/admin/add_exam_schedule">       
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
+             <form class="form-sample" id="form_examschedule" method="Post" action="/admin/add_exam_schedule">     <input type="hidden" value="<%= scheduledata.id%>" name="scheduleid">
                   <p class="card-description">
                     <h3><b><u>Exam Schedule</u></b></h3>
                   </p>
@@ -16,18 +38,32 @@
                   <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Select Class</label>
                         <div class="col-sm-4">
-                          <select class="form-control" name="class_id" id="class_id" >
+                          <select style="color:black" class="form-control" name="class_id" id="class_id" >
                             <option value="">Select Class</option>
                               <%  class_list.forEach(function(class_list){ %>
-                              <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
+
+                              <option <% if(scheduledata.class_id==class_list.class_id){ %> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
                               <%   }) %>
                             </select>
                             <span for="class_id"  class="error below" style="display: none"></span>
+
                         </div>
                         <label class="col-sm-2 col-form-label">Select Section</label>
                         <div class="col-sm-4">
-                            <select class="form-control" name="exam_section_id" id="exam_section_id" onchange="get_all_exam_data(this.value)">
-                               <option value="">Select Section</option>                    
+                            <select style="color:black" class="form-control" name="exam_section_id" id="exam_section_id" onchange="get_all_exam_data(this.value)">
+                              <%if(section_list){ %>
+                               <%  section_list.forEach(function(section_list){ %>
+
+                                 <option <% if(scheduledata.section_id==section_list.section_id){ %> selected <% } %> value="<%= section_list.section_id  %>"><%= section_list.section_name; %></option>
+
+                                   <%   }) %>
+
+                               
+
+                              <%}else{ %>
+                                 <option value="">Select Section</option>                    
+                              <% } %>
+                              
                              </select>
                              <span for="exam_section_id"  class="error below" style="display: none"></span>
                         </div>
@@ -36,16 +72,37 @@
                   <div class="form-group row">
                       <label class="col-sm-2 col-form-label">Select Subject</label>
                         <div class="col-sm-4">
-                          <select class="form-control" name="subject_id" id="subject_id">
-                            <option value="">Select Subject</option>                       
+                          <select style="color:black" class="form-control" name="subject_id" id="subject_id">
+                             <%if(subject_list){ %>
+                               <%  subject_list.forEach(function(subject_list){ %>
+
+                                 <option <% if(scheduledata.subject_id==subject_list.subject_id){ %> selected <% } %> value="<%= subject_list.subject_id  %>"><%= subject_list.name; %></option>
+
+                                   <%   }) %>
+
+                               
+
+                              <%}else{ %>
+                                  <option value="">Select Subject</option>                   
+                              <% } %>
+                                               
                           </select>
                           <span for="subject_id"  class="error below" style="display: none"></span>
                         </div>
 
                         <label class="col-sm-2 col-form-label">Select Exam</label>
                         <div class="col-sm-4">
-                          <select class="form-control" name="exam_id" id="exam_id">
-                            <option value="">Select Exam</option>                       
+                          <select style="color:black"  class="form-control" name="exam_id" id="exam_id">
+                             <%if(exam_list){ %>
+                               <%  exam_list.forEach(function(exam_list){ %>
+
+                                 <option <% if(scheduledata.exam_id==exam_list.exam_id){ %> selected <% } %> value="<%= exam_list.exam_id  %>"><%= exam_list.exam_name; %></option>
+
+                                   <%   }) %>
+                              <%}else{ %>
+                                   <option value="">Select Exam</option>    
+                              <% } %>
+                                              
                           </select>
                           <span for="exam_id"  class="error below" style="display: none"></span>
                         </div>
@@ -54,12 +111,12 @@
                    <div class="form-group row">
                       <label class="col-sm-2 col-form-label"> Date</label>
                         <div class="col-sm-4">
-                          <input type="text" name="date" id="date" class="attendence_date form-control">
+                          <input type="text" name="date" value="<%=scheduledata.date%>" id="date" class="attendence_date form-control">
                           <span for="date"  class="error below" style="display: none"></span>                          
                         </div>
                        <label class="col-sm-2 col-form-label">Total Marks</label>
                         <div class="col-sm-4">
-                          <input type="text" name="total_marks" id="total_marks" placeholder="Enter Total Marks" class="form-control">
+                          <input type="text" name="total_marks" value="<%=scheduledata.totalmarks%>" id="total_marks" placeholder="Enter Total Marks" class="form-control">
                           <span for="total_marks"  class="error below" style="display: none"></span>
                         </div>
                   </div>
@@ -133,15 +190,16 @@
                       </td>
 
                       <td>
-                       <a href="#">
-
-                        <button type="button" class="btn btn-dark btn-fw">
-                                    <i class="mdi mdi-cloud-download"></i>Edit
-                                    </button>
-                                   </a>
+                       <a href="/exam_schedule/?scheduledid=<%= exam_schedule.id %>">
+                            <button type="button" class="btn btn-dark btn-fw">
+                                        <i class="mdi mdi-cloud-download"></i>Edit
+                                        </button>
+                           </a>
                                    
 
-                                     <a href="#"  onclick="delete_record('<%= exam_schedule.id %>','<%= i %>','tbl_exam_schedule','id')" class="btn btn-sm btn-danger">Delete</a>
+                                   <a href="#"  onclick="delete_record('<%= exam_schedule.id %>','<%= i %>','tbl_exam_schedule','id')" class="btn btn-sm btn-danger">Delete</a>
+
+                           </td>
 
                                    
 

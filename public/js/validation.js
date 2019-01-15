@@ -453,11 +453,13 @@ $('form[id="form_addexam"]').validate({
           class: 'required',
           section_id:'required',
           name: 'required',
+          exam_id: 'required',
         },
         messages: {
           class: 'This field is required',
           section_id: 'This field is required',
           name: 'This field is required',
+          exam_id: 'This field is required',
         },
         submitHandler: function(form) {
           form.submit();
@@ -471,7 +473,11 @@ $('form[id="form_examschedule"]').validate({
           subject_id: 'required',
           exam_id : 'required',
           date : 'required',
-          total_marks: 'required',
+          total_marks:{
+                        required: true,
+                        number: true
+ 
+                      },
         },
         messages: {
           class_id: 'This field is required',
@@ -479,7 +485,10 @@ $('form[id="form_examschedule"]').validate({
           subject_id: 'This field is required',
           exam_id: 'This field is required',
           date: 'This field is required',
-          total_marks: 'This field is required',
+          total_marks:{
+                         required :'This field is required ',
+                         number :'Number is Not Valid'
+                       },
         },
         submitHandler: function(form) {
           form.submit();
@@ -490,8 +499,16 @@ $('form[id="form_grade"]').validate({
 
  rules: {
           name: 'required',
-          mark_from:'required',
-          mark_upto: 'required',
+          mark_from:{
+                        required: true,
+                        number: true
+ 
+                      },
+          mark_upto: {
+                        required: true,
+                        number: true
+ 
+                      },
           class_id : 'required',
           //section_id : 'required',
           exam_id : 'required',
@@ -499,8 +516,14 @@ $('form[id="form_grade"]').validate({
         },
         messages: {
           name: 'This field is required',
-          mark_from: 'This field is required',
-          mark_upto: 'This field is required',
+          mark_from: {
+                         required :'This field is required ',
+                         number :'Number is Not Valid'
+                       },
+          mark_upto: {
+                         required :'This field is required ',
+                         number :'Number is Not Valid'
+                       },
           class_id : 'This field is required',
           section_id :'This field is required',
           exam_id : 'This field is required',           
@@ -587,6 +610,74 @@ $('form[id="form_sendmarkssms"]').validate({
           form.submit();
         }
 });
+
+$('form[id="form_questionpaper"]').validate({
+
+ rules: {
+          class_id: 'required',
+           
+          exam_section_id: 'required',
+          subject_id: 'required',
+          exam_id: 'required',
+          quesionpaper_file: 'required' 
+        },
+        messages: {
+          class_id: 'This field is required',
+          exam_section_id: 'This field is required',
+          exam_id: 'This field is required',
+          user_role: 'This field is required',
+          quesionpaper_file: 'This field is required'
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+});
+
+$('form[id="form_studentmessage"]').validate({
+
+ rules: {
+          class_id: 'required',
+          descriptionstudent: 'required',
+        },
+        messages: {
+          class_id: 'This field is required',
+          descriptionstudent: 'This field is required',
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+});
+$('form[id="form_teachermessage"]').validate({
+
+ rules: {
+          class_id: 'required',
+          descriptionteacher: 'required',
+        },
+        messages: {
+          class_id: 'This field is required',
+          descriptionteacher: 'This field is required',
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+});
+$('form[id="form_parentmessage"]').validate({
+
+ rules: {
+          class_id: 'required',
+          descriptionparent: 'required',
+        },
+        messages: {
+          class_id: 'This field is required',
+          descriptionparent: 'This field is required',
+        },
+        submitHandler: function(form) {
+          form.submit();
+        }
+});
+
+
+
 
 
 /* 

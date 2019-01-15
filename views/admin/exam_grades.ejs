@@ -8,7 +8,28 @@
                 <a href="/admin/exam_grades_list"><button class="btn btn-inverse-dark btn-fw">Exam Grades List</button></a>
               </p>
              
+             <div class="container">
+             
+                <% if(success!=""){ %>
+                <div class="alert alert-success" id="success-alert">
+                  <button type="button" class="close" data-dismiss="alert">x</button>
+                  <strong><%= success %> </strong>
+                  
+                </div>
+                    
+                 <% 
+                } %>
+                <% if(error!=""){ %>
+                  
+                   <div class="alert alert-danger" id="danger-alert">
 
+                    
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong><%= error %> </strong>
+                    
+                  </div>
+               <% }  %>
+             </div> 
              <form class="form-sample" id="form_grade" method="Post" action="/admin/exam_grades">       
                   <p class="card-description">
                     <h3><b><u>Exam Grades</u></b></h3>
@@ -18,7 +39,7 @@
                   <div class="form-group row">
                     <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
                     <div class="col-sm-4">
-                     <select class="form-control" id="class_id" name="class_id" onchange="get_all_exam_name(this.value)">
+                     <select style="color:black" class="form-control" id="class_id" name="class_id" onchange="get_all_exam_name(this.value)">
                       <option value="">Select Class</option>
                       <%  class_list.forEach(function(class_list){ %>
                       <option <% if(class_list.class_id== gradedata.class_id ){%> selected <% } %> value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
@@ -30,7 +51,7 @@
                      <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Exam Name</label>
                     <div class="col-sm-4">
 
-                      <select class="form-control" id="exam_id" name="exam_id" >
+                      <select style="color:black" class="form-control" id="exam_id" name="exam_id" >
                           <option value="">Select Exam Name</option>
                           <% if(gradedata.exam_id){ %>
                           <option selected value="<%= gradedata.exam_id %>"> <%= gradedata.exam_name %></option>
@@ -151,7 +172,7 @@
                              <a href="/exam_grades?grade_id=<%=exam_grades.grade_id%>">
                               <button type="button" class="btn btn-dark btn-fw"><i class="mdi mdi-cloud-download"></i>Edit</button>
                              </a>
-                             <a href="#" onclick="delete_record('<%= exam_grades.exam_id %>','<%= i %>','tbl_exam_grades','grade_id')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button>
+                             <a href="#" onclick="delete_record('<%= exam_grades.grade_id %>','<%= i %>','tbl_exam_grades','grade_id')"><button type="button" class="btn btn-danger btn-fw"><i class="mdi mdi-alert-outline"></i>Delete</button>
                              </a>
             
 

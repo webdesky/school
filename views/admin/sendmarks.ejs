@@ -17,7 +17,7 @@
                   <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Select Class</label>
                         <div class="col-sm-4">
-                          <select class="form-control" name="class_id" id="class_id" >
+                          <select  style="color: black" class="form-control" name="class_id" id="class_id" >
                             <option value="">Select Class</option>
                               <%  class_list.forEach(function(class_list){ %>
                               <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
@@ -27,7 +27,7 @@
                         </div>
                         <label class="col-sm-2 col-form-label">Select Section</label>
                         <div class="col-sm-4">
-                            <select class="form-control" name="exam_section_id" id="exam_section_id" onchange="get_all_exam_data(this.value)">
+                            <select  style="color: black" class="form-control" name="exam_section_id" id="exam_section_id" onchange="get_all_exam_data(this.value)">
                                <option value="">Select Section</option>                    
                              </select>
                              <span for="exam_section_id"  class="error below" style="display: none"></span>
@@ -38,7 +38,7 @@
 
                       <label class="col-sm-2 col-form-label">Select Exam</label>
                       <div class="col-sm-4">
-                          <select class="form-control" name="exam_id" id="exam_id">
+                          <select  style="color: black" class="form-control" name="exam_id" id="exam_id">
                             <option value="">Select Exam</option>                       
                           </select>
                           <span for="exam_id"  class="error below" style="display: none"></span>
@@ -46,7 +46,7 @@
 
                       <label class="col-sm-2 col-form-label">SMS Receiver</label>
                       <div class="col-sm-4">
-                          <select class="form-control" name="user_role" id="user_role">
+                          <select  style="color: black" class="form-control" name="user_role" id="user_role">
                             <option value="">Select User Type</option> 
                             <option value="3">Student</option> 
                             <option value="2">Parent</option>                       

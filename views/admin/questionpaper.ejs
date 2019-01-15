@@ -7,12 +7,35 @@
           <p class="card-description">
           <!-- <a href="/admin/homeworkList"><button class="btn btn-inverse-dark btn-fw">Question Paper List</button></a> -->
           </p>
+
+           <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
           
-          <form class="forms-sample" method="post" action="/QuestionPaper" enctype="multipart/form-data">
+          <form class="forms-sample" id="form_questionpaper" method="post" action="/QuestionPaper" enctype="multipart/form-data">
             <div class="form-group row">
               <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Class Name</label>
               <div class="col-sm-2">
-               <select class="form-control" id="class_id" name="class_id">
+               <select  style="color: black" class="form-control" id="class_id" name="class_id">
                	<option value="">Select Class</option>
                	<%  class_list.forEach(function(class_list){ %>
                 <option value="<%= class_list.class_id  %>"><%= class_list.class_name; %></option>
@@ -22,7 +45,7 @@
               </div>
                <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Section Name</label>
               <div class="col-sm-2">
-               <select class="form-control" name="exam_section_id" id="exam_section_id" onchange="get_all_exam_data(this.value)">
+               <select  style="color: black" class="form-control" name="exam_section_id" id="exam_section_id" onchange="get_all_exam_data(this.value)">
                                <option value="">Section</option>                    
                </select>
               </div>
@@ -31,14 +54,14 @@
             <div class="form-group row">
               <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Subject</label>
               <div class="col-sm-2">
-                <select class="form-control" name="subject_id" id="subject_id" onchange="get_scheduled_exam()">
+                <select  style="color: black" class="form-control" name="subject_id" id="subject_id" onchange="get_scheduled_exam()">
 
                             <option value="">Subject</option>                       
                 </select>
               </div>
               <label for="exampleInputPassword2" class="col-sm-2 col-form-label">Exam</label>
               <div class="col-sm-2">
-                <select class="form-control" name="exam_id" id="exam_id">
+                <select  style="color: black" class="form-control" name="exam_id" id="exam_id">
                             <option value="">Exam</option>                       
                  </select>
               </div>
@@ -77,6 +100,9 @@
                   <th>
                     Subject
                   </th>
+                   <th>
+                    Exam
+                  </th>
 
                   <th>
                     Action
@@ -99,6 +125,9 @@
                   </td>
                   <td>
                     <%= question_paper_list.subject_name %>
+                  </td>
+                  <td>
+                    <%= question_paper_list.exam_name %>
                   </td>
                   
                   <td>

@@ -300,6 +300,7 @@ router.post("/registration", function(req, res){
 			      	          transport_id:req.body.transport_id ,
 			      	          dormitory_id:req.body.dormitory_id ,
 
+
 			      	        }
 
 
@@ -308,7 +309,7 @@ router.post("/registration", function(req, res){
                     var whereenroll= { registration_id:req.body.registration_id }
 			      	enrollobj=  {class_id:req.body.class_id,section_id:req.body.section_id}
 			      	admin.updateWhere(tableobj,whereenroll,enrollobj, function(err, result){   
-			       
+			           var tableobj      = {tablename:'tbl_registration'};
 	                   var whereparent= { registration_id:req.body.parent_id }
 	                   objparent={
 	                             name :req.body.parent_name,
@@ -317,6 +318,7 @@ router.post("/registration", function(req, res){
 	                             //email :req.body.parent_email,
 	                             profession:req.body.parent_profession
 	                           };  
+
 	                   admin.updateWhere(tableobj,whereparent,objparent, function(err, result){   
 	                        //if(result)
 					      	//{
@@ -333,6 +335,7 @@ router.post("/registration", function(req, res){
 			 		phone		 :req.body.parent_number,
 			 		email		 :req.body.parent_email,
 			 		user_role    :2,
+			 		profession   :req.body.parent_profession,
 			 		created_date :moment().format('YYYY-MM-DD:hh:mm:ss')
 		 		}
 		 	
@@ -358,6 +361,7 @@ router.post("/registration", function(req, res){
 	                          parent_email :req.body.parent_email,
 	                          parent_profession:req.body.parent_profession
 			      	        }
+
             
             if(req.body.student_name==''||req.body.admission_number==''||req.body.address==''||req.body.student_phone==''||req.body.student_email==''||req.body.adhar_number=='')
             {
@@ -1416,8 +1420,8 @@ router.post("/delete", function(req, res){
 router.post("/Class", function(req, res){
  	if(req.session.user_role==1)
 	{
-	  var name          = req.body.name;
-	  var numeric_value = req.body.class_abbreviations;//parseInt(req.body.numeric_Value);
+	  var name          = (req.body.name).trim();;
+	  var numeric_value = (req.body.class_abbreviations).trim();//parseInt(req.body.numeric_Value);
 	  var moment = require('moment');
 	  var created_at = moment().format('YYYY-MM-DD:hh:mm:ss');
 	  if(req.body.class_id)
@@ -1441,45 +1445,61 @@ router.post("/Class", function(req, res){
 	  }
 	  else
 	  {
-	  	$data={class_name:name};
-	  	admin.findWhere({tablename:'tbl_class'},{class_name : name},function(err, result){
-	  	 if(result.length>0)
-	  	 {
-	  	   //console.log('already exist')
-           req.flash('error','Class already exist')
-           
-           var  pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:$data,class_list:''};   	
-                 res.render("admin_layout", pagedata);
-          	  			
-	  	 }
-	  	 else
-	  	 {
-   
-            admin.insert_class({ class_name : name,class_abbreviations:numeric_value,created_at :created_at}, function(err, result){
-			 if(result)
-				{
-					//var data = JSON.parse(JSON.stringify(result[0]));
-					 console.log(result);
-					 var table = 'tbl_class'
-					 admin.findAll({table:table},function(err, result){
-					 	var class_list = result;
-					 	req.flash('success','Class added successfully')
-					 	var pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:"",class_list :class_list};
-			                 res.render("admin_layout", pagedata);
+	  	if(name==""||numeric_value=="")
+	  	{
+           var table = 'tbl_class'
+		   admin.findAll({table:table},function(err, result){
+			    var class_list = result; 
+           		req.flash('error','Please data required to save')
+				var pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:"",class_list :class_list};
+			 	res.render("admin_layout", pagedata);
+			});
+	  	}
+	  	else
+	  	{
 
-					 });
-					
-				}
-				else
-				{
-					console.log('This username is incorrect');
-					req.flash("msg", "This username and password is incorrect");
-					res.redirect("/");
-				}
-		      });
+            $data={class_name:name};
+		  	admin.findWhere({tablename:'tbl_class'},{class_name : name},function(err, result){
+		  	 if(result.length>0)
+		  	 {
+		  	   //console.log('already exist')
+	           req.flash('error','Class already exist')
+	           
+	           var  pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:$data,class_list:''};   	
+	                 res.render("admin_layout", pagedata);
+	          	  			
+		  	 }
+		  	 else
+		  	 {
+	   
+	            admin.insert_class({ class_name : name,class_abbreviations:numeric_value,created_at :created_at}, function(err, result){
+				 if(result)
+					{
+						//var data = JSON.parse(JSON.stringify(result[0]));
+						 console.log(result);
+						 var table = 'tbl_class'
+						 admin.findAll({table:table},function(err, result){
+						 	var class_list = result;
+						 	req.flash('success','Class added successfully')
+						 	var pagedata = {title : "Welcome Admin", pagename : "admin/class", success : req.flash('success'), error : req.flash('error'),classdata:"",class_list :class_list};
+				                 res.render("admin_layout", pagedata);
 
-	  	 }
- 		});
+						 });
+						
+					}
+					else
+					{
+						console.log('This username is incorrect');
+						req.flash("msg", "This username and password is incorrect");
+						res.redirect("/");
+					}
+			      });
+
+		  	 }
+	 		});
+
+	  	}
+	  	
   	  }
 	}else{
 	        admin.select(function(err,result){
@@ -1515,10 +1535,7 @@ router.get("/section", function(req, res){
 		{
 	     var table 	   = 'tbl_class';
 	     var tableobj  = {tablename:'tbl_section'}
-	     
-	     	
-	        
-                
+	          
 			admin.findAll({table:table},function(err, result){
               var class_list = result;
               console.log(req.query.id);
@@ -1566,15 +1583,14 @@ router.post("/section", function(req, res){
  	if(req.session.user_role==1)
 		{
 		var class_id          = req.body.class_id;
-	    var section_name  	  = req.body.section_name;
+	    var section_name  	  = (req.body.section_name).trim();
 		if(req.body.section_id) 
 		{
 	      var obj= { class_id : class_id,section_name:section_name}
 	      var where= {section_id:req.body.section_id}
 	      var tableobj = {tablename:'tbl_section'};
 	      admin.updateWhere(tableobj,where,obj, function(err, result){  
-	      	console.log(result);
-	      	return false;
+	       
 	      	 if(result)
              {	
              	req.flash('success','Section updated successfully')
@@ -1584,52 +1600,63 @@ router.post("/section", function(req, res){
  		}
 		else
 		{
-        
-	  	 admin.findWhere({tablename:'tbl_section'},{class_id : class_id,section_name:section_name},function(err, result){
-	  	 if(result.length>0)
-	  	 {
-	  	    req.flash('error','Section already exist')
-            section_data={
-                              class_id:class_id,
-                              section_name:section_name
-                         }
-             var table = 'tbl_section'
-			    admin.findAllSection({table:table},function(err, result){
-					 	var section_list = result;
-					 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list",success : req.flash('success'), error : req.flash('error'),section_list :section_list};
-			                 res.render("admin_layout", pagedata);
+         if(section_name=='')
+         {
+            
+             req.flash('error','Section required to save')
+                res.redirect('/section');
 
-			    });
          }
          else
          {
-            
+              admin.findWhere({tablename:'tbl_section'},{class_id : class_id,section_name:section_name},function(err, result){
+			  	 if(result.length>0)
+			  	 {
+			  	    req.flash('error','Section already exist')
+		            section_data={
+		                              class_id:class_id,
+		                              section_name:section_name
+		                         }
+		             var table = 'tbl_section'
+					    admin.findAllSection({table:table},function(err, result){
+							 	var section_list = result;
+							 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list",success : req.flash('success'), error : req.flash('error'),section_list :section_list};
+					                 res.render("admin_layout", pagedata);
 
-			  admin.insert_section({ class_id : class_id,section_name:section_name}, function(err, result){
-		     	if(result)
-				{
-					//var data = JSON.parse(JSON.stringify(result[0]));
-					 //console.log(result);
-					 var table = 'tbl_section'
-					 admin.findAllSection({table:table},function(err, result){
-					 	var section_list = result;
-					 	req.flash('success','Section added successfully')
-					 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list", success : req.flash('success'), error : req.flash('error'),section_list :section_list};
-			                 res.render("admin_layout", pagedata);
+					    });
+		         }
+		         else
+		         {
+		            
 
+					  admin.insert_section({ class_id : class_id,section_name:section_name}, function(err, result){
+				     	if(result)
+						{
+							//var data = JSON.parse(JSON.stringify(result[0]));
+							 //console.log(result);
+							 var table = 'tbl_section'
+							 admin.findAllSection({table:table},function(err, result){
+							 	var section_list = result;
+							 	req.flash('success','Section added successfully')
+							 	var pagedata = {title : "Welcome Admin", pagename : "admin/section_list", success : req.flash('success'), error : req.flash('error'),section_list :section_list};
+					                 res.render("admin_layout", pagedata);
+
+							 });
+							
+						}
+						else
+						{
+							console.log('This username is incorrect');
+							req.flash("msg", "This username and password is incorrect");
+							res.redirect("/");
+						}
 					 });
-					
-				}
-				else
-				{
-					console.log('This username is incorrect');
-					req.flash("msg", "This username and password is incorrect");
-					res.redirect("/");
-				}
-			 });
-		 } 
-         
-         });
+				 } 
+		         
+		         }); 
+
+         }
+	  	 
 	    }
 	}else{
 	        admin.select(function(err,result){
@@ -2117,6 +2144,7 @@ router.post("/accountantDetail", function(req, res){
 	      	 
               var where= {registration_id:req.body.registration_id}
 		      var tableobj = {tablename:'tbl_registration'};
+
 		      admin.updateWhere(tableobj,where,obj, function(err, result){ 
 		          
 		          /*
@@ -2234,7 +2262,7 @@ router.get("/Subject", function(req, res){
 	admin.findAll({table:table},function(err, result){
 	   var class_list 	 = result;
 	   var table_subject = 'tbl_subject';
-	   console.log(req.query.subject_id);   
+	   //console.log(req.query.subject_id);   
         if(req.query.subject_id)
 	     {
 	         var subject_id=req.query.subject_id;
@@ -2268,18 +2296,20 @@ router.get("/Subject", function(req, res){
 router.post("/Subject", function(req, res){
 	if(req.session.user_role==1)
 	{
-
-
-
 		var table   = {tablename:'tbl_subject'};
 	 	var data = {
-			 		name         :req.body.subject_name,
+			 		name         :(req.body.subject_name).trim(),
 			 		class_id     :req.body.class_id,	 		
 			 		subject_type :req.body.subject_type,
 			 		year         :req.session.session_year
 		           }
 		if(req.body.subject_id)
 	     {
+	     	  if((req.body.subject_name).trim()==''|| req.body.class_id==''||req.body.subject_type=='')
+	          {
+	          	 req.flash('error',"All field required");
+			     res.redirect("/subject");
+	          }   
 	          var where= {subject_id:req.body.subject_id}
 		      admin.updateWhere(table,where,data, function(err, result){  
 	             if(result)
@@ -2292,9 +2322,9 @@ router.post("/Subject", function(req, res){
      	else 
      	{
               
-          if(req.body.subject_name==''|| req.body.class_id==''||req.body.subject_type=='')
+          if((req.body.subject_name).trim()==''|| req.body.class_id==''||req.body.subject_type=='')
           {
-          	 req.flash('success',"All field required");
+          	 req.flash('error',"All field required");
 		     res.redirect("/subject");
           }   
           else
@@ -2760,15 +2790,16 @@ router.post("/HomeWork", function(req, res){
    {
 
  object=req.body;
+ flag=false;
   	async.forEachOf(subject_id, function (item,index, done) {
 
          if(object.hasOwnProperty('task_'+item))
   		 {
-  		 	 task =object['task_'+item];
+  		 	 task =object['task_'+item].trim();
   		 }
   		 if(object.hasOwnProperty('task_'+item))
   		 {
-  		 	 task_description =object['task_description_'+item];
+  		 	 task_description = object['task_description_'+item].trim();
   		 }
   		 
   		 
@@ -2789,6 +2820,7 @@ router.post("/HomeWork", function(req, res){
 		  	newname='';
 
   			var table   = {tablename:'tbl_homework'};
+
   	      if(task!='' )
   	      {
   	     	 
@@ -2816,18 +2848,21 @@ router.post("/HomeWork", function(req, res){
 	                  var where={homework_id:homework.homework_id};
 		  	  		  admin.updateWhere({tablename:'tbl_homework'},where,data, function(err, result){
 				            req.flash('success',"Homework updated successfully");
+				            flag=true;
 			      	   });
 	            	}
 	            	else
 	            	{
 
 	            	  admin.insert_all({tablename:'tbl_homework'},data,function(err, result){
-	                       req.flash('success',"Homework updated successfully");
+	            	  	flag=true;
+	                       req.flash('success',"Homework saved successfully");
 			          });	  	    		
 	            	}
 			    });	 
 
 	  	  }
+	  	  
 	  	    done(null);
 
 		},function(){
@@ -2862,7 +2897,9 @@ router.post("/HomeWork", function(req, res){
 			    var class_list 	 = result;
 			     var table = 'tbl_homework';
 			   admin.findhomework({table:table},function(err, result){
-
+  
+                if(flag==false)
+                 	req.flash('error',"No homework assigned");	 
 	 			
 				 	 
 				var homework_list 	 = result;
@@ -3072,6 +3109,7 @@ router.get("/getclassroutine", function(req, res){
 router.get("/attendence", function(req, res){
 	if(req.session.user_role==1){
 		var table  = 'tbl_class';
+		var session_year =req.session.session_year;
 	
 		admin.findAll({table:table},function(err, result){
 
@@ -3080,14 +3118,17 @@ router.get("/attendence", function(req, res){
 		    var teacher_list = result1
 		    var n =0;
 
+
 		    async.each(teacher_list, function (item, done) {
 
 						 		console.log(item.registration_id)
 						 		
 						 		var tbl_attendence  = {tablename : 'tbl_attendance'}
 						 		var attendence_date = moment().format('DD-MM-YYYY');
-								admin.getTeacherAttendence(tbl_attendence,{attendence_date:attendence_date,student_id:item.registration_id},function(err, result1){
-									console.log(result1)
+						 		date= (attendence_date).split('-');
+								attendence_date= date[2]+'-'+date[1]+'-'+date[0];
+								admin.getTeacherAttendence(tbl_attendence,{attendence_date:attendence_date,registration_id:item.registration_id,session_year:session_year},function(err, result1){
+									console.log('########################',result1)
 								  	if(result1==undefined || result1==''){
 								  		   teacher_list[n].attendence='';
 								  	}else{
@@ -3100,7 +3141,8 @@ router.get("/attendence", function(req, res){
 								});
 						}, function(){
 
-				//console.log(teacher_list)
+				 //console.log(teacher_list)
+				 //return false;
 						//res.send(teacher_list)
 			    
 			    var pagedata = {title : "Welcome Admin", pagename : "admin/attendence", message : req.flash('msg'),class_list:class_list,teacher_list:teacher_list};
@@ -3347,7 +3389,7 @@ router.get("/academic_syllabus", function(req, res){
 					admin.findAll({table:table},function(err, result){
 					  var class_list 	 = result;
 					  console.log($data);
-		              var pagedata = {title : "Welcome Admin", pagename : "admin/academic_syllabus", message : req.flash('msg'),academic_syllabusData:$data,academic_syllabus:'',class_list:class_list};
+		              var pagedata = {title : "Welcome Admin", pagename : "admin/academic_syllabus", success: req.flash('success'),error: req.flash('error'),academic_syllabusData:$data,academic_syllabus:'',class_list:class_list};
 				      res.render("admin_layout", pagedata);
 				    });
 	            }
@@ -3364,7 +3406,7 @@ router.get("/academic_syllabus", function(req, res){
 				 	var academic_syllabus  = result1
 				 	console.log(class_list);
 				 	console.log(academic_syllabus);
-					var pagedata 	 	 = {Title : "", pagename : "admin/academic_syllabus", message : req.flash('msg'),academic_syllabusData:'',academic_syllabus:academic_syllabus,class_list:class_list};
+					var pagedata 	 	 = {Title : "", pagename : "admin/academic_syllabus",success: req.flash('success'),error: req.flash('error'),academic_syllabusData:'',academic_syllabus:academic_syllabus,class_list:class_list};
 					//var pagedata 	 	 = {Title : "", pagename : "admin/academic_syllabus", message : req.flash('msg'),academic_syllabus:academic_syllabus,class_list:class_list,academic_syllabusData:''};
 					res.render("admin_layout", pagedata);
 				});
@@ -3386,61 +3428,67 @@ router.post("/addAcademicSyllabus", function(req, res){
  	data={};
   	var class_id            = req.body.class_id;
   	var subject_id  		= req.body.subject_id;
-  	var title        		= req.body.title;
-  	var description    		= req.body.descriptions;
+  	var title        		= (req.body.title).trim();
+  	var description    		= (req.body.descriptions).trim();
   	var moment 				= require('moment');
 	var created_date 		= moment().format('YYYY-MM-DD:hh:mm:ss');
   	var file = req.files.file;
   	var image= '';
-  	if(typeof file=="undefined"){
+
+   
+     if(title=='')
+     {
+    	 req.flash('error',"Title required to save");
+    	res.redirect('/academic_syllabus') 	
+     }
+     else
+     {
+    	if(typeof file=="undefined"){
   			var image = '';
-  	}else{
-	  	var newname = changename(file.name);
-	  	var filepath = path.resolve("public/syllabus/"+newname);
-	  		file.mv(filepath, function(err){
-				if(err){
-					console.log(err);
-					return;
-				}
-				else
-				{
-					
-				}
+	  	}else{
+		  	var newname = changename(file.name);
+		  	var filepath = path.resolve("public/syllabus/"+newname);
+		  		file.mv(filepath, function(err){
+					if(err){
+						console.log(err);
+						return;
+					}
+					else
+					{
+						
+					}
 
-			});
+				});
 
-	    var image = newname
-	    data['file_name']=image;
-	}
-        data['class_id']=class_id
-    	data['subject_id']=subject_id
-    	data['title']=title
-    	data['description']=description
-    	data['year']=req.session.session_year
-  		var table   = {tablename:'tbl_academic_syllabus'};
-        if(req.body.academic_syllabus_id)
-        {
-        	console.log('Updated',data);
+		    var image = newname
+		    data['file_name']=image;
+		}
+	        data['class_id']=class_id
+	    	data['subject_id']=subject_id
+	    	data['title']=title
+	    	data['description']=description
+	    	data['year']=req.session.session_year
+	  		var table   = {tablename:'tbl_academic_syllabus'};
+	        if(req.body.academic_syllabus_id)
+	        {
+	        	console.log('Updated',data);
 
-            var where={academic_syllabus_id: req.body.academic_syllabus_id};
-	  	    admin.updateWhere(table,where,data, function(err, result){
-	           if(result)
-	           {
-	             res.redirect('/academic_syllabus') 	 
-	           }
-	        });
-        }
-        else
-        {
-           	
-          admin.insert_all(table,data,function(err, result){
-  			res.redirect('/academic_syllabus')
-  		  }); 
-        }
-
-  		
-
- 
+	            var where={academic_syllabus_id: req.body.academic_syllabus_id};
+		  	    admin.updateWhere(table,where,data, function(err, result){
+		           if(result)
+		           {
+		             res.redirect('/academic_syllabus') 	 
+		           }
+		        });
+	        }
+	        else
+	        {
+	           	
+	          admin.insert_all(table,data,function(err, result){
+	  			res.redirect('/academic_syllabus')
+	  		  }); 
+	        }
+      }
     }else{
 	        admin.select(function(err,result){
 	     
@@ -3486,7 +3534,7 @@ router.get("/getStudentAttendence", function(req, res){
 			admin.getStudent(table,{class_id:class_id,section_id:section_id,session_year:session_year},function(err, result){
 						var student_id  = result;
 
-						console.log(student_id)
+						//console.log(student_id)
 						async.each(student_id, function (item, done) {
 
 						  	admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:item.registration_id,session_year:session_year},function(err, result1){
@@ -3503,7 +3551,7 @@ router.get("/getStudentAttendence", function(req, res){
 								});
 						}, function(){
 
-					 	console.log("##############",student_id)
+					 	//console.log("##############",student_id)
 						res.send(student_id)
 					
 						});
@@ -3577,14 +3625,20 @@ router.get("/getTeacherAttendence", function(req, res){
 router.post("/addAttendence", function(req, res){
 	if(req.session.user_role==1){
 		var type 				= req.body.attendence;
+        var session_year	= req.session.session_year
+
 		if(type=='student'){
+
 			var class_id  			= req.body.class_id;
 			var section_id 			= req.body.section_id;
-			var attendence_date		= moment(req.body.attendence_date).format('YYYY-DD-MM');
+			//var attendence_date		= moment(req.body.attendence_date).format('YYYY-MM-');
+			date= (req.body.attendence_date).split('-');
+			attendence_date= date[2]+'-'+date[1]+'-'+date[0];
  			var student_id			= req.body.student_id;
 			var status				= req.body.status;
 			var session_year	    = req.session.session_year;
 			var check               = Array.isArray(student_id);
+			  
 			if(check==false){
 				var data = {
 						class_id 		: class_id,
@@ -3597,9 +3651,11 @@ router.post("/addAttendence", function(req, res){
 						user_role		: 3
 					}
 
+
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id,session_year:session_year},function(err, result1){
-		  				//console.log('abcbdsdd',result1);
+		  				   //console.log('abcbdsdd>>>>>>>>>>>>>>>>>.',result1);
+		  				 // return false;
 		  				if(result1=='' || result1==undefined){
 		  					
 		  				}else{
@@ -3615,6 +3671,7 @@ router.post("/addAttendence", function(req, res){
 			  			
 			  		});
 			}else{
+
 				for(var k in student_id){
 
 					var data = {
@@ -3629,8 +3686,9 @@ router.post("/addAttendence", function(req, res){
 					}
 
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
-		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id[k]},function(err, result1){
-		  				console.log(result1);
+		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id[k],session_year:session_year},function(err, result1){
+		  				  //console.log('abcbdsdd----------',result1);
+		  				 // return false;
 		  				if(result1=='' || result1==undefined){
 		  					
 		  				}else{
@@ -3657,7 +3715,10 @@ router.post("/addAttendence", function(req, res){
 			var teacher_id  		= req.body.teacher_id;
 			var status 				= req.body.teacher_status;
 			var attendence_date		= moment().format('YYYY-MM-DD');
+			//date= (attendence_date).split('-');
+			//attendence_date= date[2]+'-'+date[1]+'-'+date[0];
 			var check  = Array.isArray(teacher_id);
+			 
 			if(check==false){
 					var data = {
 						
@@ -3671,7 +3732,7 @@ router.post("/addAttendence", function(req, res){
 
 					var table   = {tablename:'tbl_attendance'};
 					
-		  			admin.getTeacherAttendence(table,{attendence_date:attendence_date,student_id:teacher_id},function(err, result1){
+		  			admin.getTeacherAttendence(table,{attendence_date:attendence_date,student_id:teacher_id,session_year:session_year},function(err, result1){
 		  				console.log(result1);
 		  				if(result1!=''){
 		  					console.log('SDssdds')
@@ -3692,6 +3753,9 @@ router.post("/addAttendence", function(req, res){
 			}else{
 				for(var k in teacher_id){
 
+					//console.log(teacher_id[k]);
+					//return false;
+
 					var data = {
 						
 						attendence_date	: attendence_date,
@@ -3704,8 +3768,8 @@ router.post("/addAttendence", function(req, res){
 
 					var table   = {tablename:'tbl_attendance'};
 					
-		  			admin.getTeacherAttendence(table,{attendence_date:attendence_date,student_id:teacher_id[k]},function(err, result1){
-		  				console.log(result1);
+		  			admin.getTeacherAttendence(table,{attendence_date:attendence_date,registration_id:teacher_id[k],session_year:session_year},function(err, result1){
+		  				 
 		  				if(result1!=''){
 		  					console.log('SDssdds')
 		  					var id = result1[0].attendance_id
@@ -3801,13 +3865,19 @@ router.post("/study_material", function(req, res){
   if(req.session.user_role==1){
   	var class_id            = req.body.class_id;
   	var subject_id  		= req.body.subject_id;
-  	var title        		= req.body.title;
+  	var title        		= (req.body.title).trim();
   	var description    		= req.body.descriptions;
   	var moment = require('moment');
 	var created_date = moment().format('YYYY-MM-DD:hh:mm:ss');
   	
   	var file = req.files.file;
-  	
+
+  	if(title=='')
+  	{
+
+  		req.flash('error',"Title is required to save");
+  		res.redirect("/study_material")
+  	}
   
   	var image= '';
   	if(typeof file=="undefined"){
@@ -4258,7 +4328,7 @@ router.get("/exam", function(req, res){
                        	}else{
                        		var examdata 	 = '';
                        	}
-							var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:examdata};
+							var pagedata 	 = {Title : "", pagename : "admin/exam",success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list,examdata:examdata};
 							res.render("admin_layout", pagedata);
 						
                     });
@@ -4267,7 +4337,7 @@ router.get("/exam", function(req, res){
 		    	{
 			    	var exam_list    = exam_list
                  		        
-					var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:""};
+					var pagedata 	 = {Title : "", pagename : "admin/exam",success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list,examdata:""};
 					res.render("admin_layout", pagedata);
 		    	}
 			});
@@ -4300,27 +4370,48 @@ router.post("/exam", function(req, res){
 			created_date	: created_date
 	   }
 
-
+       if(class_id==""||name=="")
+       {
+       	   req.flash('error',"Exam detail required");
+           res.redirect('/exam');
+       }
 
 
         if(req.body.exam_id != undefined || req.body.exam_id != '' || req.body.exam_id!=null ) 
         {
+        
+          var tbl_exammaster  = {tablename:'tbl_exam_master'};
+		  admin.findWhere(tbl_exammaster,{class_id:class_id,exam_name:name},function(err, result){
+		    if(result.length>0)
+		    {
+               
+                 req.flash('error',"Exam detail already exist");
+                 res.redirect('/exam');
 
-	        admin.insert_all(table,data,function(err, result){
+		    }
+		    else
+		    {
+
+		    	admin.insert_all(table,data,function(err, result){
 	
-				var table  = 'tbl_class';
-				admin.findAll({table:table},function(err, result){
-				    var class_list 	 = result;
-				    var exam_table   = 'tbl_exam_master';
-				    
-				    admin.findExam({table:exam_table},function(err, exam_list){
-				    	
-				    	var exam_list    = exam_list
-						var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:""};
-						res.render("admin_layout", pagedata);
+					var table  = 'tbl_class';
+					admin.findAll({table:table},function(err, result){
+					    var class_list 	 = result;
+					    var exam_table   = 'tbl_exam_master';
+					    
+					    admin.findExam({table:exam_table},function(err, exam_list){
+					    	req.flash('success',"Exam detail added successfully");
+
+					    	var exam_list    = exam_list
+							var pagedata 	 = {Title : "", pagename : "admin/exam", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list,examdata:""};
+							res.render("admin_layout", pagedata);
+						});
 					});
 				});
-			});
+
+		    }
+
+	       }); 
         	
         }
         else
@@ -4335,9 +4426,9 @@ router.post("/exam", function(req, res){
 				    var exam_table   = 'tbl_exam_master';
 				    
 				    admin.findExam({table:exam_table},function(err, exam_list){
-				    	
+				    	 req.flash('success',"Exam detail updated successfully");
 				    	var exam_list    = exam_list
-						var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:""};
+						var pagedata 	 = {Title : "", pagename : "admin/exam", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list,examdata:""};
 						res.render("admin_layout", pagedata);
 					});
 				});
@@ -4393,7 +4484,7 @@ router.get("/sheet_Formats", function(req, res){
 
 				 console.log(formate_list); 
   	    	    var formate_list    = formate_list
-				var pagedata 	 = {Title : "", pagename : "admin/sheet_formats", message : req.flash('msg'),class_list:class_list,formate_list:formate_list,examdata:""};
+				var pagedata 	 = {Title : "", pagename : "admin/sheet_formats", success: req.flash('success'),error: req.flash('error'),class_list:class_list,formate_list:formate_list,examdata:""};
 				res.render("admin_layout", pagedata);
 			});
 		});
@@ -4420,12 +4511,23 @@ router.post("/sheet_Formats", function(req, res){
         var jsonData = {};
 
 
+     //    var tbl_sheet_formats  = {tablename:'tbl_sheet_formats'};
+	    // admin.findWhere(tbl_sheet_formats,{class_id:class_id,exam_id:exam_id},function(err, result){
+		   //  if(result.length>0)
+		   //  {
+	    //          req.flash('error',"Sheet column detail already exist");
+	    //          res.redirect('admin/sheet_Formats');
+		   //  }
+	    // });
+		    
+
+
 	     if(Array.isArray(columns))
 	     {
 	     	for(var k in columns)
 	         {
-	         	console.log(columns[k]);
-	         	if(columns[k]!='')
+	         	//console.log(columns[k]);
+	         	if(columns[k].trim() !='')
 	         	{
 	         	   var value  = columns[k].replace(/ /g,"_");
 		           var value  = value.replace('&',"-");
@@ -4443,15 +4545,16 @@ router.post("/sheet_Formats", function(req, res){
 	     {
 	     	 if(columns!=undefined || columns!='')
 	     	  {
-                
+                if(columns.trim() !='')
+                {
                   var  value = columns.replace(/ /g,"_");
 		          var value = value.replace('&',"-");
 		          var value = value.replace('%',"percentage");
 		          var value  = value.replace('.',"_");
 		          var value  = value.replace(',',"_");
 		          var value  = value.replace(':',"_");
-               	  jsonData[value]=0;
-
+               	  jsonData[value]=0;	
+                }	
 	     	  } 
 	     }
            
@@ -4462,7 +4565,7 @@ router.post("/sheet_Formats", function(req, res){
 	     {
 	     	for(var j in activity_column)
 	         {
-	         	if(activity_column[j]!="")
+	         	if(activity_column[j].trim() !="")
                 {
 
                   
@@ -4475,17 +4578,22 @@ router.post("/sheet_Formats", function(req, res){
 	     }
 	     else
 	     {
-	         if(activity_column!=undefined || activity_column!='')
+	     	//console.log('55555555555555',activity_column)
+	         if(activity_column .trim() !='')
 	     	  {
+
 	     	  	//var value =  changespecial_char(activity_column);
 	     	  	 var value =activity_column.replace(/ /g,"_");
 	         	 var value =value.replace('&',"-");
 	         	 var value =value.replace('%',"percentage");
 	     	  	jsonOtherData[value]=0;
+	     	  	//console.log('55555555555555',jsonOtherData)
 	     	  } 	
 	     }
 
 
+
+ 
   		var table = {tablename : 'tbl_sheet_formats'}
 		var data  = {
 				class_id   		: class_id,
@@ -4494,27 +4602,36 @@ router.post("/sheet_Formats", function(req, res){
 				column          :  JSON.stringify(jsonData),
 				otheracivity :  JSON.stringify(jsonOtherData) ,
    		     }
-
-
-		admin.findWhere(table,{class_id:class_id,exam_id:exam_id},function(err, result){
-
+    
+        if(jsonOtherData.length==undefined)
+        {
+        	console.log('ssssssssssssssssssssssssssssssssss');
+           req.flash('error',"Please add column in sheet");
+           res.redirect('/sheet_Formats');
+        }
+        else
+        {
+        	admin.findWhere(table,{class_id:class_id,exam_id:exam_id},function(err, result){
+  
 			if(result.length>0)
 			{
-                var tableclass  = 'tbl_class';
-				  admin.findAll({table:tableclass},function(err, result){
-				    var class_list 	 = result;
-				    var table   = {tbl_sheet_formats:'tbl_sheet_formats',tbl_exam_master:'tbl_exam_master',tbl_class:'tbl_class'};
-				    admin.getMarksheetFormatList(table,function(err, formate_list){
+    //             var tableclass  = 'tbl_class';
+				//   admin.findAll({table:tableclass},function(err, result){
+				//     var class_list 	 = result;
+				//     var table   = {tbl_sheet_formats:'tbl_sheet_formats',tbl_exam_master:'tbl_exam_master',tbl_class:'tbl_class'};
+				//     admin.getMarksheetFormatList(table,function(err, formate_list){
 
 				   
-                      var exam_list    = formate_list
-                        req.flash('msg',"Already exist");
+    //                   var exam_list    = formate_list
+    //                     req.flash('error',"Sheet formate Already exist");
 
-						var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:""};
-						res.render("admin_layout", pagedata);
+				// 		var pagedata 	 = {Title : "", pagename : "admin/sheet_formats", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list,examdata:""};
+				// 		res.render("admin_layout", pagedata);
 
-					});
-				});
+				// 	});
+				// });
+				 req.flash('error',"Sheet formate Already exist");
+				      res.redirect('/sheet_Formats');
 			}
 			else
 			{
@@ -4525,22 +4642,29 @@ router.post("/sheet_Formats", function(req, res){
 				  admin.findAll({table:table},function(err, result){
 				     var class_list 	 = result;
 				     var table   = {tbl_sheet_formats:'tbl_sheet_formats',tbl_exam_master:'tbl_exam_master',tbl_class:'tbl_class'};
-				    admin.getMarksheetFormatList(table,function(err, formate_list){
 
-				    	//console.log(formate_list); 
+				      req.flash('success',"Sheet coulmn added successfully");
+				      res.redirect('/sheet_Formats');
 
-				    	var exam_list    = formate_list
-						var pagedata 	 = {Title : "", pagename : "admin/exam", message : req.flash('msg'),class_list:class_list,exam_list:exam_list,examdata:""};
-						res.render("admin_layout", pagedata);
-					});
-				});
-			 });
+             //    admin.getMarksheetFormatList(table,function(err, formate_list){
+                            
+
+				 //    	  req.flash('success',"Sheet coulmn added successfully");
+
+				 //    	var exam_list    = formate_list
+					// 	var pagedata 	 = {Title : "", pagename : "admin/sheet_formats", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list,examdata:""};
+					// 	res.render("admin_layout", pagedata);
+					// });
+			   	 });
+			  });
 
 
-			}
+			 }
         
 
-        });
+          });
+        }
+		
 
 
 
@@ -4555,8 +4679,13 @@ router.post("/sheet_Formats", function(req, res){
 });
 router.get("/exam_schedule", function(req, res){
 	if(req.session.user_role==1){
-		var table  = 'tbl_class';
-	
+
+
+        
+        
+        
+         	var table  = 'tbl_class';
+
 			admin.findAll({table:table},function(err, result){
 			    var class_list 	 		= result;
 			    var tbl_exam_schedule   = 'tbl_exam_schedule';
@@ -4564,10 +4693,43 @@ router.get("/exam_schedule", function(req, res){
 			    admin.findExamSchedule({table:tbl_exam_schedule},function(err, exam_schedule){
 
 			    	var exam_schedule    = exam_schedule
-					var pagedata 	 = {Title : "", pagename : "admin/exam_schedule", message : req.flash('msg'),class_list:class_list,exam_schedule:exam_schedule};
-					res.render("admin_layout", pagedata);
+
+			    	 if(req.query.scheduledid)
+			    	 {
+			    	 	id=req.query.scheduledid
+			    	 	admin.findWhere({tablename:'tbl_exam_schedule'},{id:id},function(err, result)
+			    	 	{
+			    	 		 
+					       admin.findWhere({tablename:'tbl_section'},{class_id:result[0].class_id},function(err, resultsection){
+					       	    section_list= resultsection;
+					       	    
+					       	admin.findWhere({tablename:'tbl_subject'},{class_id:result[0].class_id},function(err, resultsubject){
+					       	    subject_list= resultsubject;
+					       	    
+					       	  admin.findWhere({tablename:'tbl_exam_master'},{class_id:result[0].class_id},function(err, resultexam){
+					       	  	 exam_list= resultexam;
+					       	     //console.log(resultexam);   
+						 		var scheduledata  = result[0];
+						 		 //console.log(scheduledata);
+						 		var pagedata 	 = {Title : "", pagename : "admin/exam_schedule", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_schedule:exam_schedule,scheduledata:scheduledata,section_list:section_list,subject_list:subject_list,exam_list:exam_list};
+						       res.render("admin_layout", pagedata);
+						      });  
+						     });   
+						    });   
+
+					 	});	
+			    	 }
+			    	 else
+			    	 {
+			    	 	var pagedata 	 = {Title : "", pagename : "admin/exam_schedule", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_schedule:exam_schedule,scheduledata:"",section_list:"",subject_list:"",exam_list:""};
+					    res.render("admin_layout", pagedata);
+			    	 }
+					
 				});
 			});
+         
+
+		
     }else{
 	        admin.select(function(err,result){
 	     
@@ -4584,7 +4746,7 @@ router.post("/add_exam_schedule", function(req, res){
 		var subject_id	  = req.body.subject_id;
 		var exam_id		  = req.body.exam_id;
 		var date 		  = req.body.date;
-		var total_marks   = req.body.total_marks;
+		var total_marks   = (req.body.total_marks).trim();
 		
 		var table = {tablename : 'tbl_exam_schedule'}
 		var data  = {
@@ -4592,26 +4754,56 @@ router.post("/add_exam_schedule", function(req, res){
 			section_id 		: section_id,
 			subject_id  	: subject_id,
 			exam_id			: exam_id,
-			totalmarks		: total_marks,
+			totalmarks		: total_marks.trim(),
 			session_year	: req.session.session_year,
 			date			: date
 		}
 
-		admin.insert_all(table,data,function(err, result){
-			var table  = 'tbl_class';
-	
-			admin.findAll({table:table},function(err, result){
-			    var class_list 	 		= result;
-			    var tbl_exam_schedule   = 'tbl_exam_schedule';
-			    
-			    admin.findExamSchedule({table:tbl_exam_schedule},function(err, exam_schedule){
-			    	
-			    	var exam_schedule    = exam_schedule
-					var pagedata 	 = {Title : "", pagename : "admin/exam_schedule", message : req.flash('msg'),class_list:class_list,exam_schedule:exam_schedule};
-					res.render("admin_layout", pagedata);
-				});
-			});
-		});
+
+		if(total_marks==""||class_id==""||section_id==""||exam_id==""||date=="")
+		{
+			req.flash('error',"Marks required to save");
+			res.redirect('/exam_schedule');
+		}
+		else
+		{
+			if(req.body.scheduleid)
+			{
+              
+             var table   = {tablename:'tbl_exam_schedule'};
+		  	 var where= { id:req.body.scheduleid }
+	  	  	 admin.updateWhere(table,where,data, function(err, result){
+                  req.flash('success',"Exam schedule updated successfully");
+                  res.redirect('/exam_schedule');
+
+			 });
+
+			}
+			else
+			{
+			  admin.insert_all(table,data,function(err, result){
+				var table  = 'tbl_class';
+		
+				admin.findAll({table:table},function(err, result){
+				    var class_list 	 		= result;
+				    var tbl_exam_schedule   = 'tbl_exam_schedule';
+				    
+				    admin.findExamSchedule({table:tbl_exam_schedule},function(err, exam_schedule){
+				    	req.flash('success',"Exam schedule added successfully");
+				    	var exam_schedule    = exam_schedule
+						var pagedata 	 = {Title : "", pagename : "admin/exam_schedule", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_schedule:exam_schedule,scheduledata:"",section_list:"",subject_list:"",exam_list:""};
+						res.render("admin_layout", pagedata);
+					});
+				 });
+			    });
+			}
+
+			
+
+		}
+
+
+		
 		//console.log(req.body)
     }else{
 	        admin.select(function(err,result){
@@ -4663,7 +4855,7 @@ router.get("/exam_grades", function(req, res){
                      admin.findGradeExamDetail({tbl_grades:"tbl_grades",tbl_class:"tbl_class",tbl_section:"tbl_section",tbl_exam_grades:"tbl_exam_grades",tbl_exam_master:"tbl_exam_master"},{grade_id:grade_id,session_year:session_year},function(err, result){
                        var gradedata= result[0];
                        //console.log(result);
-                       var pagedata 	  = {Title : "", pagename : "admin/exam_grades", message : req.flash('msg'),exam_grades:exam_grades,exam_list:exam_list,class_list:class_list,gradedata:gradedata};
+                       var pagedata 	  = {Title : "", pagename : "admin/exam_grades", success: req.flash('success'),error: req.flash('error'),exam_grades:exam_grades,exam_list:exam_list,class_list:class_list,gradedata:gradedata};
 				       res.render("admin_layout", pagedata);       
 
                      });
@@ -4671,7 +4863,7 @@ router.get("/exam_grades", function(req, res){
                   else
                   {
                   	
-				    var pagedata 	  = {Title : "", pagename : "admin/exam_grades", message : req.flash('msg'),exam_grades:exam_grades,exam_list:exam_list,class_list:class_list,gradedata:""};
+				    var pagedata 	  = {Title : "", pagename : "admin/exam_grades",success: req.flash('success'),error: req.flash('error'),exam_grades:exam_grades,exam_list:exam_list,class_list:class_list,gradedata:""};
 					res.render("admin_layout", pagedata);
                   }
 
@@ -4695,10 +4887,10 @@ router.post("/exam_grades", function(req, res){
 		var class_id	  = req.body.class_id;
 		//var section_id	  = req.body.section_id;
 		var exam_id       = req.body.exam_id;
-		var name 	  	  = req.body.name;
-		var mark_from	  = req.body.mark_from;
-		var mark_upto	  = req.body.mark_upto;
-		var comment		  = req.body.comment;
+		var name 	  	  = (req.body.name).trim();
+		var mark_from	  = req.body.mark_from.trim();;
+		var mark_upto	  = req.body.mark_upto.trim();
+		var comment		  = req.body.comment.trim();
 		
 		var data  = {
 			name  	 		: name,
@@ -4715,8 +4907,10 @@ router.post("/exam_grades", function(req, res){
 		 
 		var tbl_class  = 'tbl_class';
 		admin.findAll({table:tbl_class},function(err, class_list){
-           var class_list = class_list;		 
-        
+           var class_list = class_list;	
+
+
+
         if(req.body.grade_id)
 	     {
 
@@ -4728,7 +4922,7 @@ router.post("/exam_grades", function(req, res){
 		       admin.findGradeExamList({tbl_grades:"tbl_grades",tbl_class:"tbl_class",tbl_section:"tbl_section",tbl_exam_grades:"tbl_exam_grades",tbl_exam_master:"tbl_exam_master"},{session_year:session_year},function(err, result){
 				    var exam_grades   = result;
 				    //console.log(exam_grades);
-				    var pagedata 	  = {Title : "", pagename : "admin/exam_grades", message : req.flash('msg'),exam_grades:exam_grades,exam_list:'',class_list:class_list,gradedata:""};
+				    var pagedata 	  = {Title : "", pagename : "admin/exam_grades",success: req.flash('success'),error: req.flash('error'),exam_grades:exam_grades,exam_list:'',class_list:class_list,gradedata:""};
 					res.render("admin_layout", pagedata);
 			   });   
 
@@ -4736,16 +4930,29 @@ router.post("/exam_grades", function(req, res){
 	     } 
 	     else
 	     {
-	     	 var table   = {tablename:'tbl_exam_grades'}; 
-	     	admin.insert_all(table,data,function(err, result){
-			
-		  	  admin.findGradeExamList({tbl_grades:"tbl_grades",tbl_class:"tbl_class",tbl_section:"tbl_section",tbl_exam_grades:"tbl_exam_grades",tbl_exam_master:"tbl_exam_master"},{session_year:session_year},function(err, result){
-				    var exam_grades   = result;
-				    //console.log(exam_grades);
-				    var pagedata 	  = {Title : "", pagename : "admin/exam_grades", message : req.flash('msg'),exam_grades:exam_grades,exam_list:'',class_list:class_list,gradedata:""};
-					res.render("admin_layout", pagedata);
-			  });
-		    })	
+           if(exam_id==""|| class_id==""|| name==""|| mark_from==""|| mark_upto=="")   	 
+	        {
+
+	          req.flash('error',"Grade data required to save"); 
+	          res.redirect('/exam_grades'); 
+
+	        }
+	        else
+	        {
+               var table   = {tablename:'tbl_exam_grades'}; 
+		     	admin.insert_all(table,data,function(err, result){
+				
+			  	  admin.findGradeExamList({tbl_grades:"tbl_grades",tbl_class:"tbl_class",tbl_section:"tbl_section",tbl_exam_grades:"tbl_exam_grades",tbl_exam_master:"tbl_exam_master"},{session_year:session_year},function(err, result){
+					    var exam_grades   = result;
+					    //console.log(exam_grades);
+					    var pagedata 	  = {Title : "", pagename : "admin/exam_grades", success: req.flash('success'),error: req.flash('error'),exam_grades:exam_grades,exam_list:'',class_list:class_list,gradedata:""};
+						res.render("admin_layout", pagedata);
+				  });
+			    })
+	        	
+	        }
+
+	     		
 
 	     } 
           
@@ -5329,7 +5536,7 @@ router.get("/QuestionPaper", function(req, res){
 			 admin.findquestionpaper({table:table},function(err, result){
 
 			    var question_paper_list 	 = result;
-				var pagedata 	 	 = {Title : "", pagename : "admin/questionpaper", message : req.flash('msg'),question_paper_list:question_paper_list,class_list:class_list};
+				var pagedata 	 	 = {Title : "", pagename : "admin/questionpaper",success: req.flash('success'),error: req.flash('error'),question_paper_list:question_paper_list,class_list:class_list};
 				res.render("admin_layout", pagedata);
 			});
 			
@@ -5355,10 +5562,7 @@ router.post("/QuestionPaper", function(req, res){
   	
   	var file = req.files.quesionpaper_file;
   	var data = [];
-
-
-  		 
-  		file1= file;
+ 		file1= file;
   		var newname = changename(file.name);
 		var filepath = path.resolve("public/question_paper/"+newname);
 		
@@ -5373,27 +5577,62 @@ router.post("/QuestionPaper", function(req, res){
   		 	class_id 			: class_id,
   		 	section_id			: section_id,
   		 	subject_id 			: subject_id,
+  		 	exam_id             : exam_id,
   			file_name     	    : newname,
   			created_date	    : dates
   		}
   		var table   = {tablename:'tbl_question_paper'};
-  	
-  		admin.insert_all(table,data,function(err, result){
-			
-		});	
 
-  		var table  = 'tbl_class';
-	
-		admin.findAll({table:table},function(err, result){
-		    var class_list 	 = result;
-		    var table = 'tbl_question_paper';
-			admin.findquestionpaper({table:table},function(err, result){
-			 	//console.log(result);
-			    var question_paper_list 	 = result;
-				var pagedata 	 	 = {Title : "", pagename : "admin/questionpaper", message : req.flash('msg'),question_paper_list:question_paper_list,class_list:class_list};
-				res.render("admin_layout", pagedata);
-			});
-		});
+  		if(class_id==""||section_id==""||subject_id==""||exam_id=="")
+  		{
+           
+           req.flash('error',"Question paper detail required to save");
+           res.redirect("/QuestionPaper");
+  		}
+  		else
+  		{
+             var table = {tablename:'tbl_question_paper'};
+			 admin.findWhere(table,{class_id:class_id,section_id:section_id,subject_id:subject_id,exam_id:exam_id},function(err, result){
+			 	 
+               if(result.length>0)
+               {
+               	 req.flash('error',"Question paper already exist");
+               	 res.redirect("/QuestionPaper");
+               }
+               else
+               {
+                
+
+                 var table = {tablename:'tbl_question_paper'};
+                  admin.insert_all(table,data,function(err, result){
+
+                  	  req.flash('success',"Question paper added successfully");
+			
+				  });	
+
+			  		var table  = 'tbl_class';
+				
+					admin.findAll({table:table},function(err, result){
+					    var class_list 	 = result;
+					    var table = 'tbl_question_paper';
+						admin.findquestionpaper({table:table},function(err, result){
+						 	//console.log(result);
+						    var question_paper_list 	 = result;
+							var pagedata 	 	 = {Title : "", pagename : "admin/questionpaper", success: req.flash('success'),error: req.flash('error'),question_paper_list:question_paper_list,class_list:class_list};
+							res.render("admin_layout", pagedata);
+						});
+					});
+
+               }
+                
+
+                 
+			 })
+ 
+  			
+  		}
+  	
+  		
      }else{
 	        admin.select(function(err,result){
 	     
@@ -5661,7 +5900,7 @@ router.get("/sendmessage", function(req, res){
 
                  parent_list= result;
                   //console.log(parent_list);
-            	 var pagedata 	 	 = {Title : "", pagename : "admin/sendmessage", message : req.flash('msg'),class_list:class_list,teacher_list:teacher_list,parent_list:parent_list};
+            	 var pagedata 	 	 = {Title : "", pagename : "admin/sendmessage", success: req.flash('success'),error: req.flash('error'),class_list:class_list,teacher_list:teacher_list,parent_list:parent_list,page:""};
 		         res.render("admin_layout", pagedata);
 
                });
@@ -5714,27 +5953,49 @@ router.post("/sendmessage",function(req,res){
        
       if(req.body.page=='studentpage') 
        {
-          admin.getalldaysscholler(table,where,function(err, result){
-       
-           	message = req.body.descriptionstudent.replace(/<\/?p>/g,'')
-            mobileNo='';
-	    	senderdata= JSON.parse(JSON.stringify(result[0]));
-             
-	    	result.forEach(function(item, index){
-	    		if(result[index].phone && result[index].phone!='undefined')
-	    		  mobileNo += result[index].phone+',';
-	    	});
-	    	mobileNo= mobileNo.substring(0, mobileNo.length - 1)
-	    	//var mobileNo = [ "XXXXXXXXXX", "XXXXXXXXXX", "XXXXXXXXXX" ];
-			//var mobileNo =  "XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX";
-			msg91.send(mobileNo, message, function(err, response){
-              res.redirect('/sendmessage');
-			});
 
-	      });	
+       	  if(req.body.descriptionstudent==""||req.body.class_id=="")
+       	  {
+
+             req.flash('error',"Message required to send ");
+             res.redirect('/sendmessage');
+       	  }
+       	  else
+       	  {
+              admin.getalldaysscholler(table,where,function(err, result){
+       
+	           	message = req.body.descriptionstudent.replace(/<\/?p>/g,'')
+	            mobileNo='';
+		    	senderdata= JSON.parse(JSON.stringify(result[0]));
+	             
+		    	result.forEach(function(item, index){
+		    		if(result[index].phone && result[index].phone!='undefined')
+		    		  mobileNo += result[index].phone+',';
+		    	});
+		    	mobileNo= mobileNo.substring(0, mobileNo.length - 1)
+		    	//var mobileNo = [ "XXXXXXXXXX", "XXXXXXXXXX", "XXXXXXXXXX" ];
+				//var mobileNo =  "XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX";
+				msg91.send(mobileNo, message, function(err, response){
+				  req.flash('success',"Message sent successfully ");
+	              res.redirect('/sendmessage');
+				});
+
+		      });	
+       	  }    
+
+         
        }
        else if(req.body.page=='teacherpage') 
        {
+
+       	  if(req.body.descriptionteacher==""||req.body.class_id=="")
+       	  {
+
+             req.flash('error',"Message required to send ");
+             res.redirect('/sendmessage');
+       	  }
+       	  else
+       	  {
        	    var table = {tablename:'tbl_registration'};
             admin.findWhere(table,where,function(err, result){
             message = req.body.descriptionteacher.replace(/<\/?p>/g,'')
@@ -5748,13 +6009,23 @@ router.post("/sendmessage",function(req,res){
 	    	//var mobileNo = [ "XXXXXXXXXX", "XXXXXXXXXX", "XXXXXXXXXX" ];
 			//var mobileNo =  "XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX";
 		      msg91.send(mobileNo, message, function(err, response){
+		      	req.flash('success',"Message sent successfully ");
 				res.redirect('/sendmessage');
 			  });
               
             });
+          } 
        }
        else if(req.body.page=='parentpage')
        {
+       	if(req.body.descriptionparent==""||req.body.class_id=="")
+       	  {
+
+             req.flash('error',"Message required to send ");
+             res.redirect('/sendmessage');
+       	  }
+       	  else
+       	  {
        	    var table = {tablename:'tbl_registration'};
             admin.findWhere(table,where,function(err, result){
             message = req.body.descriptionparent.replace(/<\/?p>/g,'')
@@ -5769,10 +6040,12 @@ router.post("/sendmessage",function(req,res){
 	    	//var mobileNo = [ "XXXXXXXXXX", "XXXXXXXXXX", "XXXXXXXXXX" ];
 			//var mobileNo =  "XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX";
 		      msg91.send(mobileNo, message, function(err, response){
+		      	req.flash('success',"Message sent successfully ");
 				res.redirect('/sendmessage');
 			  });
               
             });
+          } 
        }
  	}
    else

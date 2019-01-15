@@ -7,6 +7,29 @@
           <p class="card-description">
           <a href="/admin/academicSyllabus_list"><button class="btn btn-inverse-dark btn-fw">Accademic Syllabus List</button></a>
           </p>
+
+          <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+          </div>
           
           <form class="forms-sample" id="form_academicsyllabus" method="post" action="/addAcademicSyllabus" enctype="multipart/form-data">
           	<input type="hidden" name="academic_syllabus_id" id="academic_syllabus_id" class="form-control" placeholder="Enter Title" value="<%= academic_syllabusData.academic_syllabus_id %>">

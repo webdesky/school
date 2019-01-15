@@ -7,14 +7,37 @@
             <p class="card-description">
            <!--  <a href="/admin/exam_list"><button class="btn btn-inverse-dark btn-fw">Marksheet Formats</button></a> -->
            </p>
-	         
+	      
+
+      <div class="container">
+             
+              <% if(success!=""){ %>
+              <div class="alert alert-success" id="success-alert">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= success %> </strong>
+                
+              </div>
+                
+             <% 
+            } %>
+            <% if(error!=""){ %>
+              
+               <div class="alert alert-danger" id="danger-alert">
+
+                
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <strong><%= error %> </strong>
+                
+              </div>
+           <% }  %>
+        </div>    
 
        <form class="form-sample" id="form_addexam" method="Post" action="/admin/sheet_Formats">       
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Select Class</label>
                 <!-- <input type="hidden" name="exam_id" value="<%= examdata.exam_id %>"> -->
                 <div class="col-sm-4">
-                  <select class="form-control" name="class" id="class"  onchange="get_all_exam_name(this.value)">
+                  <select style="color:black" class="form-control" name="class" id="class"  onchange="get_all_exam_name(this.value)">
                     <option value="">Select Class</option>
                     <%  class_list.forEach(function(class_list){ %>
 
@@ -25,7 +48,7 @@
                 </div>
                 <label class="col-sm-2 col-form-label">Select Exam</label>
                 <div class="col-sm-4">
-                    <select class="form-control" name="exam_id" id="exam_id">
+                    <select style="color:black" class="form-control" name="exam_id" id="exam_id">
                             <option value="">Exam</option>                       
                     </select>
                    
