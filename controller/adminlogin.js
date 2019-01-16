@@ -3653,8 +3653,8 @@ router.post("/addAttendence", function(req, res){
 			var class_name          = req.body.class_name;
 			var section_name        = req.body.section_name;
 
-			 
- 
+
+
 			  
 			if(check==false){
 				var data = {
@@ -3704,12 +3704,12 @@ router.post("/addAttendence", function(req, res){
 			  			
 			  		});
 			}else{
-				// console.log('paernt----->', parent_id);
-				// console.log('student----->', student_id);
+				   n=0;
+
 				// return false;
-				z=0
-				//for(var k in student_id)
 				 
+				//for(var k in student_id)
+				
 				for(k=0; k<student_id.length;k++)
 				{
 
@@ -3723,7 +3723,7 @@ router.post("/addAttendence", function(req, res){
 						session_year	: req.session.session_year,
 						user_role		: 3
 					}
-				
+				    
 
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id[k],session_year:session_year},function(err, result1){
@@ -3737,26 +3737,45 @@ router.post("/addAttendence", function(req, res){
 	                        });
 		  				}
 					  });
-					  var table   = {tablename:'tbl_attendance'}
-		  			admin.insert_all(table,data,function(err, result){
-						if(parseInt(status[k])==2)
-						{
-							//console.log('paerntid----->'+z, parent_id[k]);
-						   admin.findWhere({tablename:'tbl_registration'},{registration_id:parent_id[k]},function(err,resultparent){
-							  // console.log('section----->',student_name[k]+" "+ class_name[k]+ "("+ section_name[k]+")");
-							   message="Dear Parent, Your child "+student_name[k]+" "+ class_name[k]+ "("+ section_name[k]+") section is absent today."
-							   mobileNo= resultparent[0].phone;
-							   msg91.send(mobileNo, message, function(err, response){
-								 req.flash('success',"message sent successfully");
-							   }); 
 
+		  			
+					  var table   = {tablename:'tbl_attendance'}
+					  var student_name        = req.body.studentname;
+
+                      var student_name        = req.body.studentname;
+					  var section_name        = req.body.section_name;
+ 					  studentname= student_name[k];
+					  sectionname = section_name[k];
+		  			admin.insert_all(table,data,function(err, result){
+		  				
+		  				var parent_id           = req.body.parent_id;
+						if(parseInt(status[n])==2)
+						{
+						   admin.findWhere({tablename:'tbl_registration'},{registration_id:parent_id[n]},function(err,resultparent){
+						   	//console.log('--------->',resultparent);
+							 admin.findWhere({tablename:'tbl_class'},{class_id:class_id},function(err,resultclass){
+							 	//console.log('resultclass55555555555',resultclass);
+							   class_name=resultclass[0].class_abbreviations
+							   message="Dear Parent, Your child "+studentname+" "+ class_name+ " class ("+ sectionname+") section is absent today."
+							   console.log('<<message>>',message);
+							   
+							   mobileNo= resultparent[0].phone;
+
+							   //console.log('--mobileNo--',mobileNo);
+
+							    msg91.send(mobileNo, message, function(err, response){
+								 req.flash('success',"message sent successfully");
+							    }); 
+                             }); 
 						   });
 						}
+						n++
 			  			
 			  		});
+			  		//return false;
 		  			//console.log(data)
 		  			
-			  		z++;
+			  		 
 				}
 			}
 		}else{
@@ -5703,8 +5722,10 @@ router.get("/sendmarks", function(req, res){
 		    	
 		       var exam_list    = exam_list
 
-               var pagedata 	 = {Title : "", pagename : "admin/sendmarks", message : req.flash('msg'),class_list:class_list,exam_list:exam_list};
+               var pagedata 	 = {Title : "", pagename : "admin/sendmarks", success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list};
 			   res.render("admin_layout", pagedata);
+
+
 			});
 		});
     }else{
@@ -5722,51 +5743,127 @@ router.post("/sendmarks", function(req, res){
         session_year=req.session.session_year
         user_role = req.session.user_role 
 
-        table= {tbl_marks:'tbl_marks',tbl_registration:'tbl_registration',tbl_class:'tbl_class'}
+        table= {tbl_marks:'tbl_marks',tbl_registration:'tbl_registration',tbl_class:'tbl_class',tbl_section:'tbl_section'}
         obj = {class_id:class_id,section_id:section_id,exam_id:exam_id,session_year:session_year}
         admin.find_marks_receiver_sms(table,obj,function(err,result){
+
+
            
            student_list=result;
+
+           student_list.forEach(function(item, index){
+           
+               student_list[index].grade=""
+           	    
+      //      	 admin.findWhere({tablename:'tbl_exam_grades'},{class_id:class_id,exam_id:exam_id},function(err,gradesresult){
+      //            grades_list=gradesresult
+                 
+      //            averagemarks= item.obtained/item.numberofsubject;
+      //            grades_list.forEach(function(item1, index1){
+
+      //             //if(item.obtained >= result[0].marks_from    && item.obtained <= upto)
+      //               from = item1.mark_from;
+      //               upto =  item1.mark_upto
+      //                console.log(averagemarks +'>='+from +'&&'+ averagemarks +"<="+ upto );
+                    
+      //               if(averagemarks >= from    && averagemarks <= upto  )
+      //                {
+      //                	//grade = item1.name ;
+      //                	console.log('gradeeeeeeeeeee', item1.name)
+      //                	gradename=item1.name
+      //                }  
+      //             //                       grade = gradelist[l].name ;
+                  
+      //      	   });
+
+      //           student_list[index].grade=gradename
+		    // });
+
+
+		    });
+           //console.log('###################',student_list);
+           //return false;
+         
 
           async.each(student_list,function(item,done) {
                  
             obtained =item.marks_obtained;     
             student_name= item.name
             phone = item.phone
+ 
 
-            if(user_role==2) //parent 
-	          {
+
                  parent_id =item.parent_id
                  var table = {tablename:'tbl_registration'};
 
-			     admin.findWhere(table,{registration_id:parent_id},function(err, result){
+			     admin.findWhere(table,{registration_id:parent_id},function(err, resultparent){
 
-			     	if(result.length>0)
-			     	{
-			     		phone = result[0].phone
-			     	}
+			       //console.log('resultparent-<<<',resultparent);
+
+			       admin.findWhere({tablename:'tbl_class'},{class_id:class_id},function(err,classresult){
+                     classname=classresult[0].class_abbreviations
+                     admin.findWhere({tablename:'tbl_section'},{section_id:section_id},function(err,sectionresult){
+                       sectionname=sectionresult[0].section_name
+
+                        admin.findWhere({tablename:'tbl_exam_grades'},{class_id:class_id,exam_id:exam_id},function(err,gradesresult){
+                         grades_list=gradesresult
+
+                          averagemarks= item.obtained/item.numberofsubject;
+
+                           async.each(grades_list,function(item1,done1) {
 
 
-			     });
-	          }
-	          else
-	          {
+	                         	from = item1.mark_from;
+			                    upto =  item1.mark_upto
+			                     console.log(averagemarks +'>='+from +'&&'+ averagemarks +"<="+ upto );
+			                    
+			                    if(averagemarks >= from    && averagemarks <= upto  )
+			                     {
+			                     	//grade = item1.name ;
+			                     	console.log('gradeeeeeeeeeee', item1.name)
+			                     	gradename=item1.name
 
-	          }
+			                     }  
+		                   
+				       	   	done1(null);
+					     },function(){
+
+					     	if(resultparent.length>0)
+					     	{
+					     		 message="Your child "+item.name+" "+ classname+ " class("+ sectionname +") section "+item.exam_code+" marks:-"+item.obtained +'/'+item.total+ " "+ gradename
+							     mobileNo= resultparent[0].phone;
+							     msg91.send(mobileNo, message, function(err, response){
+
+								   req.flash('success',"message sent successfully");
+
+							     });
+					     	}
+					     }) // inner async close 
+
+					    }); 	
+			     	});
+
+			       });
+
+			     })
+
+			     done(null);
 
           },function(){
-            var table  = 'tbl_class';
-				admin.findAll({table:table},function(err, result){
-				    var class_list 	 = result;
-				    var exam_table   = 'tbl_exam_master';
-				    admin.findExam({table:exam_table},function(err, exam_list){
+          	 req.flash('success',"Marks sent successfully");
+          	 res.redirect('/sendmarks');
+    //         var table  = 'tbl_class';
+				// admin.findAll({table:table},function(err, result){
+				//     var class_list 	 = result;
+				//     var exam_table   = 'tbl_exam_master';
+				//     admin.findExam({table:exam_table},function(err, exam_list){
 				    	
-				       var exam_list    = exam_list
-
-		               var pagedata 	 = {Title : "", pagename : "admin/sendmarks", message : req.flash('msg'),class_list:class_list,exam_list:exam_list};
-					   res.render("admin_layout", pagedata);
-					});
-				});
+				//        var exam_list    = exam_list
+    //                    req.flash('success',"Student shifted into new section successfully");
+		  //              var pagedata 	 = {Title : "", pagename : "admin/sendmarks",  success: req.flash('success'),error: req.flash('error'),class_list:class_list,exam_list:exam_list};
+				// 	   res.render("admin_layout", pagedata);
+				// 	});
+				// });
           });
              
  

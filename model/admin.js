@@ -1129,7 +1129,8 @@ module.exports.get_subject_scheduled_exam=function(obj, where, orerby, groupby, 
 module.exports.get_marks_exam_list=function(obj, where, orerby, cb){
 	con.connect(function(err){
 		var que = "SELECT * FROM "+obj.tbl_marks+" LEFT JOIN "+obj.tbl_exam_master+" ON "+obj.tbl_exam_master+".class_id="+obj.tbl_marks+".class_id WHERE  "+obj.tbl_marks+".section_id="+ where.section_id+ " AND "+obj.tbl_marks+".year='"+where.session_year+"' GROUP BY "+obj.tbl_exam_master+".exam_id  ORDER BY "+orerby.orderby+" "+orerby.order ;
-		console.log(que);
+		//console.log('ssssssssssssssss',que);
+
 		con.query(que, cb);
 	});
 
@@ -1241,12 +1242,24 @@ module.exports.findmarksheetstudent=function(tableobj, obj, cb){
 module.exports.find_marks_receiver_sms= function(table,obj,cb){
   con.connect(function(err){
     
-     var que="SELECT "+table.tbl_registration+".registration_id , "+table.tbl_registration+".parent_id ,"+table.tbl_marks+".marks_obtained,"+table.tbl_marks+".marks, "+table.tbl_registration+".phone,"+table.tbl_registration+".name,"+table.tbl_class+".class_name ,"+table.tbl_marks+".marks, FROM "+table.tbl_marks+" LEFT JOIN "+table.tbl_registration+" ON "+table.tbl_registration+".registration_id="+table.tbl_marks+".student_id LEFT JOIN "+table.tbl_class+" ON "+table.tbl_class+".class_id="+table.tbl_marks+".class_id LEFT JOIN  "+table.tbl_subject+" ON "+table.tbl_subject+".subject_id= "+table.tbl_marks+".subject_id  WHERE "+table.tbl_marks+".exam_id="+obj.exam_id+" AND "+table.tbl_marks+".class_id="+obj.class_id+" AND "+table.tbl_marks+".section_id="+obj.section_id+"  AND "+table.tbl_marks+".year='"+obj.session_year+"'";
-     console.log(que);
+     //var que="SELECT "+table.tbl_registration+".registration_id , "+table.tbl_registration+".parent_id ,"+table.tbl_marks+".marks_obtained, "+table.tbl_marks+".mark_total,  "+table.tbl_marks+".marks,"+table.tbl_marks+".exam_code,"+table.tbl_registration+".phone,"+table.tbl_registration+".name,"+table.tbl_class+".class_name, "+table.tbl_class+".class_abbreviations , "+table.tbl_section+".section_name ,"+table.tbl_marks+".marks FROM "+table.tbl_marks+" LEFT JOIN "+table.tbl_registration+" ON "+table.tbl_registration+".registration_id="+table.tbl_marks+".student_id LEFT JOIN "+table.tbl_class+" ON "+table.tbl_class+".class_id="+table.tbl_marks+".class_id  LEFT JOIN tbl_section ON "+table.tbl_marks+".section_id= "+table.tbl_section+".section_id   WHERE "+table.tbl_marks+".exam_id="+obj.exam_id+" AND "+table.tbl_marks+".class_id="+obj.class_id+" AND "+table.tbl_marks+".section_id="+obj.section_id+"  AND "+table.tbl_marks+".year='"+obj.session_year+"'";
+     //var que="SELECT "+table.tbl_registration+".registration_id , "+table.tbl_registration+".parent_id ,"+table.tbl_marks+".marks_obtained, "+table.tbl_marks+".mark_total,  "+table.tbl_marks+".marks,"+table.tbl_marks+".exam_code,"+table.tbl_registration+".phone,"+table.tbl_registration+".name,"+table.tbl_class+".class_name, "+table.tbl_class+".class_abbreviations , "+table.tbl_section+".section_name ,"+table.tbl_marks+".marks FROM "+table.tbl_marks+" LEFT JOIN "+table.tbl_registration+" ON "+table.tbl_registration+".registration_id="+table.tbl_marks+".student_id LEFT JOIN "+table.tbl_class+" ON "+table.tbl_class+".class_id="+table.tbl_marks+".class_id  LEFT JOIN tbl_section ON "+table.tbl_marks+".section_id= "+table.tbl_section+".section_id   WHERE "+table.tbl_marks+".exam_id="+obj.exam_id+" AND "+table.tbl_marks+".class_id="+obj.class_id+" AND "+table.tbl_marks+".section_id="+obj.section_id+"  AND "+table.tbl_marks+".year='"+obj.session_year+"'";
+    var que= "SELECT  count(*) as numberofsubject, "+table.tbl_registration+".registration_id , "+table.tbl_registration+".parent_id ,SUM("+table.tbl_marks+".marks_obtained) AS obtained, SUM("+table.tbl_marks+".mark_total) AS total,  "+table.tbl_marks+".marks,"+table.tbl_marks+".exam_code,"+table.tbl_registration+".phone,"+table.tbl_registration+".name,tbl_marks.marks,tbl_marks.exam_code,tbl_registration.phone,tbl_registration.name,tbl_marks.marks FROM tbl_marks LEFT JOIN tbl_registration ON tbl_registration.registration_id=tbl_marks.student_id WHERE "+table.tbl_marks+".exam_id="+obj.exam_id+" AND "+table.tbl_marks+".class_id="+obj.class_id+" AND "+table.tbl_marks+".section_id="+obj.section_id+"  AND "+table.tbl_marks+".year='"+obj.session_year+"' GROUP BY tbl_marks.student_id";
+      console.log('queryyyyyyyy',que);
      con.query(que,cb);
 
   });
 }
+module.exports.find_marks_obtained_total= function(table,obj,cb){
+  con.connect(function(err){
+    
+     var que="SELECT SUM("+table.tbl_marks+".marks_obtained) AS obtained, SUM("+table.tbl_marks+".mark_total) AS total WHERE "+table.tbl_marks+".exam_id="+obj.exam_id+" AND "+table.tbl_marks+".class_id="+obj.class_id+" AND "+table.tbl_marks+".section_id="+obj.section_id+"  AND "+table.tbl_marks+".year='"+obj.session_year+"'";
+      console.log('queryyyyyyyy',que);
+     con.query(que,cb);
+
+  });
+}
+
 
 
 
