@@ -425,32 +425,461 @@
                padding: 20px 50px;
             }
 
-                  @page {
-                          size: A4;
-                          margin: 0;
-                      }
-                  @media print {
-                          .page {
-                              margin: 0;
-                              border: initial;
-                              border-radius: initial;
-                              width: initial;
-                              min-height: initial;
-                              box-shadow: initial;
-                              background: initial;
-                              page-break-after: always;
-                          }
+   @page {
+     size: A4;
+     margin: 0;
+       }
+   @media print {
+     .page {
+         margin: 0;
+         border: initial;
+         border-radius: initial;
+         width: initial;
+         min-height: initial;
+         box-shadow: initial;
+         background: initial;
+         page-break-after: always;
+     }
+     .asas {
+            display: none!important;
+         }
+   }
+   @media print {
+       .hiderow {
+         display: none;
+       }
+    }
+
+@media screen {
+         p.bodyText {font-family:verdana, arial, sans-serif;}
+      }
+
+      @media print {
+         p.bodyText {font-family:georgia, times, serif;}
+      }
+      @media screen, print {
+                  .page {
+         width: 24cm;
+         min-height: 29.7cm;
+         padding: 2cm;
+         margin: 1cm auto;
+         border: 1px #D3D3D3 solid;
+         border-radius: 5px;
+         background: white;
+         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+         }
+         .subpage {
+         padding: 1cm;
+         border: 5px red solid;
+         height: 256mm;
+         outline: 2cm #FFEAEA solid;
+         }
+         .justify-text
+         {
+         line-height: 40px;
+         }
+         .div-right{
+         float: right;
+         }
+         .div-left{
+         float: left;
+         text-align: justify;
+         }
+         .drwaline{
+         margin: 2cm auto;
+         border: 1px #000 solid;
+         border-radius: 5px;
+         }
+             /*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
+         @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,500i,700,700i');
+         h1,h2,h3,h4,h5,h6{
+         font-family: 'Ubuntu', sans-serif;
+         margin: 15px 0px;
+         }
+         p{
+         font-size: 14px;
+         color: #828282;
+         }
+         a{
+         color: #005a4f;
+         }
+         h1{
+         font-size: 60px;
+         }
+         h3{
+         font-size: 28px;
+         color: #202020;
+         }
+         h4{
+         font-size: 30px;
+         font-weight: 600;
+         }
+         .summative-1 table.table .bold-1{
+         font-weight: 800!important;
+         }
+         .summative-1 table.table .bold-2{
+         font-weight: 600!important;
+         font-size: 13px!important;
+         }
+         ul{
+         margin:0;
+         padding: 0;
+         }
+         li{
+         list-style: none;
+         }
+         a, a:hover {                
+         text-decoration: none;
+         color: #ccc;
+         }
+         .heading-1 {
+         position: absolute;
+         font-size: 22px;
+         font-weight: 900;
+         text-align: center;
+         transform: translateX(-50%) translateY(-50%);
+         background: #fff!important;
+         left: 50%;
+         top: -22px;
+         padding: 5px 15px;
+         border: 2px solid #903f5f;
+         color: #903f5f!important;
+         }
+         .heading-2 {
+         padding: 5px 15px;
+         border: 2px solid #903f5f;
+         color: #903f5f!important;
+         font-size: 22px;
+         font-weight: 900;
+         text-align: center;
+         width: 100%;
+         margin: auto;
+         border-radius: 9px;
+         }
+         .summative-1 {
+         position: relative;
+         border: 2px solid #903f5f;
+         outline: 4px solid #903f5f;
+         outline-offset: 4px;
+         margin: 30px;
+         padding: 20px 5px;
+         width: 1000px;
+         margin: 30px auto 0;
+         }
+         .wripper-left{
+         width: 65%;
+         float: left;
+         }
+         .table {
+         width: 100%;
+         max-width: 100%;
+         margin-bottom: 12px;
+         margin-top: 12px;
+         }
+         .wripper-right{
+         width: 30%;
+         float: left;
+         margin-left: 20px;
+         }
+         .co-curricular{
+         font-weight: 800;
+         }
+         .sign p{
+         color: #903f5f!important;
+         font-weight: 500;
+         }
+         .summative-1 {
+         }
+         .summative-1 .table-bordered>tbody>tr>td, .summative-1 .table-bordered>tbody>tr>th, .summative-1 .table-bordered>tfoot>tr>td, 
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         color: #903f5f;
+         font-weight: 300!important;
+         font-size: 14px!important;
+         }
+         .summative-1 .table-bordered>tbody>tr>td, .summative-1 .table-bordered>tbody>tr>th, .summative-1 .table-bordered>tfoot>tr>td, 
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         color: #903f5f!important;
+         font-weight: 300;
+         }
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         font-weight: 700!important;
+         }
+         .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+         border: 2px solid #903f5f;
+         text-align: center;
+         vertical-align: middle;
+         font-family: 'Open Sans', sans-serif;
+         padding: 2px;
+         }
+         thead>tr{
+         border: 2px solid #903f5f;
+         text-align: center;
+         }
+         .student-info{
+         padding: 0 15px;
+         margin-top: 10px;
+         }
+         .student-info .col-xs-6{
+         padding: 0px;
+         }
+         .student-info div:first-child {
+         width: 36%;
+         }
+         .student-info div{
+         width: 20%;
+         float: left;
+         }
+         .row.sign {
+         margin-top: 10px;
+         }
+         .sign-inner{
+         width: 33%;
+         float: left;
+         padding: 0px 15px;
+         }
+         .print-1{
+         background: #613131;
+         padding: 5px 10px;
+         border-radius: 5px;
+         cursor: pointer;
+         }
+         .sign-div{
+         width: 30%;
+         float: left;
+         margin-left: 2.5%;
+         }
+         .word-b tr th, .word-b tr td{
+         word-break: break-all;
+         }
 
 
-                      }
-                  @media print {
-                      .hiderow {
-                        display: none;
-                      }
-      </style>
+
+         * {
+         box-sizing: border-box;
+         -moz-box-sizing: border-box;
+         }
+         .page {
+         width: 24cm;
+         min-height: 29.7cm;
+         padding: 2cm;
+         margin: 1cm auto;
+         border: 1px #D3D3D3 solid;
+         border-radius: 5px;
+         background: white;
+         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+         }
+         .subpage {
+         padding: 1cm;
+         border: 5px red solid;
+         height: 256mm;
+         outline: 2cm #FFEAEA solid;
+         }
+         .justify-text
+         {
+         line-height: 40px;
+         }
+         .div-right{
+         float: right;
+         }
+         .div-left{
+         float: left;
+         text-align: justify;
+         }
+         .drwaline{
+         margin: 2cm auto;
+         border: 1px #000 solid;
+         border-radius: 5px;
+         }
+        
+         /*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
+         @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,500i,700,700i');
+         h1,h2,h3,h4,h5,h6{
+         font-family: 'Ubuntu', sans-serif;
+         margin: 15px 0px;
+         }
+         p{
+         font-size: 14px;
+         color: #828282;
+         }
+         a{
+         color: #005a4f;
+         }
+         h1{
+         font-size: 60px;
+         }
+         h3{
+         font-size: 28px;
+         color: #202020;
+         }
+         h4{
+         font-size: 30px;
+         font-weight: 600;
+         }
+         .summative-1 table.table .bold-1{
+         font-weight: 800!important;
+         }
+         .summative-1 table.table .bold-2{
+         font-weight: 600!important;
+         font-size: 13px!important;
+         }
+         ul{
+         margin:0;
+         padding: 0;
+         }
+         li{
+         list-style: none;
+         }
+         a, a:hover {                
+         text-decoration: none;
+         color: #ccc;
+         }
+         .heading-1 {
+         position: absolute;
+         font-size: 22px;
+         font-weight: 900;
+         text-align: center;
+         transform: translateX(-50%) translateY(-50%);
+         background: #fff!important;
+         left: 50%;
+         top: -22px;
+         padding: 5px 15px;
+         border: 2px solid #903f5f;
+         color: #903f5f!important;
+         }
+         .heading-2 {
+         padding: 5px 15px;
+         border: 2px solid #903f5f;
+         color: #903f5f!important;
+         font-size: 22px;
+         font-weight: 900;
+         text-align: center;
+         width: 100%;
+         margin: auto;
+         border-radius: 9px;
+         }
+         .summative-1 {
+         position: relative;
+         border: 2px solid #903f5f;
+         outline: 4px solid #903f5f;
+         outline-offset: 4px;
+         margin: 30px;
+         padding: 20px 5px;
+         width: 680px;
+         margin: 30px auto 0;
+         }
+         .wripper-left{
+         width: 65%;
+         float: left;
+         }
+         .table {
+         width: 100%;
+         max-width: 100%;
+         margin-bottom: 12px;
+         margin-top: 12px;
+         }
+         .wripper-right{
+         width: 30%;
+         float: left;
+         margin-left: 20px;
+         }
+         .co-curricular{
+         font-weight: 800;
+         }
+         .sign p{
+         color: #903f5f!important;
+         font-weight: 500;
+         }
+         .summative-1 {
+         }
+         .summative-1 .table-bordered>tbody>tr>td, .summative-1 .table-bordered>tbody>tr>th, .summative-1 .table-bordered>tfoot>tr>td, 
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         color: #903f5f;
+         font-weight: 300!important;
+         font-size: 11px!important;
+         }
+         .summative-1 .table-bordered>tbody>tr>td, .summative-1 .table-bordered>tbody>tr>th, .summative-1 .table-bordered>tfoot>tr>td, 
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         color: #903f5f!important;
+         font-weight: 300;
+         }
+         .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th{
+         font-weight: 700!important;
+         }
+         .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+         border: 2px solid #903f5f;
+         text-align: center;
+         vertical-align: middle;
+         font-family: 'Open Sans', sans-serif;
+         padding: 2px;
+         }
+         thead>tr{
+         border: 2px solid #903f5f;
+         text-align: center;
+         }
+         .student-info{
+         padding: 0 15px;
+         margin-top: 10px;
+         }
+         .student-info .col-xs-6{
+         padding: 0px;
+         }
+         .student-info div:first-child {
+         width: 36%;
+         }
+         .student-info div{
+         width: 20%;
+         float: left;
+         }
+         .row.sign {
+         margin-top: 10px;
+         }
+         .sign-inner{
+         width: 33%;
+         float: left;
+         padding: 0px 15px;
+         }
+       
+      
+         .sign-div{
+         width: 30%;
+         float: left;
+         margin-left: 2.5%;
+         }
+         .word-b tr th, .word-b tr td{
+         word-break: break-all;
+         }
+         .summative-1 .table-bordered>tbody>tr>td, .summative-1 .table-bordered>tbody>tr>th, .summative-1 .table-bordered>tfoot>tr>td, .summative-1 .table-bordered>tfoot>tr>th, .summative-1 .table-bordered>thead>tr>td, .summative-1 .table-bordered>thead>tr>th {
+            word-break: initial !important;
+            white-space: normal;
+        }
+
+
+        #tabulationsheet h1{
+            font-size: 32px;
+            text-align: center;
+           }
+           #tabulationsheet .table-bordered>tbody>tr>td, #tabulationsheet .table-bordered>tbody>tr>th,
+           #tabulationsheet .table-bordered>tfoot>tr>td, #tabulationsheet .table-bordered>tfoot>tr>th, 
+           #tabulationsheet .table-bordered>thead>tr>td, #tabulationsheet .table-bordered>thead>tr>th{
+            border: 1px solid #ddd;
+            padding: 8px 10px;
+           }
+           #tabulationsheet a {
+               color: #42beda;
+               font-weight: 600;
+               text-decoration: none;
+            }
+           #tabulationsheet{
+               background: #f5f5f5;
+               padding: 20px 50px;
+            }
+      }
+
+</style>
 
     <!--  Model for Marksheet  -->
-    <div id="printSection">
+    <div id="formativeprint">
+
 
       <div class="modal my-modal-1 fade" id="markseetmodal" role="dialog">
         <div class="modal-dialog">
@@ -460,91 +889,114 @@
             <div class="modal-header">
 
 
-              <h4 class="modal-title"><b>Student Fees</b></h4>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            
+              <button type="button" class="close asas" data-dismiss="modal">&times;</button>
 
             </div>
                <div class="modal-body">
-                       <div class="summative-1">
-               <h1 class="heading-1"> FORMATIVE I</h1>
+                       <div class="summative-1" style="    position: relative;
+    border: 2px solid #903f5f;
+    outline: 4px solid #903f5f;
+    outline-offset: 4px;
+    margin: 30px;
+    padding: 20px 5px;
+    width: 680px;
+    margin: 30px auto 0;
+}">
+
+               <h1 class="heading-1" style="    position: absolute;
+    font-size: 22px;
+    font-weight: 900;
+    text-align: center;
+    transform: translateX(-50%) translateY(-50%);
+    background: #fff!important;
+    left: 50%;
+    top: -22px;
+    padding: 5px 15px;
+    border: 2px solid #903f5f;
+    color: #903f5f!important;"> FORMATIVE I</h1>
                <div class="row student-info" id="studentinfo">
                  
                    
                </div>
 
-     
-                     <div class="wrapper">
-                        <div class="wripper-left">
-                           <table class="table table-bordered" id="Formative_modal">
-                              <thead>
-                                
-                              </thead>
-                             <tbody>
-                              
-                              
-                              </tbody>
-                           </table>
-                        </div>
-                        <div class="wripper-right">
-                           <h2 class="heading-2">ATTENDANCE</h2>
-                           <table class="table table-bordered attendance">
-                              <tr>
-                                 <td>Month</td>
-                                 <td>No. of Working Days</td>
-                                 <td>No. of Days Present</td>
-                              </tr>
-                             
-                              <tr>
-                                 <td>GRAND TOTAL</td>
-                                 <td id="working_days"></td>
-                                 <td id="present_days"></td>
-                              </tr>
-                              <tr>
-                                 <td class="bold-1">TOTAL</td>
-                                 <td id="total_working_days"></td>
-                                 <td id="total_present_days"> </td>
-                              </tr>
-                           </table>
-                           <table class="table table-bordered grade-rank">
-                              <tr>
-                                 <td width="20%" class="bold-1">RANK:</td>
-                                 <td></td>
-                              </tr>
-                              <tr>
-                                 <td class="bold-1">GRADE: </td>
-                                 <td id="total_grade"></td>
-                              </tr>
-                              <tr>
-                                 <td class="bold-1">GPA: </td>
-                                 <td></td>
-                              </tr>
-                           </table>
-                        </div>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <div class="clearfix"></div>
-                        <div class="row sign">
-                           <div class="sign-div">
-                              <p>.........................................<br>
-                                 Sig. of Class Teacher
-                              </p>
-                           </div>
-                           <div class="sign-div text-center">
-                              <p>.........................................<br>
-                                 Head of the Institution
-                              </p>
-                           </div>
-                           <div class="sign-div text-right">
-                              <p>.........................................<br>
-                                 Parent / Guardian
-                              </p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+
+         <div class="wrapper">
+            <div class="wripper-left" style="width: 65%; float: left;">
+               <table class="table table-bordered" style="border: 1px solid #ccc!important;    border-collapse: collapse;" id="Formative_modal">
+                  <thead>
+                    
+                  </thead>
+                 <tbody>
+                  
+                  
+                  </tbody>
+               </table>
+            </div>
+            <div class="wripper-right" style="width: 65%; float: left;    width: 30%;
+float: left;    margin-left: 20px;">
+               <h2 class="heading-2" style="padding: 5px 15px;border: 2px solid #903f5f;color: #903f5f!important;font-size: 22px;font-weight: 900;text-align: center;width: 170px;
+margin: auto;border-radius: 9px;">ATTENDANCE</h2>
+               <table class="table table-bordered attendance" style="border-collapse: collapse;width: 205px;margin-bottom: 12px;margin-top: 12px;">
+                  <tr style="border: 1px solid #903f5f">
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px">Month</td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;">No. of Working Days</td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;">No. of Days Present</td>
+                  </tr>
+                 
+                  <tr>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;">GRAND TOTAL</td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" id="working_days"></td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" id="present_days"></td>
+                  </tr>
+                  <tr>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" class="bold-1">TOTAL</td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" id="total_working_days"></td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" id="total_present_days"> </td>
+                  </tr>
+               </table>
+               <table class="table table-bordered grade-rank">
+                  <tr>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" width="20%" class="bold-1">RANK:</td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;"></td>
+                  </tr>
+                  <tr>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" class="bold-1">GRADE: </td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" id="total_grade"></td>
+                  </tr>
+                  <tr>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;" class="bold-1">GPA: </td>
+                     <td style="border: 1px solid #903f5f; color: #903f5f;padding: 2px;text-align: center;"></td>
+                  </tr>
+               </table>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="clearfix"></div>
+            <div class="row sign" style="clear: left;">
+               <div class="sign-div" style="width: 30%; float: left;">
+                  <p style="color: #903f5f">.........................................<br>
+                     Sig. of Class Teacher
+                  </p>
+               </div>
+               <div class="sign-div text-center" style="width: 30%; float: left;">
+                  <p style="color: #903f5f">.........................................<br>
+                     Head of the Institution
+                  </p>
+               </div>
+               <div class="sign-div text-right" style="width: 30%; float: left;">
+                  <p style="color: #903f5f">.........................................<br>
+                     Parent / Guardian
+                  </p>
+               </div>
+            </div>
+            <br/>
+            <br/>
+         </div>
+      </div>
 
              <div class="marksheet">
      
@@ -553,8 +1005,8 @@
              </div>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" onclick="PrintElem()" >Print</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button" class="btn btn-default asas" onclick="PrintElem('formativeprint')" >Print</button>
+              <button type="button" class="btn btn-default asas" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -564,6 +1016,7 @@
 
 
  <!--  Model for Summative 1 & 2  -->
+    <div id="summitiveprint">
       <div class="modal my-modal-1 fade" id="summativemarkseetmodal" role="dialog">
         <div class="modal-dialog">
         
@@ -571,14 +1024,30 @@
           <div class="modal-content">
             <div class="modal-header">
 
-
-              <h4 class="modal-title"><b>Student Fees</b></h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
 
             </div>
             <div class="modal-body">
-              <div class="summative-1">
-      <h1 class="heading-1"> SUMMATIVE I</h1>
+              <div class="summative-1" style="position: relative;
+    border: 2px solid #903f5f;
+    outline: 4px solid #903f5f;
+    outline-offset: 4px;
+    margin: 30px;
+    padding: 20px 5px;
+    width: 680px;
+    margin: 30px auto 0;
+    }: ;">
+      <h1 class="heading-1" style="position: absolute;
+    font-size: 22px;
+    font-weight: 900;
+    text-align: center;
+    transform: translateX(-50%) translateY(-50%);
+    background: #fff!important;
+    left: 50%;
+    top: -22px;
+    padding: 5px 15px;
+    border: 2px solid #903f5f;
+    color: #903f5f!important;"> SUMMATIVE I</h1>
 
       <div class="row student-info" id="studentinfo1">
         
@@ -586,8 +1055,8 @@
       </div>
       
       <div class="wrapper">
-         <div class="wripper-left">
-            <table class="table table-bordered" id="Summative_modal">
+         <div class="wripper-left" style="width: 61%; float: left;">
+            <table class="table table-bordered" id="Summative_modal" style="border-collapse: collapse;">
                <thead>
                  
                </thead>
@@ -597,24 +1066,36 @@
                </tbody>
             </table>
          </div>
-         <div class="wripper-right">
-            <h2 class="heading-2">ATTENDANCE</h2>
-            <table class="table table-bordered attendance">
-               <tr>
-                  <td>Month</td>
-                  <td>No. of Working Days</td>
-                  <td>No. of Days Present</td>
+         <div class="wripper-right" style="width: 35%; float: left; margin-left: 20px;">
+            <h2 class="heading-2" style="    padding: 5px 0px;
+    border: 2px solid #903f5f;
+    color: #903f5f!important;
+    font-size: 22px;
+    font-weight: 900;
+    text-align: center;
+    width: 170px;
+    margin: auto;
+    border-radius: 9px;">ATTENDANCE</h2>
+            <table class="table table-bordered attendance"  style="border-collapse: collapse; border: 1px solid #903f5f;    margin-bottom: 12px;
+    margin-top: 12px;">
+               <tr style="border-collapse: collapse;">
+                  <td style="border: 1px solid #903f5f;
+    color: #903f5f;
+    text-align: center;
+    padding: 2px;">Month</td>
+                  <td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">No. of Working Days</td>
+                  <td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">No. of Days Present</td>
                </tr>
               
                <tr>
-                  <td>GRAND TOTAL</td>
-                  <td id="working_days"></td>
-                  <td id="present_days"></td>
+                  <td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">GRAND TOTAL</td>
+                  <td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;" id="working_days"></td>
+                  <td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;" id="present_days"></td>
                </tr>
                <tr>
-                  <td class="bold-1">TOTAL</td>
-                  <td id="total_working_days"></td>
-                  <td id="total_present_days"> </td>
+                  <td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"  class="bold-1">TOTAL</td>
+                  <td  style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;" id="total_working_days"></td>
+                  <td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"  id="total_present_days"> </td>
                </tr>
             </table>
            <!--  <table class="table table-bordered grade-rank">
@@ -632,12 +1113,12 @@
                </tr>
             </table>
  -->
-             <table class="table table-bordered grade-rank" id="co-curricular">
+             <table class="table table-bordered grade-rank" id="co-curricular"  style="border-collapse: collapse; border: 1px solid #903f5f">
                <thead>
                <tr>
-                  <td width="20%" class="bold-2">CO-CORRICULAR ACTIVITIES</td>
-                  <td class="bold-2"><span class="bold-1">SA</span>1<br><small>(50 Markes)</small></td>
-                  <td class="bold-1">GRADE</td>
+                  <td width="20%" class="bold-2" style="font-weight: 600;font-size: 13px; color: #903f5f; border: 1px solid #903f5f">CO-CORRICULAR ACTIVITIES</td>
+                  <td class="bold-2" style="font-weight: 600;font-size: 13px; color: #903f5f; border: 1px solid #903f5f"><span class="bold-1">SA</span>1<br><small>(50 Markes)</small></td>
+                  <td style="border: 1px solid #903f5f" class="bold-1">GRADE</td>
                </tr>
                <thead>
                <tbody>   
@@ -678,23 +1159,24 @@
          <br/>
          <br/>
          <div class="clearfix"></div>
-         <div class="row sign">
-            <div class="sign-div">
+         <div class="row sign" style="clear: both;">
+            <div class="sign-div" style="width: 32%; float: left; color: #930f5f">
                <p>.........................................<br>
                   Sig. of Class Teacher
                </p>
             </div>
-            <div class="sign-div text-center">
+            <div class="sign-div text-center" style="width: 32%; float: left; color: #930f5f">
                <p>.........................................<br>
                   Head of the Institution
                </p>
             </div>
-            <div class="sign-div text-right">
+            <div class="sign-div text-right" style="width: 32%; float: left; color: #930f5f">
                <p>.........................................<br>
                   Parent / Guardian
                </p>
             </div>
          </div>
+         <br><br>
       </div>
    </div>
 
@@ -705,12 +1187,13 @@
              </div>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-default" onclick="printDiv('print-content')" >Print</button>
+               <button type="button" class="btn btn-default" onclick="PrintElem('summitiveprint')" >Print</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
       </div>
+     </div>
     <!-- Summative 1 & 2 -->
 
 

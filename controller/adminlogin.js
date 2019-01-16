@@ -2139,7 +2139,8 @@ router.post("/accountantDetail", function(req, res){
 	      	           profession: req.body.accountant_profession,
 	      	           academics: req.body.accountant_academics,
 	      	           //show_website: req.body.show_website
-	      	           email: req.body.accountant_email
+	      	           
+	      	           //email: req.body.accountant_email
 	      	          }
 	      	 
               var where= {registration_id:req.body.registration_id}
@@ -2161,6 +2162,7 @@ router.post("/accountantDetail", function(req, res){
 			      		res.redirect("/accountantList");
 			      });
 			      */
+
 			      res.redirect("/accountantList");
 		      });
 	     }

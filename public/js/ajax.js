@@ -2878,13 +2878,13 @@ function Formative1(student_id,class_id,section_id)
             if(tabulation_list.length>0)
             {
                   $("#studentinfo").empty();
-                  student_info= '<div class="row student-info" style="width:100%"><div class="col-xs-6 col-sm-6"><p>Name: <b>'+student_name+'</b></p></div><div class="col-xs-6 col-sm-2"><p>Class: <b>'+class_name+' </b></p></div><div class="col-xs-6 col-sm-2"><p>Section: <b>'+section_name+'</b></p></div></div>'   
+                  student_info= '<div class="row student-info" style="width:100%;"><div class="col-xs-6 col-sm-6" style="width: 50%; float:left;"><p>Name: <b>'+student_name+'</b></p></div><div class="col-xs-6 col-sm-2" style="width: 20%; float:left;"><p>Class: <b>'+class_name+' </b></p></div><div class="col-xs-6 col-sm-2"  style="width: 20%; float:left;"><p>Section: <b>'+section_name+'</b></p></div></div>'   
                   $("#studentinfo").append(student_info);        
 
 
 
                
-                    dynamicheader ='<tr><th>Sr.No</th><th>Subject</th>';
+                    dynamicheader ='<tr class="aaaaa"><th style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">Sr.No</th><th style="border: 1px solid #903f5f; color: #903f5f ;text-align:center;padding: 2px;">Subject</th>';
                    
                     var keys = 0;
                     for (var i = 0; i < tabulation_list.length; i++) 
@@ -2912,18 +2912,18 @@ function Formative1(student_id,class_id,section_id)
                             //  console.log('keys',+keys);
                            subjecttotal=0.0;
 
-                           dynamictbody+='<tr><td>'+serial+'</td>' 
-                           dynamictbody+='<td>'+subject_name+'</td>';
+                           dynamictbody+='<tr style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;"><td style="border: 1px solid #903f5f">'+serial+'</td>' 
+                           dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f; text-align:center;padding: 2px;">'+subject_name+'</td>';
                            var total  = 0 ;
                            for(k=0;k<keys.length;k++)
                              {
 
-                              dynamictbody+='<td>'+json[keys[k]]+'</td>'
+                              dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">'+json[keys[k]]+'</td>'
                               total +=json[keys[k]];
                              }
                           // dynamictbody+='<td>'+total+'</td>'    
                           //dynamictbody+='<td>'+grade+'</td>'
-                          dynamictbody+='<td>'+total+'</td>'
+                          dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">'+total+'</td>'
                            var grade = '';
                            averagemarks= total/singlesubject.length;
                            for (var l = 0; l < gradelist.length; l++) 
@@ -2934,7 +2934,7 @@ function Formative1(student_id,class_id,section_id)
                                  if(averagemarks >= from    && averagemarks <= upto  )
                                     grade = gradelist[l].name ;
                           }
-                          dynamictbody+='<td>'+grade+'</td></tr>'
+                          dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">'+grade+'</td></tr>'
                            // if(i==0) 
                             
                            // dynamictbody+='<td>'+subjecttotal+'</td>';
@@ -2944,7 +2944,7 @@ function Formative1(student_id,class_id,section_id)
                           for(k=0;k<keys.length;k++)
                              {
                                  
-                                  dynamicheader+='<th>'+keys[k].replace(/_/g," ")+'</th>';
+                                  dynamicheader+='<th style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">'+keys[k].replace(/_/g," ")+'</th>';
                                 
                              }
                         }
@@ -2961,7 +2961,7 @@ function Formative1(student_id,class_id,section_id)
                           //var href = "/Formative/?student_id="+tabulationlist[i].student_id+"&class_id="+class_id+"&section_id="+section_id+"&exam_id="+exam_id+"";
                           
                      }
-                      dynamicheader+='<th>Total 20%</th><th>Grade</th></tr>';
+                      dynamicheader+='<th style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">Total 20%</th><th style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">Grade</th></tr>';
                      $('#Formative_modal thead').append(dynamicheader);
                       $('#Formative_modal tbody').append(dynamictbody);
 
@@ -2982,10 +2982,10 @@ function Formative1(student_id,class_id,section_id)
                         });
                       });
                      var grand_total  = 0;
-                     var dynamic_total  = '<tr><td colspan=2>Total</td>';
+                     var dynamic_total  = '<tr><td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;" colspan=2>Total</td>';
                      for (i = 0; i < result.length; ++i) {
     
-                          dynamic_total += '<td>'+result[i]+'</td>';
+                          dynamic_total += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">'+result[i]+'</td>';
                           grand_total +=result[i];
                         }
 
@@ -3000,7 +3000,7 @@ function Formative1(student_id,class_id,section_id)
                                      if(averagemarks >= from    && averagemarks <= upto  )
                                         grand_grade = gradelist[l].name ;
                               }
-                      dynamic_total   += '<td>'+grand_grade+'</td></tr>'; 
+                      dynamic_total   += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">'+grand_grade+'</td></tr>'; 
                       $('#total_grade').text(grand_grade);
                       $('#working_days').text(working_days);
                       $('#present_days').text(present_days);
@@ -3009,7 +3009,7 @@ function Formative1(student_id,class_id,section_id)
                       $('#total_present_days').text(present_days);
                       $('#Formative_modal tbody').append(dynamic_total);
 
-                      var dynamic_grade  = '<tr><td colspan=2>Grade</td>';
+                      var dynamic_grade  = '<tr><td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;" colspan=2>Grade</td>';
                        for (i = 0; i < result.length; ++i) {
                                var grade = '';
                                averagemarks= result[i]/tr;
@@ -3022,12 +3022,12 @@ function Formative1(student_id,class_id,section_id)
                                         grade = gradelist[l].name ;
                               }
 
-                              dynamic_grade   += '<td>'+grade+'</td>';
+                              dynamic_grade   += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px;">'+grade+'</td>';
                          
                         }
                         
 
-                         dynamic_grade   += '<td></td></tr>'; 
+                         dynamic_grade   += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align:center;padding: 2px; color: #903f5f"></td></tr>'; 
                           $('#Formative_modal tbody').append(dynamic_grade);
                      console.log(dynamic_total);
                    // dynamicheader+='<th>Total</th><th>Grade</th><th>Marks Card</th></tr>'; 
@@ -3086,9 +3086,9 @@ function Formative1(student_id,class_id,section_id)
             {
 
                    $("#studentinfo1").empty();
-                  student_info= '<div class="row student-info" style="width:100%"><div class="col-xs-6 col-sm-6"><p>Name: <b>'+student_name+'</b></p></div><div class="col-xs-6 col-sm-2"><p>Class: <b>'+class_name+' </b></p></div><div class="col-xs-6 col-sm-2"><p>Section: <b>'+section_name+'</b></p></div></div>'
+                  student_info= '<div class="row student-info" style="width:100%"><div class="col-xs-6 col-sm-6" style="width: 50%; float: left;"><p>Name: <b>'+student_name+'</b></p></div><div class="col-xs-6 col-sm-2" style="width: 20%; float: left;"><p>Class: <b>'+class_name+' </b></p></div><div class="col-xs-6 col-sm-2" style="width: 20%; float: left;"><p>Section: <b>'+section_name+'</b></p></div></div>'
                
-                    dynamicheader ='<tr><th>Sr.No</th><th>Subject</th>';
+                    dynamicheader ='<tr style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"><th style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">Sr.No</th><th style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">Subject</th>';
                     $("#studentinfo1").append(student_info);
 
 
@@ -3120,18 +3120,18 @@ function Formative1(student_id,class_id,section_id)
                             //  console.log('keys',+keys);
                            subjecttotal=0.0;
 
-                           dynamictbody+='<tr><td>'+serial+'</td>' 
-                           dynamictbody+='<td>'+subject_name+'</td>';
+                           dynamictbody+='<tr style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+serial+'</td>' 
+                           dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+subject_name+'</td>';
                            var total  = 0 ;
                            for(k=0;k<keys.length;k++)
                              {
 
-                              dynamictbody+='<td>'+json[keys[k]]+'</td>'
+                              dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+json[keys[k]]+'</td>'
                               total +=json[keys[k]];
                              }
                           // dynamictbody+='<td>'+total+'</td>'    
                           //dynamictbody+='<td>'+grade+'</td>'
-                          dynamictbody+='<td>'+total+'</td>'
+                          dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+total+'</td>'
                            var grade = '';
                            averagemarks= total/singlesubject.length;
                            for (var l = 0; l < gradelist.length; l++) 
@@ -3142,7 +3142,7 @@ function Formative1(student_id,class_id,section_id)
                                  if(averagemarks >= from    && averagemarks <= upto  )
                                     grade = gradelist[l].name ;
                           }
-                          dynamictbody+='<td>'+grade+'</td></tr>'
+                          dynamictbody+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+grade+'</td></tr>'
                            // if(i==0) 
                             
                            // dynamictbody+='<td>'+subjecttotal+'</td>';
@@ -3158,7 +3158,7 @@ function Formative1(student_id,class_id,section_id)
                                   var columnname =columnname.replace(','," ");
                                   var columnname =columnname.replace(':'," "); 
 
-                                  dynamicheader+='<th>'+columnname+'</th>';
+                                  dynamicheader+='<th style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+columnname+'</th>';
                                 
                              }
                         }
@@ -3175,7 +3175,7 @@ function Formative1(student_id,class_id,section_id)
                           //var href = "/Formative/?student_id="+tabulationlist[i].student_id+"&class_id="+class_id+"&section_id="+section_id+"&exam_id="+exam_id+"";
                           
                      }
-                      dynamicheader+='<th>Total 20%</th><th>Grade</th></tr>';
+                      dynamicheader+='<th style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">Total 20%</th><th style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">Grade</th></tr>';
                      $('#Summative_modal thead').append(dynamicheader);
                       $('#Summative_modal tbody').append(dynamictbody);
 
@@ -3197,10 +3197,10 @@ function Formative1(student_id,class_id,section_id)
                         });
                       });
                      var grand_total  = 0;
-                     var dynamic_total  = '<tr><td colspan=2>Total</td>';
+                     var dynamic_total  = '<tr style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;" colspan=2>Total</td>';
                      for (i = 0; i < result.length; ++i) {
     
-                          dynamic_total += '<td>'+result[i]+'</td>';
+                          dynamic_total += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+result[i]+'</td>';
                           grand_total +=result[i];
                         }
 
@@ -3215,7 +3215,7 @@ function Formative1(student_id,class_id,section_id)
                                      if(averagemarks >= from    && averagemarks <= upto  )
                                         grand_grade = gradelist[l].name ;
                               }
-                      dynamic_total   += '<td>'+grand_grade+'</td></tr>'; 
+                      dynamic_total   += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+grand_grade+'</td></tr>'; 
                       $('#total_grade').text(grand_grade);
                       $('#working_days').text(working_days);
                       $('#present_days').text(present_days);
@@ -3224,7 +3224,7 @@ function Formative1(student_id,class_id,section_id)
                       $('#total_present_days').text(present_days);
                       $('#Summative_modal tbody').append(dynamic_total);
 
-                      var dynamic_grade  = '<tr><td colspan=2>Grade</td>';
+                      var dynamic_grade  = '<tr style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;" colspan=2>Grade</td>';
                        for (i = 0; i < result.length; ++i) {
                                var grade = '';
                                averagemarks= result[i]/tr;
@@ -3237,12 +3237,12 @@ function Formative1(student_id,class_id,section_id)
                                         grade = gradelist[l].name ;
                               }
 
-                              dynamic_grade   += '<td>'+grade+'</td>';
+                              dynamic_grade   += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+grade+'</td>';
                          
                         }
                         
 
-                         dynamic_grade   += '<td></td></tr>'; 
+                         dynamic_grade   += '<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"></td></tr>'; 
 
 
                          /* Co-curriculam Activty */
@@ -3272,8 +3272,8 @@ function Formative1(student_id,class_id,section_id)
                                         var subject_name =subject_name.replace(','," ");
                                         var subject_name =subject_name.replace(':'," "); 
 
-                                      curriculam+='<tr><td>'+subject_name+'</td>';  
-                                      curriculam+='<td>'+json[keys[k]]+'</td>'
+                                      curriculam+='<tr style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+subject_name+'</td>';  
+                                      curriculam+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+json[keys[k]]+'</td>'
                                       //total =json[keys[k]];
                                       var grade = '';
                                       averagemarks= json[keys[k]]; 
@@ -3286,7 +3286,7 @@ function Formative1(student_id,class_id,section_id)
                                              if(averagemarks >= from    && averagemarks <= upto  )
                                                 grade = gradelist[l].name ;
                                       }
-                                      curriculam+='<td>'+grade+'</td><tr>'
+                                      curriculam+='<td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+grade+'</td><tr>'
                                    }
                                     
                                    averagemarks= total/l; 
@@ -3299,7 +3299,7 @@ function Formative1(student_id,class_id,section_id)
                                              if(averagemarks >= from    && averagemarks <= upto  )
                                                 totalgrade = gradelist[l].name ;
                                       }
-                                    curriculam+='<tr><td>TOTAL GRADE</td><td>'+total+'</td><td>'+totalgrade+'</td></tr>'
+                                    curriculam+='<tr style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">TOTAL GRADE</td><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+total+'</td><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;">'+totalgrade+'</td></tr>'
                                  
                          } 
                           $("#co-curricular tbody").append(curriculam);
@@ -3312,7 +3312,7 @@ function Formative1(student_id,class_id,section_id)
             }
             else
             {
-               $('.tableshift tbody').append('<tr ><td colspan="2">NO DATA FOUND<td></tr>');  
+               $('.tableshift tbody').append('<tr style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;"><td style="border: 1px solid #903f5f;color: #903f5f;text-align: center;padding: 2px;" colspan="2">NO DATA FOUND<td></tr>');  
             }
         },
         error: function() {
@@ -3414,12 +3414,12 @@ function convertDateInWords(date_str) {
 
 
 
-function PrintElem()
+function PrintElem(id)
 {
     
     try 
-    {
-        var printContent = document.getElementById('printSection').innerHTML;
+    {   $('.asas').hide();
+        var printContent = document.getElementById(id).innerHTML;
         var windowUrl = '';
         var uniqueName = new Date();
         var windowName = 'Print' + uniqueName.getTime();
@@ -3428,10 +3428,13 @@ function PrintElem()
         printWindow.document.close();
         printWindow.focus();
         printWindow.print();
+
+         $('.asas').show();
         printWindow.close();
     }
     catch (e) 
     {
+        $('.asas').show();
         self.print();
     }
 } 
