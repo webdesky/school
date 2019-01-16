@@ -959,6 +959,8 @@ function getStudentAttendence(attendence_date){
     //var attendence_date         = moment(attendence_date).format('YYYY-DD-MM'); 
     var class_id                = $('#class_id').val();
     var section_id              = $('#section_id').val();
+    var class_name=   $('#class_id').find(":selected").text();
+    var section_name=   $('#section_id').find(":selected").text();
 
     // console.log(attendence_date);
     // return
@@ -980,11 +982,11 @@ function getStudentAttendence(attendence_date){
                  var count = i+1;
                  console.log(response.attendence)
                 if(response[i].attendence==undefined || response[i].attendence==0){
-                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1">Present</option><option value="2">Absent</option></select></td></tr>');
+                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td><input type="hidden" value="'+class_name+'" name="class_name"><input type="hidden" value="'+section_name+'" name="section_name"><input type="hidden" value="'+response[i].name+'" name="studentname"><input type="hidden" value="'+response[i].parent_id+'" name="parent_id">'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1">Present</option><option value="2">Absent</option></select></td></tr>');
                 }else if(response[i].attendence==1){
-                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" selected>Present</option><option value="2">Absent</option></select></td></tr>');
+                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td><input type="hidden" value="'+class_name+'" name="class_name"><input type="hidden" value="'+section_name+'" name="section_name"><input type="hidden" value="'+response[i].name+'" name="studentname"><input type="hidden" value="'+response[i].parent_id+'" name="parent_id">'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" selected>Present</option><option value="2">Absent</option></select></td></tr>');
                 }else if(response[i].attendence==2){
-                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td>'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" >Present</option><option value="2" selected>Absent</option></select></td></tr>');
+                    $('#attendence tbody').append('<tr><td>'+count+'</td><td>'+response[i].admission_number+'</td><td><input type="hidden" value="'+class_name+'" name="class_name"><input type="hidden" value="'+section_name+'" name="section_name"><input type="hidden" value="'+response[i].name+'" name="studentname"><input type="hidden" value="'+response[i].parent_id+'" name="parent_id">'+response[i].name+'</td><td><input type="hidden"  name="student_id"   value="'+response[i].registration_id+'"><select class="form-control select" id="status" name="status"><option value="0">Select Attendence</option><option value="1" >Present</option><option value="2" selected>Absent</option></select></td></tr>');
                 }
                 
             }
