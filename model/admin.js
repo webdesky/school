@@ -554,7 +554,7 @@ module.exports.getStudent=function(table,obj, cb){
 		// rajendra sir query
         // var que = "SELECT *  FROM "+table.tbl_attendance+" INNER JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id  INNER JOIN "+table.tbl_registration+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id="+obj.class_id+" AND "+table.tbl_attendance+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
 
-         var que = "SELECT DISTINCT(tbl_registration.registration_id) as registration_id ,tbl_registration.name,tbl_registration.admission_number  FROM "+table.tbl_registration+" LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id  LEFT JOIN "+table.tbl_attendance+" ON "+table.tbl_registration+".registration_id="+table.tbl_attendance+".registration_id WHERE "+table.tbl_enroll+".class_id="+obj.class_id+" AND "+table.tbl_enroll+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+         var que = "SELECT DISTINCT(tbl_registration.registration_id) as registration_id ,tbl_registration.name,tbl_registration.parent_id,tbl_registration.admission_number  FROM "+table.tbl_registration+" LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id  LEFT JOIN "+table.tbl_attendance+" ON "+table.tbl_registration+".registration_id="+table.tbl_attendance+".registration_id WHERE "+table.tbl_enroll+".class_id="+obj.class_id+" AND "+table.tbl_enroll+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
 
 		 console.log(que); 
 		con.query(que, cb);
@@ -666,7 +666,7 @@ module.exports.getTeacherAttendence=function(table,obj, cb){
 
 	con.connect(function(err){
 		var que = "SELECT *  FROM "+table.tablename+" WHERE  "+table.tablename+".attendence_date='"+obj.attendence_date+"' AND "+table.tablename+".registration_id="+obj.registration_id+" AND "+table.tablename+".session_year='"+obj.session_year+"'";
-		 console.log('Teacherrrrrrrrrrrrrrr',que);
+		 //console.log('Teacherrrrrrrrrrrrrrr',que);
 		con.query(que, cb);
 	});
 }

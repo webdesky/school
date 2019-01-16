@@ -3534,24 +3534,32 @@ router.get("/getStudentAttendence", function(req, res){
 			admin.getStudent(table,{class_id:class_id,section_id:section_id,session_year:session_year},function(err, result){
 						var student_id  = result;
 
-						//console.log(student_id)
+						student_id.forEach(function(item, index){
+							student_id[index].parent_phone="";
+						 
+						});
 						async.each(student_id, function (item, done) {
 
 						  	admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:item.registration_id,session_year:session_year},function(err, result1){
 									console.log('sas',result1)
+								admin.findWhere({tablename:'tbl_registration'},{registration_id:item.parent_id},function(err, result2){
+										//console.log('sas',result1)		
 								  	if(result1==undefined || result1==''){
-								  		   student_id[n].attendence='';
+											 student_id[n].attendence='';
+											 student_id[n].parent_phone=result2[0].phone;
 								  	}else{
-								  		   student_id[n].attendence=result1[0].status;
+											 student_id[n].attendence=result1[0].status;
+											 student_id[n].parent_phone=result2[0].phone;
 								  	}
 								  
 								    n++;
 									
-								    done(null);
+									done(null);
+								});
 								});
 						}, function(){
 
-					 	//console.log("##############",student_id)
+					 	console.log("###^^^^^^^^^^^^^^^^^^#",student_id)
 						res.send(student_id)
 					
 						});
@@ -3638,6 +3646,13 @@ router.post("/addAttendence", function(req, res){
 			var status				= req.body.status;
 			var session_year	    = req.session.session_year;
 			var check               = Array.isArray(student_id);
+			var parent_id           = req.body.parent_id;
+			var student_name        = req.body.studentname;
+			var class_name          = req.body.class_name;
+			var section_name        = req.body.section_name;
+
+			 
+ 
 			  
 			if(check==false){
 				var data = {
@@ -3668,11 +3683,33 @@ router.post("/addAttendence", function(req, res){
 		  			});
 		  			 
 		  			admin.insert_all(table,data,function(err, result){
+
+						if(parseInt(status)==2)
+						{
+						   admin.findWhere({tablename:'tbl_registration'},{registration_id:parent_id},function(err,resultparent){
+							   message="Dear Parent, Your child "+student_name+" "+ class_name+ "("+ section_name+") section is absent today."
+							   mobileNo= resultparent[0].phone;
+							  // console.log('Parentttttttttttttttttttttttt',mobileNo);
+							   //mobileNo= mobileNo.substring(0, mobileNo.length - 1)
+							   //var mobileNo = [ "XXXXXXXXXX", "XXXXXXXXXX", "XXXXXXXXXX" ];
+							   //var mobileNo =  "XXXXXXXXXX,XXXXXXXXXX,XXXXXXXXXX";
+							   msg91.send(mobileNo, message, function(err, response){
+								 req.flash('success',"message sent successfully");
+							   });
+
+						   });
+						}
 			  			
 			  		});
 			}else{
-
-				for(var k in student_id){
+				// console.log('paernt----->', parent_id);
+				// console.log('student----->', student_id);
+				// return false;
+				z=0
+				//for(var k in student_id)
+				 
+				for(k=0; k<student_id.length;k++)
+				{
 
 					var data = {
 						class_id 		: class_id,
@@ -3684,11 +3721,10 @@ router.post("/addAttendence", function(req, res){
 						session_year	: req.session.session_year,
 						user_role		: 3
 					}
+				
 
 					var table   = {tbl_attendance:'tbl_attendance',tbl_enroll : 'tbl_enroll',tablename:'tbl_attendance'};
 		  			admin.getStudentAttendence(table,{class_id:class_id,section_id:section_id,attendence_date:attendence_date,student_id:student_id[k],session_year:session_year},function(err, result1){
-		  				  //console.log('abcbdsdd----------',result1);
-		  				 // return false;
 		  				if(result1=='' || result1==undefined){
 		  					
 		  				}else{
@@ -3698,17 +3734,27 @@ router.post("/addAttendence", function(req, res){
 				            admin.deletewhere(table,findObj,function(err,result){
 	                        });
 		  				}
-
-		  				
-		  			});
-
-		  			//console.log('avbc',data);return false;
+					  });
+					  var table   = {tablename:'tbl_attendance'}
 		  			admin.insert_all(table,data,function(err, result){
+						if(parseInt(status[k])==2)
+						{
+							//console.log('paerntid----->'+z, parent_id[k]);
+						   admin.findWhere({tablename:'tbl_registration'},{registration_id:parent_id[k]},function(err,resultparent){
+							  // console.log('section----->',student_name[k]+" "+ class_name[k]+ "("+ section_name[k]+")");
+							   message="Dear Parent, Your child "+student_name[k]+" "+ class_name[k]+ "("+ section_name[k]+") section is absent today."
+							   mobileNo= resultparent[0].phone;
+							   msg91.send(mobileNo, message, function(err, response){
+								 req.flash('success',"message sent successfully");
+							   }); 
+
+						   });
+						}
 			  			
 			  		});
 		  			//console.log(data)
 		  			
-			  		
+			  		z++;
 				}
 			}
 		}else{
