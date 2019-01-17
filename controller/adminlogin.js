@@ -7508,7 +7508,7 @@ router.get("/pay_fees", function(req, res)
 
 		                         }
 		                         var where  = {payment_id : result[0].payment_id}
-		                         admin.updateWhere(table_payment,where,update_data, function(err, result){ 
+		                         admin.updateWhereAccounting(table_payment,where,update_data, function(err, result){ 
 		                         });
 				    		}
 
@@ -7584,7 +7584,7 @@ router.get("/pay_fees", function(req, res)
 
 		                         }
 		                         var where  = {payment_id : result[0].payment_id}
-		                         admin.updateWhere(table_payment,where,update_data, function(err, result){ 
+		                         admin.updateWhereAccounting(table_payment,where,update_data, function(err, result){ 
 		                         });
 				    		}
 
@@ -7660,7 +7660,7 @@ router.get("/pay_fees", function(req, res)
 
 		                         }
 		                         var where  = {payment_id : result[0].payment_id}
-		                         admin.updateWhere(table_payment,where,update_data, function(err, result){ 
+		                         admin.updateWhereAccounting(table_payment,where,update_data, function(err, result){ 
 		                         });
 				    		}
 

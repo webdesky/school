@@ -2344,7 +2344,10 @@ function Formative1(student_id,class_id,section_id)
                 favorite.push($(this).val());
             });
             var data =[];
-           
+            if(favorite==''){
+                alert('Please Select Fees To Pay');
+                return false;
+            }
             var user_id = $('#student_id').val();
             $.ajax({
                url: '/get_payment_data',
@@ -3420,7 +3423,7 @@ function PrintElem()
 {
     
     try 
-    {
+    {   $('.asas').hide();
         var printContent = document.getElementById('printSection').innerHTML;
         var windowUrl = '';
         var uniqueName = new Date();
@@ -3430,10 +3433,12 @@ function PrintElem()
         printWindow.document.close();
         printWindow.focus();
         printWindow.print();
+        $('.asas').show();
         printWindow.close();
     }
     catch (e) 
-    {
+    {   
+         $('.asas').show();
         self.print();
     }
 } 

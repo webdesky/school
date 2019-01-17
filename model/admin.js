@@ -833,6 +833,38 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
  
 }
 
+
+module.exports.updateWhereAccounting=function(tableobj,where, obj, cb){
+    
+    con.connect(function(err){
+      var que= "UPDATE "+tableobj.tablename+" SET ";
+      var counter = 1;
+		for(var k in obj){
+			txt =obj[k].toString();
+				txt =txt.replace(/'/g, "\\'");
+			if(counter==1)
+			{
+				que += k+'= "'+txt+'"';
+			}
+			else
+			{
+				que += " , "+k+'= "'+txt+'"' ;
+
+			}
+			counter++;
+		}
+
+	   // var key = Object.keys(where);
+	   
+	   // if(key.length>0)
+	   //   que += " WHERE "+key[0]+" = '"+where[key[0]].replace(/'/g, "\\'")+"'";	
+ 
+
+	  console.log('#####################',que);
+       con.query(que, cb);
+	});
+ 
+}
 module.exports.deletewhere=function(tableobj,obj,cb)
 {
   var que= "DELETE  FROM "+tableobj.tablename+" WHERE ";
