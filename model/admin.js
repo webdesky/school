@@ -574,8 +574,13 @@ module.exports.getStudentsformarks=function(table,obj, cb){
 module.exports.getStudentByClassId= function(table,obj,cb){
 	con.connect(function(err){
 		//select DISTINCT(student.student_id) as student_id,student.name,student.student_code from enroll INNER JOIN student ON enroll.student_id= student.student_id $where
-        var que = "SELECT DISTINCT(tbl_registration.registration_id) as student_id,tbl_registration.name  FROM "+table.tablename+" INNER JOIN tbl_registration ON "+table.tablename+".registration_id= tbl_registration.registration_id  WHERE "+table.tablename+".class_id='"+obj.class_id+"' AND "+table.tablename+".section_id='"+obj.section_id+"' AND "+table.tablename+".session_year= '"+obj.year+"'";		
-		//console.log(que);
+		if(obj.section_id!=undefined){
+        var que = "SELECT DISTINCT(tbl_registration.registration_id) as student_id,tbl_registration.name  FROM "+table.tablename+" INNER JOIN tbl_registration ON "+table.tablename+".registration_id= tbl_registration.registration_id  WHERE "+table.tablename+".class_id='"+obj.class_id+"' AND "+table.tablename+".section_id='"+obj.section_id+"' AND "+table.tablename+".session_year= '"+obj.year+"'";	
+       	}else{
+       	 var que = "SELECT DISTINCT(tbl_registration.registration_id) as student_id,tbl_registration.name  FROM "+table.tablename+" INNER JOIN tbl_registration ON "+table.tablename+".registration_id= tbl_registration.registration_id  WHERE "+table.tablename+".class_id='"+obj.class_id+"'  AND "+table.tablename+".session_year= '"+obj.year+"'";	
+       		
+       	}	
+		console.log(que);
 		con.query(que, cb);
 	});	
 }
@@ -586,8 +591,8 @@ module.exports.getStudentByClassId= function(table,obj,cb){
  		con.connect(function(err){
 		//SELECT * FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id=tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id  WHERE tbl_registration.registration_id = 61 
         // var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount from "+table.tablename+" INNER JOIN tbl_registration ON tbl_registration.registration_id="+table.tablename+".student_id INNER JOIN tbl_transport ON tbl_registration.transport_id=tbl_transport.transport_id WHERE "+table.tablename+".student_id="+obj.student_id+"";		
-        var que = "SELECT tbl_transport.route_fare,SUM('tbl_transport_payment_master.amount') as transport_paid_amount,SUM('tbl_transport_payment_master.discount') as transport_paid_discount FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_student_payment_master ON tbl_registration.registration_id = tbl_student_payment_master.student_id WHERE tbl_registration.registration_id = "+obj.student_id+""
-		console.log(que);
+        var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id WHERE tbl_registration.registration_id = "+obj.student_id+""
+		console.log('transport',que);
 		con.query(que, cb);
 	});	
  }
@@ -836,33 +841,30 @@ module.exports.updateWhere=function(tableobj,where, obj, cb){
 
 module.exports.updateWhereAccounting=function(tableobj,where, obj, cb){
     
-    con.connect(function(err){
+   con.connect(function(err){
       var que= "UPDATE "+tableobj.tablename+" SET ";
       var counter = 1;
 		for(var k in obj){
-			txt =obj[k].toString();
-				txt =txt.replace(/'/g, "\\'");
 			if(counter==1)
 			{
-				que += k+'= "'+txt+'"';
+				que += k+"= '"+obj[k]+"'";
 			}
 			else
 			{
-				que += " , "+k+'= "'+txt+'"' ;
+				que += " , "+k+"= '"+obj[k]+"' ";
 
 			}
 			counter++;
 		}
 
-	   // var key = Object.keys(where);
+	   var key = Object.keys(where);
 	   
-	   // if(key.length>0)
-	   //   que += " WHERE "+key[0]+" = '"+where[key[0]].replace(/'/g, "\\'")+"'";	
- 
+	   if(key.length>0)
 
-	  console.log('#####################',que);
+	     que += " WHERE "+key[0]+" = '"+where[key[0]]+"'";	
        con.query(que, cb);
 	});
+ 
  
 }
 module.exports.deletewhere=function(tableobj,obj,cb)
@@ -1291,6 +1293,27 @@ module.exports.find_marks_obtained_total= function(table,obj,cb){
 
   });
 }
+
+// gaurav 17 jan 
+module.exports.findAllPayment=function(obj, cb){
+	//console.log(obj);
+	con.connect(function(err){
+		var que = "SELECT "+obj.table+".*, tbl_registration.name FROM "+obj.table+" LEFT JOIN tbl_registration ON tbl_registration.registration_id="+obj.table+".student_id";
+
+		con.query(que, cb);
+	});
+}
+
+
+module.exports.findStudentTransportFees=function(table,obj, cb){
+	//console.log(obj);
+	con.connect(function(err){
+		var que = "SELECT tbl_transport.route_fare FROM "+table.tablename+" LEFT JOIN tbl_transport ON tbl_transport.transport_id="+table.tablename+".transport_id WHERE "+table.tablename+".registration_id="+obj.registration_id+" ";
+		console.log('transport',que);
+		con.query(que, cb);
+	});
+}
+
 
 
 

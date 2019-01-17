@@ -1,0 +1,170 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Manage Accouting Payments</u></b></h1>
+          <p class="card-description">
+          <a href="#"><button class="btn btn-inverse-dark btn-fw">Accounting Payment</button></a>
+          </p>
+          		<div class="col-md-12">
+						<div class="form-group row">
+							
+							<div class="col-sm-2">
+								<div class="form-radio abc" id="fees">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input abc" name="fees" id="register" value="fees" checked > Fees
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-radio" id="trans">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="fees" value="trans"> Transport Fees
+									</label>
+								</div>
+							</div>
+							
+
+						</div>
+				</div>
+		    <div id="fees_detail">
+           <% if(payments!=''){ %>
+			        <div class="table-responsive">
+			          <table class="table table-bordered datatable">
+			            <thead>
+			              <tr>
+			                <th>
+			                  #
+			                </th>
+			                <th>
+			                  Receipt Number
+			                </th>
+			                <th>
+			                  Student Name
+			                </th>
+			                <th>
+			                  Fees Type
+			                </th>
+			                <th>
+			                  Fees Term
+			                </th>
+			                <th>
+			                  Amount
+			                </th>
+			                <th>Discount</th>
+			                <th>Date</th>
+			                <th>Action</th>
+			              </tr>
+			            </thead>
+			            <tbody>
+			            <%  var i=1; payments.forEach(function(payments){ %>
+			              <tr id="tr_<%= i %>">
+			                <td>
+			                  <%= i %>
+			                </td>
+			                <td>
+			                  <%= payments.receipt_number %>
+			                </td>
+			                <td>
+			                  <%= payments.name %>
+			                </td>
+			                
+			                <td>
+			                  <%= payments.fees_type %>
+			                </td>
+			                <td>
+			                  <%= payments.fees_term %>
+			                </td>
+			                <td>
+			                	<%= payments.amount %>
+			                </td>
+			                <td>
+			                	<%= payments.discount %>
+			                </td>
+			                <td>
+			                	<%=  moment(payments.date ).format('DD-MM-YYYY') %>
+			                </td>
+			             	<td>
+			                 <a href="/payments_edit/?id=<%= payments.payment_master_id %>">
+			                 			 <button type="button" class="btn btn-dark btn-fw">
+			                              <i class="mdi mdi-cloud-download"></i>Edit
+			                              </button>
+			                             </a>
+			                             
+			                </td>
+			              </tr>
+			            <% i++; })%>
+			            </tbody>
+			          </table>
+			        </div>
+           <% } %>
+           </div>
+           <div id="transport_fees_detail" style="display: none;">
+           	<% if(transport!=''){ %>
+			        <div class="table-responsive">
+			          <table class="table table-bordered datatable">
+			            <thead>
+			              <tr>
+			                <th>
+			                  #
+			                </th>
+			                <th>
+			                  Receipt Number
+			                </th>
+			                <th>
+			                  Student Name
+			                </th>
+			                
+			                <th>
+			                  Amount
+			                </th>
+			                <th>Discount</th>
+			                <th>Date</th>
+			                <th>Action</th>
+			              </tr>
+			            </thead>
+			            <tbody>
+			            <%  var i=1; transport.forEach(function(transport){ %>
+			              <tr id="tr_<%= i %>">
+			                <td>
+			                  <%= i %>
+			                </td>
+			                <td>
+			                  <%= transport.receipt_number %>
+			                </td>
+			                <td>
+			                  <%= transport.name %>
+			                </td>
+			                
+			               
+			                <td>
+			                	<%= transport.amount %>
+			                </td>
+			                <td>
+			                	<%= transport.discount %>
+			                </td>
+			                <td>
+			                	<%=  moment(transport.date ).format('DD-MM-YYYY') %>
+			                </td>
+			             	<td>
+			                 <a href="/transport_payments_edit/?id=<%= transport.transport_master_id %>">
+			                 			 <button type="button" class="btn btn-dark btn-fw">
+			                              <i class="mdi mdi-cloud-download"></i>Edit
+			                              </button>
+			                             </a>
+			                             
+			                </td>
+			              </tr>
+			            <% i++; })%>
+			            </tbody>
+			          </table>
+			        </div>
+           <% } %>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          

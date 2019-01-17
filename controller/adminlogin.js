@@ -7950,8 +7950,13 @@ router.get("/ajax_get_payment_receipt_data", function(req, res)
 
             var table  = {tablename : 'tbl_enroll'}
      		var fee_payment  = '';
-     		admin.getStudentByClassId(table,{class_id:class_id,year:year,section_id:section_id},function(err, result){
-
+     		if(class_id!='' && section_id!=''){
+     		  	var obj  =  {class_id:class_id,year:year,section_id:section_id}
+     		}else if(class_id!='' && section_id==''){
+     			var obj  =  {class_id:class_id,year:year}
+     		}
+     		admin.getStudentByClassId(table,obj,function(err, result){
+     			console.log(result);
 		        var fee_payment 	 = result;
 		   		 fee_payment.forEach(function(item, index){
 		 	 	  fee_payment[index].transport_fees ="";
@@ -8225,7 +8230,7 @@ router.get("/Events",function(req,res){
             if(req.query.id){
                 admin.findWhere(tableobj,findObj,function(err,result1){
 	                if(result1){
-	                 	data =JSON.parse(JSON.stringify(result1)); 
+	                 	data       =   JSON.parse(JSON.stringify(result1)); 
 	                    console.log('ddd') ;
 	                    console.log(data[0]);
 					    var pagedata = {title : "Welcome Admin", pagename : "admin/Events", message : req.flash('msg'),Events : data[0]};
@@ -8265,5 +8270,218 @@ function formatDate(date, time2) {
     return f;
 }
 
+router.get("/manage_payment",function(req,res){
+	if(req.session.user_role==1)
+	{ 		
+		// console.log(req.query);
+		// var student_id   = req.query.student_id;
+		// var class_id     = req.query.class_id;
+		// var section_id   = req.query.section_id;
+		// var exam_id      = req.query.exam_id;
+		var table  = 'tbl_student_payment_master';
+	   
+		admin.findAllPayment({table:table},function(err, result){
+			var payments  = result;
+			var table_transport  = 'tbl_transport_payment_master';
+			admin.findAllPayment({table:table_transport},function(err, transport){
+	    		var pagedata = {title : "Welcome Admin", pagename : "admin/manage_payment", message : req.flash('msg'),payments:payments,transport:transport,moment:moment};
+	    		res.render("admin_layout", pagedata);
+	    	});
+		});
+	}else{
+	      
+		    res.render('admin/index',{error : req.flash('msg')});
+	}
+});
 
+router.get("/payments_edit", function(req, res){
+	if(req.session.user_role==1){
+         
+         
+        var tableobj  = {tablename:'tbl_student_payment_master'}
+	    if(req.query.id)
+	     {
+           var findObj = {payment_master_id:req.query.id}
+           admin.findWhere(tableobj,findObj,function(err,result){
+           if(result)
+	           {
+	              var $data =JSON.parse(JSON.stringify(result)); 
+	              var fees_id    = $data[0].fees_id;
+	              var tableobj1  = {tablename:'tbl_fees_structure'}
+	              var findObj1   = {fees_id:fees_id}
+	              admin.findWhere(tableobj1,findObj1,function(err,result1){
+		              //console.log($data[0].fees_id);
+		              var total_fees  = result1[0].fees_amount;
+		              var pagedata = {title : "Welcome Admin", pagename : "admin/payment_edit", success: req.flash('success'),error: req.flash('error'),paymentData:$data[0],total_fees:total_fees};
+				      res.render("admin_layout", pagedata);
+			      });
+	           }
+           });
+	     }
+	}else{
+	      
+		    res.render('admin/index',{error : req.flash('msg')});
+	}
+});
+
+
+router.post("/update_payment", function(req, res){
+	if(req.session.user_role==1){
+
+		var payment_master_id  = req.body.payment_master_id;
+		var fees_id            = req.body.fees_id;
+		var old_amount 		   = req.body.old_amount;
+		var old_discount       = req.body.old_discount;
+		var amount     	       = req.body.amount;
+		var discount           = req.body.discount;
+		var student_id         = req.body.student_id;
+		console.log(req.body);
+
+		if(old_amount!=amount){
+			var tableobj      = {tablename:'tbl_student_payment_master'};
+	        var whereparent   = { payment_master_id:payment_master_id }
+	        var objparent     = {
+	                              amount : amount
+	                            };  
+
+	            admin.updateWhereAccounting(tableobj,whereparent,objparent, function(err, result){   
+	            	var tableobj1 = {tablename:'tbl_student_payment'};
+					admin.findWhere(tableobj1,{ fees_id : fees_id,student_id:student_id}, function(err, result){  
+						 var payment_id  = result[0].payment_id;          
+						 var fees_amount = result[0].amount;
+						 if(amount>old_amount){
+						 	var am             = amount-old_amount;
+						 	var update_amount  = fees_amount+am; 
+						 }
+
+						 if(amount<old_amount){
+						 	var am             =  old_amount - amount;
+						 	var update_amount  = fees_amount-am;	
+						 }
+
+						 var where  = { payment_id :payment_id }
+						 var obj    = {
+						 	amount   : update_amount
+						 }
+						 admin.updateWhereAccounting(tableobj1,where,obj, function(err, result){  
+
+						 });
+						 
+
+					});
+				});
+		}
+
+		else if(old_discount!=discount){
+			console.log('abccccc');
+			var tableobj      = {tablename:'tbl_student_payment_master'};
+	        var whereparent   = { payment_master_id:payment_master_id }
+	            objparent     = {
+	                              discount : discount
+	                            };  
+
+	            admin.updateWhereAccounting(tableobj,whereparent,objparent, function(err, result){   
+	            	var tableobj1 = {tablename:'tbl_student_payment'};
+					admin.findWhere(tableobj1,{ fees_id : fees_id,student_id:student_id}, function(err, result){  
+						 var payment_id  = result[0].payment_id;          
+						 var fees_discount = result[0].discount;
+						 if(discount>old_discount){
+						 	var am             = discount-old_discount;
+						 	var update_discount  = fees_discount+am; 
+						 }
+
+						 if(discount<old_discount){
+						 	var am               =  old_discount - discount;
+						 	var update_discount  = fees_discount-am;	
+						 }
+
+						 var where  = { payment_id :payment_id }
+						 var obj    = {
+						 	discount   : update_discount
+						 }
+						 admin.updateWhereAccounting(tableobj1,where,obj, function(err, result){  
+
+						 });
+						 
+
+					});
+				});
+		}
+			//
+			res.redirect('/manage_payment'); 
+		
+
+
+	}else{
+	        admin.select(function(err,result){
+	     
+		    res.render('admin/index',{error : req.flash('msg')});
+			  
+		 	});
+	}
+});
+
+
+router.get("/transport_payments_edit", function(req, res){
+	if(req.session.user_role==1){
+         
+         
+        var tableobj  = {tablename:'tbl_transport_payment_master'}
+	    if(req.query.id)
+	     {
+           var findObj = {transport_master_id:req.query.id}
+           admin.findWhere(tableobj,findObj,function(err,result){
+           if(result)
+	           {
+	              var $data =JSON.parse(JSON.stringify(result)); 
+	              var table_enroll     = {tablename : 'tbl_registration'}
+	              var registration_id  = result[0].student_id;
+	              admin.findStudentTransportFees(table_enroll,{registration_id:registration_id},function(err,result1){
+		              //console.log($data[0].fees_id);
+		              var total_fees  = result1[0].route_fare;
+		              var pagedata = {title : "Welcome Admin", pagename : "admin/transport_payment_edit", success: req.flash('success'),error: req.flash('error'),paymentData:$data[0],total_fees:total_fees};
+				      res.render("admin_layout", pagedata);
+			      });
+	           }
+           });
+	     }
+	}else{
+	      
+		    res.render('admin/index',{error : req.flash('msg')});
+	}
+});
+
+router.post("/update_transport_payment", function(req, res){
+	if(req.session.user_role==1){
+
+		var transport_master_id       = req.body.transport_master_id;
+		
+		var amount     	       = req.body.amount;
+		var discount           = req.body.discount;
+		var student_id         = req.body.student_id;
+		console.log(req.body);
+
+		    var tableobj            = {tablename:'tbl_transport_payment_master'};
+	        var whereparent   		= { transport_master_id:transport_master_id }
+	        var objparent     		= {
+	                              amount  : amount,
+	                              discount : discount
+	                            };  
+
+	            admin.updateWhereAccounting(tableobj,whereparent,objparent, function(err, result){   
+
+	            });
+			//
+			res.redirect('/manage_payment'); 
+		
+
+
+	}else{
+	        admin.select(function(err,result){
+	     
+		    res.render('admin/index',{error : req.flash('msg')});
+			  
+		 	});
+	}
+});
 module.exports=router;

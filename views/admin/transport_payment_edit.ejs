@@ -1,0 +1,47 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Edit Transport Payment</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/manage_payment"><button class="btn btn-inverse-dark btn-fw">Manage Transport Payment</button></a>
+          </p>
+
+
+          	
+             <form class="forms-sample" id="form_transport" method="post" action="/update_transport_payment">
+	           
+	           	<div class="form-group row">
+	              
+	              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Amount</label>
+	              <div class="col-sm-4">
+	               	<input type="hidden" name="transport_remaining_amount" value="<%= total_fees - (paymentData.amount + paymentData.discount) %>" id="transport_remaining_amount">
+	              	 <input type="hidden" name="student_id" value="<%= paymentData.student_id%>">
+	               
+	                <input type="hidden" name="transport_master_id" value="<%= paymentData.transport_master_id %>">
+	               
+	                <input type="text" value="<%= paymentData.amount %>" class="form-control" id="transport_amounts" name="amount" onblur="transport_amount_validation(this.value)" >
+	                
+	              </div>
+
+	                <label for="exampleInputPassword2" class="col-sm-2 col-form-label"> Discount </label>
+	              <div class="col-sm-4">
+	                <input type="text" name="discount"  value="<%= paymentData.discount %>" id="trasnport_discounts" class="form-control"  onblur="transport_discount_validation(this.value)" >
+	                
+	              
+	              </div>
+	            </div>
+	         	<div class="col-sm-12">
+	         		<span id="transport_error" style="color: red"></span>
+	         	</div>
+	            <div class="col-sm-12" align="center"> 
+	            <button type="submit" class="btn btn-success mr-2">Submit</button>
+	           
+	            </div>
+          	</form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

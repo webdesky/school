@@ -236,6 +236,25 @@ $('input[name="attendence"]').change(function(){
 
 });
 
+
+$('input[name="fees"]').change(function(){
+    var radio = $(this).val();
+    if(radio=='fees'){
+        $('#transport_fees_detail').hide();
+        $('#fees_detail').show();
+        $('#trans').removeClass('abc');
+        $('#fees').addClass('abc');
+
+    }else if(radio='trans'){
+        $('#transport_fees_detail').show();
+        $('#fees_detail').hide();
+        $('#trans').addClass('abc');
+        $('#fees').removeClass('abc');
+    }
+   
+
+});
+
 $(document).ready( function () {
  
     $('#myTable').DataTable({
@@ -2664,7 +2683,7 @@ function Formative1(student_id,class_id,section_id)
         var section_id = $('#section_id').val();
 
         console.log(class_id);
-        console.log
+       
       }
 
 
@@ -2692,34 +2711,35 @@ function Formative1(student_id,class_id,section_id)
                     console.log(response);
                     var fees_report = response.fee_payment;
                     if(fees_report!=''){
-                        $('#fees_report_table tbody').html('');
-                        for (var i = 0; i < fees_report.length; i++) {
+                      $('#fees_report_table tbody').html('');
+                      for (var i = 0; i < fees_report.length; i++) {
                             var count = i+1;
                                
-                          if(fees_report[i]['fees_amount']==null){
-                        $('$fees_report_table tbody').append('<tr><td colspan="6">No data Found</td></tr>');
-                        return false;
-                      }
+                        if(fees_report[i]['fees_amount']==null){
+                           fees_report[i]['fees_amount'] = 0;
+                          //$('#fees_report_table tbody').append('<tr><td colspan="6">No data Found</td></tr>');
+                          
+                        }
 
-                      if(fees_report[i]['total_amount']==null){
-                          fees_report[i]['total_amount'] = 0;
-                      }
-                      if(fees_report[i]['total_discount']==null){
-                          fees_report[i]['total_discount'] = 0;
-                      }
+                        if(fees_report[i]['total_amount']==null){
+                            fees_report[i]['total_amount'] = 0;
+                        }
+                        if(fees_report[i]['total_discount']==null){
+                            fees_report[i]['total_discount'] = 0;
+                        }
                       
-                      if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
+                        if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
 
-                      var remaining_amount             = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
+                        var remaining_amount             = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
 
-                    }else{
-                      var remaining_amount             = parseFloat(fees_report[i]['fees_amount']) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) );
-                    }
+                        }else{
+                          var remaining_amount             = parseFloat(fees_report[i]['fees_amount']) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) );
+                        }
                     
 
-                      $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td style="color:blue;">'+ fees_report[i]['route_fare']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['transport_fees'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
-                      $('#fees_report_table').DataTable();
-                        }
+                        $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td style="color:blue;">'+ fees_report[i]['route_fare']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['transport_fees'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
+                        $('#fees_report_table').DataTable();
+                      }
                         $('#fees_report').show();
                     }else{
                          $('#fees_report').hide();
@@ -3423,13 +3443,14 @@ function PrintElem(id)
 {
     
     try 
-    {   $('.asas').hide();
+    {  
+      $('.asas').hide();
 
         var printContent = document.getElementById(id).innerHTML;
-        var windowUrl = '';
-        var uniqueName = new Date();
-        var windowName = 'Print' + uniqueName.getTime();
-        var printWindow = window.open(windowUrl, windowName, 'left=50000,top=50000,width=0,height=0');
+        var windowUrl    = '';
+        var uniqueName   = new Date();
+        var windowName   = 'Print' + uniqueName.getTime();
+        var printWindow  = window.open(windowUrl, windowName, 'left=50000,top=50000,width=0,height=0');
         printWindow.document.write(printContent);
         printWindow.document.close();
         printWindow.focus();
@@ -3437,18 +3458,18 @@ function PrintElem(id)
         $('.asas').show();
         printWindow.close();
     }
-    catch (e) 
+    catch(e) 
     {   
          $('.asas').show();
 
-         $('.asas').show();
-        printWindow.close();
-    }
-    catch (e) 
-    {
-        $('.asas').show();
         self.print();
+       // printWindow.close();
     }
+    // catch (e) 
+    // {
+    //     $('.asas').show();
+    //     self.print();
+    // }
 } 
    
 /* Get Exam Code */

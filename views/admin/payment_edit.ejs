@@ -1,0 +1,62 @@
+<div class="content-wrapper">
+  <div class="row">
+    <div class="col-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="card-title"><b><u>Edit Payment</u></b></h1>
+          <p class="card-description">
+          <a href="/admin/manage_payment"><button class="btn btn-inverse-dark btn-fw">Manage Payment</button></a>
+          </p>
+
+
+          	
+             <form class="forms-sample" id="form_transport" method="post" action="/update_payment">
+	            <div class="form-group row">
+	              
+	              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Fees Name</label>
+	              <div class="col-sm-4">
+	                <input type="hidden" name="remaining_amount" value="<%= total_fees - (paymentData.amount + paymentData.discount) %>" id="remaining_amount_1">
+	              	 <input type="hidden" name="student_id" value="<%= paymentData.student_id%>">
+	                <input type="hidden" name="fees_id" value="<%= paymentData.fees_id%>">
+	                <input type="hidden" name="payment_master_id" value="<%= paymentData.payment_master_id%>">
+	                <input type="hidden" name="old_amount" value="<%= paymentData.amount%>">
+	                <input type="hidden" name="old_discount" value="<%= paymentData.discount%>">
+	                <input type="text" value="<%= paymentData.fees_type %>" class="form-control" id="fees_type" placeholder="Enter  Route Name" name="fees_type" disabled>
+	                <span for="route_name"  class="error below" style="display: none"></span>
+	              </div>
+
+	                <label for="exampleInputPassword2" class="col-sm-2 col-form-label"> Fees Term </label>
+	              <div class="col-sm-4">
+	                <input type="text" name="fees_term"  value="<%= paymentData.fees_term %>" id="fees_term" class="form-control"  disabled>
+	                <span for="number_of_vehicle"  class="error below" style="display: none"></span>
+	              </div>
+	            </div>
+	           	<div class="form-group row">
+	              
+	              <label for="exampleInputEmail2" class="col-sm-2 col-form-label">Amount</label>
+	              <div class="col-sm-4">
+	               
+	                <input type="text" value="<%= paymentData.amount %>" class="form-control" id="amounts_1" name="amount" onblur="amount_validation(this.value,'1')" >
+	                
+	              </div>
+
+	                <label for="exampleInputPassword2" class="col-sm-2 col-form-label"> Discount </label>
+	              <div class="col-sm-4">
+	                <input type="text" name="discount"  value="<%= paymentData.discount %>" id="discounts_1" class="form-control"  onblur="discount_validation(this.value,'1')" >
+	                
+	              
+	              </div>
+	            </div>
+	         	<div class="col-sm-12">
+	         		<span id="error" style="color: red"></span>
+	         	</div>
+	            <div class="col-sm-12" align="center"> 
+	            <button type="submit" class="btn btn-success mr-2">Submit</button>
+	           
+	            </div>
+          	</form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
