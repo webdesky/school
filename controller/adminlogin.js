@@ -8047,6 +8047,115 @@ router.get("/ajax_get_payment_receipt_data", function(req, res)
 	}
 });
 
+router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
+{
+	if(req.session.user_role==1)
+	{ 
+		var year      			  = req.session.session_year;
+		var from    	          = req.query.from;
+		var to         		      = req.query.to;
+		
+	    var session_year	    = req.session.session_year
+
+	     var table  		=  {tbl_attendance : 'tbl_attendance',tbl_enroll:'tbl_enroll',tbl_registration:'tbl_registration'}
+
+
+           // var table  = {tablename : 'tbl_enroll'}
+     		var fee_payment  = '';
+     			
+     		admin.getAllStudent(table,{session_year:session_year},function(err, result){
+     			console.log(result);
+		        var fee_payment 	 = result;
+		   		 fee_payment.forEach(function(item, index){
+		 	 	  fee_payment[index].transport_fees ="";
+		 	 	  fee_payment[index].route_fare		="";
+		 	 	  fee_payment[index].total_amount	="";
+		 	 	  fee_payment[index].total_discount = "";
+		 	 	  fee_payment[index].fees_amount    = "";
+		 	    });
+				async.forEachOf(fee_payment, function(item, key, callback){
+				var table_transport  = {tablename:'tbl_transport_payment_master'}	
+			    admin.getTransportFeesByStudentId(table_transport,{student_id:fee_payment[key].registration_id},function(err, result){
+			    		
+			    		var transport_data   = result;
+			    		console.log(transport_data);
+			    		if(transport_data!=undefined){
+				    		if(transport_data[0]['route_fare']!=null){
+		                        if(transport_data[0]['transport_paid_amount']!=null || transport_data[0]['transport_paid_discount']!=null ){
+		                        
+		                        fee_payment[key].transport_fees  = transport_data[0]['transport_paid_amount'] + transport_data[0]['transport_paid_discount'];
+		                        fee_payment[key].route_fare      = transport_data[0]['route_fare'];
+		                        }else{
+		                        	
+		                         fee_payment[key].transport_fees = 0.00;
+		                         fee_payment[key].route_fare     = transport_data[0]['route_fare'];
+		                        }
+	                     	}else{
+	                     		
+		                        fee_payment[key].transport_fees = 'No Transport Taken';
+		                        fee_payment[key].route_fare     =  'No Transport Taken';
+	                    	 }
+                    	 }
+
+
+                    	callback();
+			    });
+				
+				}, function(err){
+				  if(err) {
+				    console.log(err);
+				    callback(err);
+				  }else{
+				  		async.forEachOf(fee_payment, function(item, key, callback){
+				  			  var where1 = '';
+		                      // if (class_id!='') {
+		                      //   where1 =  "tbl_fees_structure.class_id = "+class_id+"";
+		                      // }
+		                      
+		                      // if (fee_type_id!='' && fee_type_id!=0) {
+		                      //   where1 =  " "+where1+"  AND tbl_fees_structure.fees_type_id ="+fee_type_id+"";
+		                      // }
+		                      // if (fees_term_id!='') {
+		                      //   where1 =  " "+where1+" AND tbl_fees_structure.fees_term_id = "+fees_term_id+"";
+		                      // }
+		                      
+		                      var table_payment  = {tablename:'tbl_student_payment_master'}
+							 admin.getAccountingFeesByStudentId(table_payment,{student_id:fee_payment[key].registration_id,where1},function(err, result){
+							 	  if(result!=''){
+							 	 fee_payment[key].total_amount  = result[0]['amount'];
+							 	 fee_payment[key].total_discount  = result[0]['discount'];
+							 	 var table_fees = {tablename : 'tbl_fees_structure'}
+							 	 admin.getTotalFees(table_fees,{where1},function(err, result){
+							 	 	var fees_amount  = result;
+							 	 	 fee_payment[key].fees_amount  = fees_amount[0]['fees_amount'];
+							 	 	
+							 	 callback();
+
+							 	});
+							 	}
+							 });
+			    		
+							
+						}, function(err){
+						  if(err) {
+						    console.log(err);
+						    callback(err);
+						  }else{
+								res.send({fee_payment:fee_payment})
+						  }
+						});
+
+				  }
+				});
+			
+		});
+    
+		
+     }else{
+	      
+		    res.render('admin/index',{error : req.flash('msg')});
+	}
+});
 
 router.get("/get_receipt_detail", function(req, res)
 {

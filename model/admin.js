@@ -549,17 +549,26 @@ module.exports.getFeesDetail=function(table,obj, cb){
 module.exports.getStudent=function(table,obj, cb){
 
 	con.connect(function(err){
-		//var que = "SELECT "+table.tablename+".registration_id,tbl_registration.name  FROM "+table.tablename+" LEFT JOIN tbl_registration ON "+table.tablename+".registration_id=tbl_registration.registration_id WHERE "+table.tablename+".class_id="+obj.class_id+" AND "+table.tablename+".section_id="+obj.section_id+"";
-
-		// rajendra sir query
-        // var que = "SELECT *  FROM "+table.tbl_attendance+" INNER JOIN "+table.tbl_enroll+" ON "+table.tbl_attendance+".registration_id="+table.tbl_enroll+".registration_id  INNER JOIN "+table.tbl_registration+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id WHERE "+table.tbl_attendance+".class_id="+obj.class_id+" AND "+table.tbl_attendance+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+		
 
          var que = "SELECT DISTINCT(tbl_registration.registration_id) as registration_id ,tbl_registration.name,tbl_registration.parent_id,tbl_registration.admission_number  FROM "+table.tbl_registration+" LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id  LEFT JOIN "+table.tbl_attendance+" ON "+table.tbl_registration+".registration_id="+table.tbl_attendance+".registration_id WHERE "+table.tbl_enroll+".class_id="+obj.class_id+" AND "+table.tbl_enroll+".section_id="+obj.section_id+" AND  "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
 
-		 console.log(que); 
+		 console.log('student',que); 
 		con.query(que, cb);
 	});
 }
+module.exports.getAllStudent=function(table,obj, cb){
+
+	con.connect(function(err){
+		
+
+         var que = "SELECT DISTINCT(tbl_registration.registration_id) as registration_id ,tbl_registration.name,tbl_registration.parent_id,tbl_registration.admission_number  FROM "+table.tbl_registration+" LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id  LEFT JOIN "+table.tbl_attendance+" ON "+table.tbl_registration+".registration_id="+table.tbl_attendance+".registration_id WHERE   "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
+
+		 console.log('student',que); 
+		con.query(que, cb);
+	});
+}
+
 module.exports.getStudentsformarks=function(table,obj, cb){
 
 	con.connect(function(err){
@@ -600,9 +609,12 @@ module.exports.getStudentByClassId= function(table,obj,cb){
 module.exports.getAccountingFeesByStudentId = function(table,obj,cb){
  		con.connect(function(err){
 		
-		
-        var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+" AND "+obj.where1+"";		
-	//	console.log(que);
+		if(obj.where1!=''){
+        	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+" AND "+obj.where1+"";
+        }else{
+        	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+"";
+        }		
+		console.log('gaurav',que);
 		con.query(que, cb);
 	});	
  }

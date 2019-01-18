@@ -2687,7 +2687,7 @@ function Formative1(student_id,class_id,section_id)
       }
 
 
-      function ajax_get_payment_receipt_data(){
+    function ajax_get_payment_receipt_data(){
         var class_id      = $('#class_id').val();
         var fees_term_id  = $('#fees_term_id').val();
         var fee_type_id   = $('#fee_type_id').val();
@@ -2730,7 +2730,7 @@ function Formative1(student_id,class_id,section_id)
                       
                         if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
 
-                        var remaining_amount             = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
+                        var remaining_amount               = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
 
                         }else{
                           var remaining_amount             = parseFloat(fees_report[i]['fees_amount']) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) );
@@ -2747,7 +2747,67 @@ function Formative1(student_id,class_id,section_id)
                  }
         });
 
-      }
+    }
+
+    function ajax_get_payment_receipt_data_by_date(){
+        var from      = $('#from').val();
+        var to        = $('#to').val();
+        
+        if(from=='' || to==''){
+            alert('please select Date');
+            return false;
+        }
+        $.ajax({
+                 url: '/ajax_get_payment_receipt_data_by_date',
+                 type: 'GET',
+                 data : {
+                        from     :from,
+                        to        :to
+                       
+                        },
+
+                 success: function(response)
+                 {
+                    console.log(response);
+                    var fees_report = response.fee_payment;
+                    if(fees_report!=''){
+                      $('#fees_report_table tbody').html('');
+                      for (var i = 0; i < fees_report.length; i++) {
+                            var count = i+1;
+                               
+                        if(fees_report[i]['fees_amount']==null){
+                           fees_report[i]['fees_amount'] = 0;
+                          //$('#fees_report_table tbody').append('<tr><td colspan="6">No data Found</td></tr>');
+                          
+                        }
+
+                        if(fees_report[i]['total_amount']==null){
+                            fees_report[i]['total_amount'] = 0;
+                        }
+                        if(fees_report[i]['total_discount']==null){
+                            fees_report[i]['total_discount'] = 0;
+                        }
+                      
+                        if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
+
+                        var remaining_amount               = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
+
+                        }else{
+                          var remaining_amount             = parseFloat(fees_report[i]['fees_amount']) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) );
+                        }
+                    
+
+                        $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td style="color:blue;">'+ fees_report[i]['route_fare']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['transport_fees'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
+                        $('#fees_report_table').DataTable();
+                      }
+                        $('#fees_report').show();
+                    }else{
+                         $('#fees_report').hide();
+                    }
+                 }
+        });
+
+    }
 
     function get_receipt_detail(receipt_number){
         var receipt_number  = receipt_number;
