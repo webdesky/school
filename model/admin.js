@@ -564,7 +564,7 @@ module.exports.getAllStudent=function(table,obj, cb){
 
          var que = "SELECT DISTINCT(tbl_registration.registration_id) as registration_id ,tbl_registration.name,tbl_registration.parent_id,tbl_registration.admission_number  FROM "+table.tbl_registration+" LEFT JOIN "+table.tbl_enroll+" ON "+table.tbl_registration+".registration_id="+table.tbl_enroll+".registration_id  LEFT JOIN "+table.tbl_attendance+" ON "+table.tbl_registration+".registration_id="+table.tbl_attendance+".registration_id WHERE   "+table.tbl_enroll+".bonafide_status=0 AND "+table.tbl_enroll+".session_year='"+obj.session_year+"'";	
 
-		 console.log('student',que); 
+		// console.log('student',que); 
 		con.query(que, cb);
 	});
 }
@@ -598,13 +598,22 @@ module.exports.getStudentByClassId= function(table,obj,cb){
 
  module.exports.getTransportFeesByStudentId = function(table,obj,cb){
  		con.connect(function(err){
-		//SELECT * FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id=tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id  WHERE tbl_registration.registration_id = 61 
-        // var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount from "+table.tablename+" INNER JOIN tbl_registration ON tbl_registration.registration_id="+table.tablename+".student_id INNER JOIN tbl_transport ON tbl_registration.transport_id=tbl_transport.transport_id WHERE "+table.tablename+".student_id="+obj.student_id+"";		
+				
         var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id WHERE tbl_registration.registration_id = "+obj.student_id+""
+		//console.log('transport',que);
+		con.query(que, cb);
+	});	
+ }
+
+ module.exports.getTransportFeesByStudentId_date = function(table,obj,cb){
+ 		con.connect(function(err){
+				
+        var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id WHERE  "+obj.where+" AND tbl_registration.registration_id = "+obj.student_id+"";
 		console.log('transport',que);
 		con.query(que, cb);
 	});	
  }
+
 
 module.exports.getAccountingFeesByStudentId = function(table,obj,cb){
  		con.connect(function(err){
@@ -614,7 +623,7 @@ module.exports.getAccountingFeesByStudentId = function(table,obj,cb){
         }else{
         	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+"";
         }		
-		console.log('gaurav',que);
+	//	console.log('gaurav',que);
 		con.query(que, cb);
 	});	
  }
@@ -623,9 +632,12 @@ module.exports.getAccountingFeesByStudentId = function(table,obj,cb){
 module.exports.getTotalFees = function(table,obj,cb){
 	con.connect(function(err){
 		//SELECT SUM(fees_structure.fees_amount) as fees_amount from fees_structure $where2
-		
-        var que = "SELECT SUM("+table.tablename+".fees_amount) as fees_amount from "+table.tablename+" WHERE "+obj.where1+"";		
-		//console.log(que);
+		if(obj.where1!=''){
+        	var que = "SELECT SUM("+table.tablename+".fees_amount) as fees_amount from "+table.tablename+" WHERE "+obj.where1+"";		
+        }else{
+        	var que = "SELECT SUM("+table.tablename+".fees_amount) as fees_amount from "+table.tablename+"";
+        }
+		console.log(que);
 		con.query(que, cb);
 	});	
 }

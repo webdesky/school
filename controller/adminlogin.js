@@ -7943,6 +7943,7 @@ router.get("/ajax_get_payment_receipt_data", function(req, res)
 		var fees_term_id          = req.query.fees_term_id;
 		var fee_type_id        	  = req.query.fee_type_id;
 		var section_id        	  = req.query.section_id;
+		var balance      		  = req.query.balance;
 		console.log(class_id);
 		console.log(fees_term_id);
 		console.log(fee_type_id);
@@ -8031,7 +8032,88 @@ router.get("/ajax_get_payment_receipt_data", function(req, res)
 						    console.log(err);
 						    callback(err);
 						  }else{
+						  		if(balance==1){
+							  		async.forEachOf(fee_payment, function(item, key, callback){
+							  			console.log('#######################################');
+							  			if(fee_payment[key].route_fare=='No Transport Taken'){
+							  				fee_payment[key].route_fare  = 0;
+							  			}
+							  			if(fee_payment[key].fees_amount=='' || fee_payment[key].fees_amount==null){
+							  				fee_payment[key].fees_amount  = 0;
+							  			}
+							  			if(fee_payment[key].total_amount=='' || fee_payment[key].total_amount==null){
+							  				fee_payment[key].total_amount  = 0;
+							  			}
+							  			if(fee_payment[key].total_discount=='' || fee_payment[key].total_discount==null){
+							  				fee_payment[key].total_discount  = 0;
+							  			}
+							  			if(fee_payment[key].transport_fees=='No Transport Taken' || fee_payment[key].transport_fees==null){
+							  				fee_payment[key].transport_fees  = 0;
+							  			}
+
+
+
+							  			var remaining_amount   = (parseInt(fee_payment[key].route_fare) + parseInt(fee_payment[key].fees_amount) - (parseInt(fee_payment[key].total_amount)+  parseInt(fee_payment[key].total_discount) + parseInt(fee_payment[key].transport_fees))) 
+							  			if(remaining_amount==0){
+							  				delete fee_payment[key];
+							  			}
+							  			// if(fee_payment[key].total_amount==0 && fee_payment[key].total_discount==0 && fee_payment[key].transport_fees==0){
+							  			// 	delete fee_payment[key];
+							  			// }
+							  			
+							  			 callback();
+							  		}, function(err){
+							  			 if(err) {
+
+										    console.log(err);
+										    callback(err);
+										  }else{
+										  	console.log(fee_payment)
+
+										  	res.send({fee_payment:fee_payment})
+										  }
+							  		});
+						  		}else{
+
+						  			// async.forEachOf(fee_payment, function(item, key, callback){
+							  		// 	console.log('#######################################');
+							  		// 	if(fee_payment[key].route_fare=='No Transport Taken'){
+							  		// 		fee_payment[key].route_fare  = 0;
+							  		// 	}
+							  		// 	if(fee_payment[key].fees_amount=='' || fee_payment[key].fees_amount==null){
+							  		// 		fee_payment[key].fees_amount  = 0;
+							  		// 	}
+							  		// 	if(fee_payment[key].total_amount=='' || fee_payment[key].total_amount==null){
+							  		// 		fee_payment[key].total_amount  = 0;
+							  		// 	}
+							  		// 	if(fee_payment[key].total_discount=='' || fee_payment[key].total_discount==null){
+							  		// 		fee_payment[key].total_discount  = 0;
+							  		// 	}
+							  		// 	if(fee_payment[key].transport_fees=='No Transport Taken' || fee_payment[key].transport_fees==null){
+							  		// 		fee_payment[key].transport_fees  = 0;
+							  		// 	}
+
+
+
+							  			
+							  		// 	if(fee_payment[key].total_amount==0 && fee_payment[key].total_discount==0 && fee_payment[key].transport_fees==0){
+							  		// 		delete fee_payment[key];
+							  		// 	}
+							  			
+							  		// 	 callback();
+							  		// }, function(err){
+							  		// 	 if(err) {
+
+										 //    console.log(err);
+										 //    callback(err);
+										 //  }else{
+										 //  	console.log(fee_payment)
+										  	
+										 //  	res.send({fee_payment:fee_payment})
+										 //  }
+							  		// });
 								res.send({fee_payment:fee_payment})
+						  		}
 						  }
 						});
 
@@ -8054,7 +8136,8 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
 		var year      			  = req.session.session_year;
 		var from    	          = req.query.from;
 		var to         		      = req.query.to;
-		
+		//var balance      		  = req.query.balance;
+	
 	    var session_year	    = req.session.session_year
 
 	     var table  		=  {tbl_attendance : 'tbl_attendance',tbl_enroll:'tbl_enroll',tbl_registration:'tbl_registration'}
@@ -8064,21 +8147,22 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
      		var fee_payment  = '';
      			
      		admin.getAllStudent(table,{session_year:session_year},function(err, result){
-     			console.log(result);
+     			console.log('abc1',result);
 		        var fee_payment 	 = result;
-		   		 fee_payment.forEach(function(item, index){
-		 	 	  fee_payment[index].transport_fees ="";
-		 	 	  fee_payment[index].route_fare		="";
-		 	 	  fee_payment[index].total_amount	="";
+		   		  fee_payment.forEach(function(item, index){
+		 	 	  fee_payment[index].transport_fees = "";
+		 	 	  fee_payment[index].route_fare		= "";
+		 	 	  fee_payment[index].total_amount	= "";
 		 	 	  fee_payment[index].total_discount = "";
 		 	 	  fee_payment[index].fees_amount    = "";
 		 	    });
 				async.forEachOf(fee_payment, function(item, key, callback){
 				var table_transport  = {tablename:'tbl_transport_payment_master'}	
-			    admin.getTransportFeesByStudentId(table_transport,{student_id:fee_payment[key].registration_id},function(err, result){
+				var where = "(created_date BETWEEN '"+from+"' AND '"+to+"')"
+			    admin.getTransportFeesByStudentId_date(table_transport,{student_id:fee_payment[key].registration_id,where},function(err, result){
 			    		
 			    		var transport_data   = result;
-			    		console.log(transport_data);
+			    		console.log('abc2',transport_data);
 			    		if(transport_data!=undefined){
 				    		if(transport_data[0]['route_fare']!=null){
 		                        if(transport_data[0]['transport_paid_amount']!=null || transport_data[0]['transport_paid_discount']!=null ){
@@ -8108,6 +8192,7 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
 				  }else{
 				  		async.forEachOf(fee_payment, function(item, key, callback){
 				  			  var where1 = '';
+				  			  var where1 = "(created_date BETWEEN '"+from+"' AND '"+to+"')"
 		                      // if (class_id!='') {
 		                      //   where1 =  "tbl_fees_structure.class_id = "+class_id+"";
 		                      // }
@@ -8121,17 +8206,18 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
 		                      
 		                      var table_payment  = {tablename:'tbl_student_payment_master'}
 							 admin.getAccountingFeesByStudentId(table_payment,{student_id:fee_payment[key].registration_id,where1},function(err, result){
+							 	console.log('abc3',result[0])
 							 	  if(result!=''){
-							 	 fee_payment[key].total_amount  = result[0]['amount'];
-							 	 fee_payment[key].total_discount  = result[0]['discount'];
-							 	 var table_fees = {tablename : 'tbl_fees_structure'}
-							 	 admin.getTotalFees(table_fees,{where1},function(err, result){
-							 	 	var fees_amount  = result;
-							 	 	 fee_payment[key].fees_amount  = fees_amount[0]['fees_amount'];
-							 	 	
-							 	 callback();
+								 	 fee_payment[key].total_amount  = result[0]['amount'];
+								 	 fee_payment[key].total_discount  = result[0]['discount'];
+								 	 var table_fees = {tablename : 'tbl_fees_structure'}
+								 	 admin.getTotalFees(table_fees,{where1},function(err, result1){
+								 	 	var fees_amount  = result1;
+								 	 	 fee_payment[key].fees_amount  = fees_amount[0]['fees_amount'];
+								 	 	
+								 	 callback();
 
-							 	});
+								 	 });
 							 	}
 							 });
 			    		
@@ -8141,7 +8227,93 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
 						    console.log(err);
 						    callback(err);
 						  }else{
-								res.send({fee_payment:fee_payment})
+						 
+						    //     console.log('#######################################');
+						  		// console.log(fee_payment);return false;
+						  		// console.log('#######################################');
+						  		// if(balance==1){
+							  	// 	async.forEachOf(fee_payment, function(item, key, callback){
+							  	// 		console.log('#######################################');
+							  	// 		if(fee_payment[key].route_fare=='No Transport Taken'){
+							  	// 			fee_payment[key].route_fare  = 0;
+							  	// 		}
+							  	// 		if(fee_payment[key].fees_amount=='' || fee_payment[key].fees_amount==null){
+							  	// 			fee_payment[key].fees_amount  = 0;
+							  	// 		}
+							  	// 		if(fee_payment[key].total_amount=='' || fee_payment[key].total_amount==null){
+							  	// 			fee_payment[key].total_amount  = 0;
+							  	// 		}
+							  	// 		if(fee_payment[key].total_discount=='' || fee_payment[key].total_discount==null){
+							  	// 			fee_payment[key].total_discount  = 0;
+							  	// 		}
+							  	// 		if(fee_payment[key].transport_fees=='No Transport Taken' || fee_payment[key].transport_fees==null){
+							  	// 			fee_payment[key].transport_fees  = 0;
+							  	// 		}
+
+
+
+							  	// 		var remaining_amount   = (parseInt(fee_payment[key].route_fare) + parseInt(fee_payment[key].fees_amount) - (parseInt(fee_payment[key].total_amount)+  parseInt(fee_payment[key].total_discount) + parseInt(fee_payment[key].transport_fees))) 
+							  	// 		if(remaining_amount==0){
+							  	// 			delete fee_payment[key];
+							  	// 		}
+							  	// 		if(fee_payment[key].total_amount==0 && fee_payment[key].total_discount==0 && fee_payment[key].transport_fees==0){
+							  	// 			delete fee_payment[key];
+							  	// 		}
+							  			
+							  	// 		 callback();
+							  	// 	}, function(err){
+							  	// 		 if(err) {
+
+										//     console.log(err);
+										//     callback(err);
+										//   }else{
+										//   	console.log(fee_payment)
+
+										//   	res.send({fee_payment:fee_payment})
+										//   }
+							  	// 	});
+						  		// }else{
+
+						  			async.forEachOf(fee_payment, function(item, key, callback){
+							  			console.log('#######################################');
+							  			if(fee_payment[key].route_fare=='No Transport Taken'){
+							  				fee_payment[key].route_fare  = 0;
+							  			}
+							  			if(fee_payment[key].fees_amount=='' || fee_payment[key].fees_amount==null){
+							  				fee_payment[key].fees_amount  = 0;
+							  			}
+							  			if(fee_payment[key].total_amount=='' || fee_payment[key].total_amount==null){
+							  				fee_payment[key].total_amount  = 0;
+							  			}
+							  			if(fee_payment[key].total_discount=='' || fee_payment[key].total_discount==null){
+							  				fee_payment[key].total_discount  = 0;
+							  			}
+							  			if(fee_payment[key].transport_fees=='No Transport Taken' || fee_payment[key].transport_fees==null){
+							  				fee_payment[key].transport_fees  = 0;
+							  			}
+
+
+
+							  			
+							  			if(fee_payment[key].total_amount==0 && fee_payment[key].total_discount==0 && fee_payment[key].transport_fees==0){
+							  				delete fee_payment[key];
+							  			}
+							  			
+							  			 callback();
+							  		}, function(err){
+							  			 if(err) {
+
+										    console.log(err);
+										    callback(err);
+										  }else{
+										  	console.log(fee_payment)
+										  	
+										  	res.send({fee_payment:fee_payment})
+										  }
+							  		});
+						  		//}
+
+								
 						  }
 						});
 

@@ -86,7 +86,12 @@
                        <span for="fee_type_id"  class="error below" style="display: none"></span>
                     </div>
                     
-
+                     <div class="col-sm-1">
+                        <label class="col-form-label">balance</label>
+                        <input type="checkbox" name="balance" class="form-control" id="balance">
+                        <span for="to"  class="error below" style="display: none"></span>
+                    </div>
+                    
                     <div class="col-sm-2">
 		                  <button type="submit" class="btn btn-success mr-2" style="margin-top: 36px;" onclick="ajax_get_payment_receipt_data()">Submit</button>
                     </div>
@@ -99,7 +104,7 @@
       
                     <div class="col-sm-2">
                       <label class="col-form-label">From</label>
-                      <input type="text" name="from" id="from" class="form-control attendence_date" placeholder="From Date">
+                      <input type="text" name="from" id="from" class="form-control attendence_date1" placeholder="From Date">
                       <span for="from"  class="error below" style="display: none"></span>
                     </div>
 
@@ -107,12 +112,11 @@
                     
                     <div class="col-sm-2">
                       <label class="col-form-label">To</label>
-                     <input type="text" name="to" id="to" class="form-control attendence_date" placeholder="To date">
+                     <input type="text" name="to" id="to" class="form-control attendence_date1" placeholder="To date">
                        <span for="to"  class="error below" style="display: none"></span>
                     </div>
 
-                    
-                    
+                   
 
                     <div class="col-sm-2">
                       <button type="submit" class="btn btn-success mr-2" style="margin-top: 36px;" onclick="ajax_get_payment_receipt_data_by_date()">Submit</button>
