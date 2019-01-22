@@ -71,6 +71,17 @@
                     </div>
 
                     <div class="col-sm-2">
+                      <label class="col-form-label">Select Type</label>
+                      <select class="form-control" name="type" id="type" onchange="type_check(this.value)">
+                       
+                        <option value="1">Fees Receipt</option>
+                        <option value="2">Transport Receipt</option>                   
+                       </select>
+                       <span for="section_id"  class="error below" style="display: none"></span>
+                    </div>
+
+
+                    <div class="col-sm-2" id="accounting_term">
                     	<label class="col-form-label">Accounting Term</label>
                       	<select class="form-control" name="fees_term_id" id="fees_term_id">
                         	<option value="">Select Accounting Term</option>                   
@@ -78,7 +89,7 @@
                        <span for="accounting_term"  class="error below" style="display: none"></span>
                     </div>
 
-                    <div class="col-sm-2">
+                    <div class="col-sm-2" id="accounting_type">
                     	<label class="col-form-label">Fee Type</label>
                       	<select class="form-control" name="fee_type_id" id="fee_type_id">
                         	<option value="">Select Fee Type</option>                   
@@ -92,7 +103,7 @@
                         <span for="to"  class="error below" style="display: none"></span>
                     </div>
                     
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
 		                  <button type="submit" class="btn btn-success mr-2" style="margin-top: 36px;" onclick="ajax_get_payment_receipt_data()">Submit</button>
                     </div>
                     
@@ -116,7 +127,16 @@
                        <span for="to"  class="error below" style="display: none"></span>
                     </div>
 
-                   
+                    <div class="col-sm-2">
+                      <label class="col-form-label">Select Type</label>
+                      <select class="form-control" name="fees_type_date" id="fees_type_date">
+                       
+                        <option value="1">Fees Receipt</option>
+                        <option value="2">Transport Receipt</option>                   
+                       </select>
+                       <span for="section_id"  class="error below" style="display: none"></span>
+                    </div>
+
 
                     <div class="col-sm-2">
                       <button type="submit" class="btn btn-success mr-2" style="margin-top: 36px;" onclick="ajax_get_payment_receipt_data_by_date()">Submit</button>
@@ -132,12 +152,14 @@
               <thead>
                 <tr>
                   <th>  #               </th>
+                  <th>Admission Number</th>
                   <th> Student Name     </th>
                   <th> Amount           </th>
-                  <th> Transport Amount </th>
+                  <!-- <th> Transport Amount </th> -->
                   <th> Discount         </th>
                   <th> Collected Amount </th>
-                  <th> Transport Fees   </th>
+                  <th>Payment Date</th>
+                  <!-- <th> Transport Fees   </th> -->
                   <th> Balance Amount   </th>
                 
                  

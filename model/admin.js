@@ -584,9 +584,9 @@ module.exports.getStudentByClassId= function(table,obj,cb){
 	con.connect(function(err){
 		//select DISTINCT(student.student_id) as student_id,student.name,student.student_code from enroll INNER JOIN student ON enroll.student_id= student.student_id $where
 		if(obj.section_id!=undefined){
-        var que = "SELECT DISTINCT(tbl_registration.registration_id) as student_id,tbl_registration.name  FROM "+table.tablename+" INNER JOIN tbl_registration ON "+table.tablename+".registration_id= tbl_registration.registration_id  WHERE "+table.tablename+".class_id='"+obj.class_id+"' AND "+table.tablename+".section_id='"+obj.section_id+"' AND "+table.tablename+".session_year= '"+obj.year+"'";	
+        var que = "SELECT DISTINCT(tbl_registration.registration_id) as student_id,tbl_registration.name,tbl_registration.admission_number  FROM "+table.tablename+" INNER JOIN tbl_registration ON "+table.tablename+".registration_id= tbl_registration.registration_id  WHERE "+table.tablename+".class_id='"+obj.class_id+"' AND "+table.tablename+".section_id='"+obj.section_id+"' AND "+table.tablename+".session_year= '"+obj.year+"'";	
        	}else{
-       	 var que = "SELECT DISTINCT(tbl_registration.registration_id) as student_id,tbl_registration.name  FROM "+table.tablename+" INNER JOIN tbl_registration ON "+table.tablename+".registration_id= tbl_registration.registration_id  WHERE "+table.tablename+".class_id='"+obj.class_id+"'  AND "+table.tablename+".session_year= '"+obj.year+"'";	
+       	 var que = "SELECT DISTINCT(tbl_registration.registration_id) as student_id,tbl_registration.name,tbl_registration.admission_number  FROM "+table.tablename+" INNER JOIN tbl_registration ON "+table.tablename+".registration_id= tbl_registration.registration_id  WHERE "+table.tablename+".class_id='"+obj.class_id+"'  AND "+table.tablename+".session_year= '"+obj.year+"'";	
        		
        	}	
 		console.log(que);
@@ -599,7 +599,7 @@ module.exports.getStudentByClassId= function(table,obj,cb){
  module.exports.getTransportFeesByStudentId = function(table,obj,cb){
  		con.connect(function(err){
 				
-        var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id WHERE tbl_registration.registration_id = "+obj.student_id+""
+        var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount,tbl_transport_payment_master.date as payment_date FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id WHERE tbl_registration.registration_id = "+obj.student_id+""
 		//console.log('transport',que);
 		con.query(que, cb);
 	});	
@@ -608,7 +608,7 @@ module.exports.getStudentByClassId= function(table,obj,cb){
  module.exports.getTransportFeesByStudentId_date = function(table,obj,cb){
  		con.connect(function(err){
 				
-        var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id WHERE  "+obj.where+" AND tbl_registration.registration_id = "+obj.student_id+"";
+        var que = "SELECT tbl_transport.route_fare,SUM(tbl_transport_payment_master.amount) as transport_paid_amount,SUM(tbl_transport_payment_master.discount) as transport_paid_discount,tbl_transport_payment_master.date as payment_date FROM tbl_registration LEFT JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id LEFT JOIN tbl_transport_payment_master ON tbl_registration.registration_id = tbl_transport_payment_master.student_id WHERE  "+obj.where+" AND tbl_registration.registration_id = "+obj.student_id+"";
 		console.log('transport',que);
 		con.query(que, cb);
 	});	
@@ -619,7 +619,7 @@ module.exports.getAccountingFeesByStudentId = function(table,obj,cb){
  		con.connect(function(err){
 		
 		if(obj.where1!=''){
-        	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+" AND "+obj.where1+"";
+        	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount,tbl_student_payment_master.date as payment_date from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+" AND "+obj.where1+"";
         }else{
         	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+"";
         }		

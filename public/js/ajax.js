@@ -2696,6 +2696,7 @@ function Formative1(student_id,class_id,section_id)
         var fees_term_id  = $('#fees_term_id').val();
         var fee_type_id   = $('#fee_type_id').val();
         var section_id    = $('#section_id').val();
+        var type          = $('#type').val();
         if($("#balance").prop('checked') == true){
             var balance  = 1;
         }else{
@@ -2713,7 +2714,8 @@ function Formative1(student_id,class_id,section_id)
                         fees_term_id :fees_term_id,
                         fee_type_id  :fee_type_id,
                         section_id   :section_id,
-                        balance      :balance
+                        balance      :balance,
+                        type         :type
                         },
 
                  success: function(response)
@@ -2738,16 +2740,16 @@ function Formative1(student_id,class_id,section_id)
                                     fees_report[i]['total_discount'] = 0;
                                 }
                               
-                                if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
+                                // if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
 
-                                var remaining_amount               = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
+                                // var remaining_amount               = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
 
-                                }else{
+                                // }else{
                                   var remaining_amount             = parseFloat(fees_report[i]['fees_amount']) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) );
-                                }
+                              // }
                             
 
-                                $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td style="color:blue;">'+ fees_report[i]['route_fare']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['transport_fees'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
+                                $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['admission_number'] +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['payment_date'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
                                 $('#fees_report_table').DataTable();
                             }
                           }
@@ -2764,7 +2766,7 @@ function Formative1(student_id,class_id,section_id)
       
         var from      = $('#from').val();
         var to        = $('#to').val();
-        
+        var type      = $('#fees_type_date').val();
         if(from=='' || to==''){
             alert('please select Date');
             return false;
@@ -2774,7 +2776,8 @@ function Formative1(student_id,class_id,section_id)
                  type: 'GET',
                  data : {
                         from     :from,
-                        to       :to
+                        to       :to,
+                        type     :type
                         
                         
                         },
@@ -2802,16 +2805,16 @@ function Formative1(student_id,class_id,section_id)
                                 fees_report[i]['total_discount'] = 0;
                             }
                           
-                            if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
+                            // if(fees_report[i]['transport_fees']!='No Transport Taken' && fees_report[i]['route_fare']!='No Transport Taken'){
 
-                            var remaining_amount               = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
+                            // var remaining_amount               = (parseFloat(fees_report[i]['fees_amount']) + parseFloat(fees_report[i]['route_fare'])) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) + parseFloat(fees_report[i]['transport_fees']));
 
-                            }else{
+                            // }else{
                               var remaining_amount             = parseFloat(fees_report[i]['fees_amount']) - (parseFloat(fees_report[i]['total_amount']) + parseFloat(fees_report[i]['total_discount']) );
-                            }
+                           // }
                         
 
-                            $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td style="color:blue;">'+ fees_report[i]['route_fare']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['transport_fees'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
+                            $('#fees_report_table tbody').append('<tr><td>'+ count +'</td><td>'+ fees_report[i]['admission_number'] +'</td><td>'+ fees_report[i]['name'] +'</td><td style="color:blue;">'+ fees_report[i]['fees_amount']+'</td><td>'+ fees_report[i]['total_discount'] +'</td><td style="color:green;">'+ fees_report[i]['total_amount'] +'</td><td>'+ fees_report[i]['payment_date'] +'</td><td style="color:red;">'+ remaining_amount  +'</td></tr>');
                             $('#fees_report_table').DataTable();
 
                            }
@@ -3862,6 +3865,20 @@ function subject_check(type){
     else if(type=='teach'){
         $('#teach').addClass('abc');
         $('#stud').removeClass('abc');
+    }
+}
+
+function type_check(type){
+   if(type=='1'){
+        $('#accounting_term').show();
+        $('#accounting_type').show();
+        // $('#stud').addClass('abc');
+        // $('#teach').removeClass('abc');
+    }
+
+    else if(type=='2'){
+        $('#accounting_term').hide();
+        $('#accounting_type').hide();
     }
 }
 
