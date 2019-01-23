@@ -619,7 +619,7 @@ module.exports.getAccountingFeesByStudentId = function(table,obj,cb){
  		con.connect(function(err){
 		
 		if(obj.where1!=''){
-        	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount,tbl_student_payment_master.date as payment_date from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+" AND "+obj.where1+"";
+        	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount,tbl_student_payment_master.date as payment_date,tbl_student_payment_master.fees_id from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+" AND "+obj.where1+"";
         }else{
         	var que = "SELECT SUM(tbl_student_payment_master.discount) as discount,SUM(tbl_student_payment_master.amount) as amount from tbl_student_payment_master LEFT JOIN tbl_fees_structure ON tbl_fees_structure.fees_id=tbl_student_payment_master.fees_id WHERE tbl_student_payment_master.student_id="+obj.student_id+"";
         }		

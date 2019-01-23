@@ -8389,7 +8389,8 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
 		   		if(type==2){
 				async.forEachOf(fee_payment, function(item, key, callback){
 				var table_transport  = {tablename:'tbl_transport_payment_master'}	
-				var where = "(created_date BETWEEN '"+from+"' AND '"+to+"')"
+				var where  = "date >= '"+from+"' AND date <= '"+to+"'";
+				//var where = "(created_date BETWEEN '"+from+"' AND '"+to+"')"
 			    admin.getTransportFeesByStudentId_date(table_transport,{student_id:fee_payment[key].registration_id,where},function(err, result){
 			    		
 			    		var transport_data   = result;
@@ -8473,8 +8474,8 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
 				}else{
 						async.forEachOf(fee_payment, function(item, key, callback){
 				  			  var where1 = '';
-				  			  var where1 = "(created_date BETWEEN '"+from+"' AND '"+to+"')"
-		                     
+				  			//  var where1 = "(created_date BETWEEN '"+from+"' AND '"+to+"')"
+		                     var where1  = "tbl_student_payment_master.date >= '"+from+"' AND tbl_student_payment_master.date <= '"+to+"'";
 		                      
 		                      var table_payment  = {tablename:'tbl_student_payment_master'}
 							 admin.getAccountingFeesByStudentId(table_payment,{student_id:fee_payment[key].registration_id,where1},function(err, result){
@@ -8488,7 +8489,9 @@ router.get("/ajax_get_payment_receipt_data_by_date", function(req, res)
 								 	  	fee_payment[key].payment_date   = 'No Payment Done';
 								 	  }
 								 	 var table_fees = {tablename : 'tbl_fees_structure'}
-								 	 admin.getTotalFees(table_fees,{where1},function(err, result1){
+								 	 var fees_id    = result[0]['fees_id'];
+								 	 var where2     = "fees_id  = '"+fees_id+"'"; 
+								 	 admin.getTotalFees(table_fees,{where1:where2},function(err, result1){
 								 	 	var fees_amount  = result1;
 								 	 	 fee_payment[key].fees_amount  = fees_amount[0]['fees_amount'];
 								 	 	
