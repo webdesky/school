@@ -7572,10 +7572,23 @@ router.get("/pay_fees", function(req, res)
 	                    'fees_type'     : fees_type[key],
 	                    'fees_term'		: fees_term[key]
 
-			    	}
+			    }
 
 			   
-				    admin.insert_all(table,insert_data,function(err, result){	
+				admin.insert_all(table,insert_data,function(err, result){	
+						admin.getStudentDetail({registration_id:user_id},function(err, result){
+				        	
+					    	var mobileNo      = result[0].parent_number;
+					    	var amount_new    = parseFloat(amount[key])  +  parseFloat(discount[key]);
+					    	var current_date  = moment().format('DD-MM-YYYY')
+					    	var message   = "Dear Parent ,Your child "+result[0].student_name+" "+result[0].class_name+" class "+result[0].section_name+" section "+fees_term[key]+" Rs "+amount_new+" has paid ("+current_date+")";
+
+					    	
+							msg91.send(mobileNo, message, function(err, response){
+					             //req.flash('success',"Homework sent successfully");
+							});
+		       			});
+						
 				    	var table_payment  = {tablename : 'tbl_student_payment'}
 				    	
 				    	console.log(key)
@@ -7613,7 +7626,7 @@ router.get("/pay_fees", function(req, res)
 
 				    		
 				    	});
-				    });	
+				});	
 			
 			  //console.log('/brokers/topics/' + topic + '/partitions/' + key + '/state');
 			  callback();
@@ -7622,11 +7635,12 @@ router.get("/pay_fees", function(req, res)
 			    console.log(err);
 			    callback(err);
 			  }else{
+			  	  
 			  	  res.send('1');
 			  }
 			});
 		}else if(amount==''  && discount!='') {
-						console.log('2');
+						
 
 			async.forEachOf(discount, function(item, key, callback){
 				if(amount[key]==''){
@@ -7652,6 +7666,18 @@ router.get("/pay_fees", function(req, res)
 
 			   
 				    admin.insert_all(table,insert_data,function(err, result){	
+				    	admin.getStudentDetail({registration_id:user_id},function(err, result){
+				        	
+					    	var mobileNo      = result[0].parent_number;
+					    	var amount_new    = parseFloat(amount[key])  +  parseFloat(discount[key]);
+					    	var current_date  = moment().format('DD-MM-YYYY')
+					    	var message   = "Dear Parent ,Your child "+result[0].student_name+" "+result[0].class_name+" class "+result[0].section_name+" section "+fees_term[key]+" Rs"+amount_new+" has paid ("+current_date+")";
+
+					    	
+							msg91.send(mobileNo, message, function(err, response){
+					             //req.flash('success',"Homework sent successfully");
+							});
+		       			});
 				    	var table_payment  = {tablename : 'tbl_student_payment'}
 				    	
 				    	console.log(key)
@@ -7702,7 +7728,7 @@ router.get("/pay_fees", function(req, res)
 			  }
 			});
 		}else if(amount!=''  && discount=='') {
-						console.log('3');
+						
 
 			async.forEachOf(amount, function(item, key, callback){
 				if(amount[key]==''){
@@ -7728,6 +7754,18 @@ router.get("/pay_fees", function(req, res)
 
 			   
 				    admin.insert_all(table,insert_data,function(err, result){	
+				    	admin.getStudentDetail({registration_id:user_id},function(err, result){
+				        	
+					    	var mobileNo      = result[0].parent_number;
+					    	var amount_new    = parseFloat(amount[key])  +  parseFloat(discount[key]);
+					    	var current_date  = moment().format('DD-MM-YYYY')
+					    	var message   = "Dear Parent ,Your child "+result[0].student_name+" "+result[0].class_name+" class "+result[0].section_name+" section "+fees_term[key]+" Rs"+amount_new+" has paid ("+current_date+")";
+
+					    	
+							msg91.send(mobileNo, message, function(err, response){
+					             //req.flash('success',"Homework sent successfully");
+							});
+		       			});
 				    	var table_payment  = {tablename : 'tbl_student_payment'}
 				    	
 				    	console.log(key)
@@ -7778,11 +7816,12 @@ router.get("/pay_fees", function(req, res)
 			  }
 			});
 		}
-    
-		
+        
+        
+    	//admin.getStudentDetail()
      }else{
 	      
-		    res.render('admin/index',{error : req.flash('msg')});
+		res.render('admin/index',{error : req.flash('msg')});
 	}
 });
 
@@ -7806,13 +7845,19 @@ router.get("/insert_transport_payment", function(req, res)
 		for (var i = 0; i < 5; i++){
 		    text += possible.charAt(Math.floor(Math.random() * possible.length));
 		}
+		if(amount==''){
+					amount = 0.00;
+		}
+	   if(discount==''){
+					discount = 0.00;
+		}
 		insert_data   = {
 				'receipt_number'    : text,
                 'student_id'        : student_id,
                 'type'              : type,
                 'payment_number'    : payment_number,
-                'amount'            : amount,
-                'discount'          : discount,
+                'amount'            : parseFloat(amount),
+                'discount'          : parseFloat(discount),
                 'date'              : moment().format('YYYY-MM-DD:hh:mm:ss'),
                 'year'              : year,
                 'collected_by'      : 'Admin'
@@ -7822,6 +7867,18 @@ router.get("/insert_transport_payment", function(req, res)
 
 
 		  admin.insert_all(table,insert_data,function(err, result){	
+		  	admin.getStudentDetail({registration_id:student_id},function(err, result){
+				        	
+					    	var mobileNo      = result[0].parent_number;
+					    	var amount_new    = parseFloat(amount)  +  parseFloat(discount);
+					    	var current_date  = moment().format('DD-MM-YYYY')
+					    	var message   = "Dear Parent ,Your child "+result[0].student_name+" "+result[0].class_name+" class "+result[0].section_name+" section Transport Fees Rs"+amount_new+" has paid ("+current_date+")";
+
+					    	
+							msg91.send(mobileNo, message, function(err, response){
+					             //req.flash('success',"Homework sent successfully");
+							});
+		       			});
 		  	res.send('1');
 		  });
 	

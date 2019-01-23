@@ -462,9 +462,9 @@ module.exports.get_receipt_detail=function(table,obj ,cb){
 	
 		con.connect(function(err){
 		
-		var que = "SELECT tbl_student_payment_master.*,tbl_registration.name as student_name,tbl_parent.name as parent_name,tbl_fee_type.fee_type,tbl_fees_term.term_name,tbl_class.class_name,tbl_section.section_name,tbl_fees_structure.fees_amount	 FROM tbl_student_payment_master INNER JOIN tbl_registration ON tbl_registration.registration_id = tbl_student_payment_master.student_id  INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id=tbl_registration.parent_id                                                       INNER JOIN tbl_fees_structure ON tbl_student_payment_master.fees_id=tbl_fees_structure.fees_id              INNER JOIN tbl_fee_type ON tbl_fees_structure.fees_type_id=tbl_fee_type.fee_type_id                         INNER JOIN tbl_fees_term ON tbl_fees_term.term_id=tbl_fees_structure.fees_term_id                           INNER JOIN tbl_enroll ON tbl_enroll.registration_id=tbl_registration.registration_id                         INNER JOIN tbl_class ON tbl_class.class_id = tbl_enroll.class_id                                             INNER JOIN tbl_section ON tbl_section.section_id = tbl_enroll.section_id   WHERE tbl_student_payment_master.student_id='"+obj.student_id+"' AND tbl_student_payment_master.receipt_number='"+obj.receipt_number+"'";
+		var que = "SELECT tbl_student_payment_master.*,tbl_registration.name as student_name,tbl_parent.name as parent_name,tbl_fee_type.fee_type,tbl_fees_term.term_name,tbl_class.class_name,tbl_section.section_name,tbl_fees_structure.fees_amount,tbl_registration.admission_number,DATE_FORMAT(tbl_student_payment_master.date, '%d-%m-%Y') as _payment_date	 FROM tbl_student_payment_master INNER JOIN tbl_registration ON tbl_registration.registration_id = tbl_student_payment_master.student_id  INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id=tbl_registration.parent_id                                                       INNER JOIN tbl_fees_structure ON tbl_student_payment_master.fees_id=tbl_fees_structure.fees_id              INNER JOIN tbl_fee_type ON tbl_fees_structure.fees_type_id=tbl_fee_type.fee_type_id                         INNER JOIN tbl_fees_term ON tbl_fees_term.term_id=tbl_fees_structure.fees_term_id                           INNER JOIN tbl_enroll ON tbl_enroll.registration_id=tbl_registration.registration_id                         INNER JOIN tbl_class ON tbl_class.class_id = tbl_enroll.class_id                                             INNER JOIN tbl_section ON tbl_section.section_id = tbl_enroll.section_id   WHERE tbl_student_payment_master.student_id='"+obj.student_id+"' AND tbl_student_payment_master.receipt_number='"+obj.receipt_number+"'";
 
-	    //console.log(que);
+	    console.log('dddddddddddd',que);
 		 con.query(que, cb);
 	});
 }
@@ -472,9 +472,9 @@ module.exports.get_transport_detail=function(table,obj ,cb){
 	
 		con.connect(function(err){
 		
-		var que = "SELECT tbl_registration.name as student_name,tbl_parent.name as parent_name,tbl_transport_payment_master.date as date,tbl_transport_payment_master.amount as amount,tbl_transport_payment_master.discount as discount,tbl_class.class_name,tbl_section.section_name,tbl_transport_payment_master.receipt_number,tbl_transport_payment_master.type,tbl_transport.route_fare FROM tbl_transport_payment_master  INNER JOIN tbl_registration ON tbl_transport_payment_master.student_id = tbl_registration.registration_id    INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id = tbl_transport_payment_master.student_id                                                                      INNER JOIN tbl_enroll ON tbl_registration.registration_id  = tbl_enroll.registration_id                     INNER JOIN tbl_class ON tbl_enroll.class_id = tbl_class.class_id      INNER JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id                                         INNER JOIN tbl_section  ON tbl_enroll.section_id = tbl_section.section_id WHERE tbl_transport_payment_master.student_id='"+obj.student_id+"' AND tbl_transport_payment_master.receipt_number='"+obj.receipt_number+"'";
+		var que = "SELECT tbl_registration.name as student_name,tbl_parent.name as parent_name,DATE_FORMAT(tbl_transport_payment_master.date, '%d-%m-%Y') as date,tbl_transport_payment_master.amount as amount,tbl_transport_payment_master.discount as discount,tbl_class.class_name,tbl_section.section_name,tbl_transport_payment_master.receipt_number,tbl_transport_payment_master.type,tbl_transport.route_fare,tbl_registration.admission_number FROM tbl_transport_payment_master  INNER JOIN tbl_registration ON tbl_transport_payment_master.student_id = tbl_registration.registration_id    INNER JOIN tbl_registration as tbl_parent ON tbl_parent.registration_id = tbl_transport_payment_master.student_id                                                                      INNER JOIN tbl_enroll ON tbl_registration.registration_id  = tbl_enroll.registration_id                     INNER JOIN tbl_class ON tbl_enroll.class_id = tbl_class.class_id      INNER JOIN tbl_transport ON tbl_registration.transport_id = tbl_transport.transport_id                                         INNER JOIN tbl_section  ON tbl_enroll.section_id = tbl_section.section_id WHERE tbl_transport_payment_master.student_id='"+obj.student_id+"' AND tbl_transport_payment_master.receipt_number='"+obj.receipt_number+"'";
 
-	   // console.log(que);
+	  //  console.log('asbasasb',que);
 		 con.query(que, cb);
 	});
 }
@@ -1336,6 +1336,14 @@ module.exports.findStudentTransportFees=function(table,obj, cb){
 		console.log('transport',que);
 		con.query(que, cb);
 	});
+}
+
+module.exports.getStudentDetail= function(obj,cb){
+	con.connect(function(err){
+		var que = "SELECT parent_table.name as parent_name,parent_table.phone as parent_number, tbl_registration.name as student_name,tbl_class.class_name,tbl_section.section_name FROM tbl_registration LEFT JOIN tbl_enroll ON tbl_registration.registration_id = tbl_enroll.registration_id LEFT JOIN tbl_registration as parent_table ON tbl_registration.parent_id = parent_table.registration_id LEFT JOIN tbl_class ON tbl_enroll.class_id= tbl_class.class_id LEFT JOIN tbl_section ON tbl_enroll.section_id= tbl_section.section_id  WHERE tbl_enroll.registration_id = "+obj.registration_id+"";
+		//console.log('gaurav test',que);
+		con.query(que, cb);
+	});	
 }
 
 

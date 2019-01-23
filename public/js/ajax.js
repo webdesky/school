@@ -2651,7 +2651,7 @@ function Formative1(student_id,class_id,section_id)
          var type_number = $('#transport_number').val();
 
          $.ajax({
-                 url: '/insert_transport_payment',
+                 url: '/admin/insert_transport_payment',
                  type: 'GET',
                  data : {
                         amount:amount,
@@ -2851,13 +2851,14 @@ function Formative1(student_id,class_id,section_id)
                                 $('#school_name').text(school_name);
                                 $('#school_address').text(school_address);
                                 $('#school_phone').text(school_phone);
-                                $('#payment_date').text(detail[0].date);
+                                $('#payment_date').text(detail[0]._payment_date);
                                 $('#student_name').text(detail[0].student_name);
                                 $('#parent_name').text(detail[0].parent_name);
                                 $('#class_name').text(detail[0].class_name);
                                 $('#section_name').text(detail[0].section_name);
                                  $('#school_logo').attr('src','../../../images/'+logo+'');
                                 $('#receipt_number').text(detail[0].receipt_number);
+                                $('#fees_student_id').text(detail[0].admission_number);
                                 $('#fees_receipt_data tbody').html('');
                                 var sum = 0;
                                 var due = 0 ;
@@ -2916,7 +2917,8 @@ function Formative1(student_id,class_id,section_id)
                                 $('#class_name').text(detail[0].class_name);
                                 $('#section_name').text(detail[0].section_name);
                                 $('#receipt_number').text(detail[0].receipt_number);
-                                $('#school_logo').attr('src','../../../images/'+logo+'')
+                                $('#school_logo').attr('src','../../../images/'+logo+'');
+                                $('#fees_student_id').text(detail[0].admission_number)
                                 $('#fees_receipt_data tbody').html('');
                                 var sum = 0;
                                 var due = 0;
